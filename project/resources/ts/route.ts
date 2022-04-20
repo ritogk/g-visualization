@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Main from './components/Main.vue';
+import GAnalys from './components/GAnalys.vue';
 import Abb from './components/Abb.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        name: 'Main',
-        component: Main,
+        name: 'GAnalys',
+        component: GAnalys,
       },
     {
         path: '/abb',

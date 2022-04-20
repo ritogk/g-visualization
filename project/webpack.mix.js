@@ -13,4 +13,21 @@ const mix = require('laravel-mix');
 
  mix.ts('resources/ts/main.ts', 'public/js/app.js')
  .vue()
- .css('resources/css/app.css', 'public/css')
+ .sass('resources/scss/main.scss', 'public/css/app.css');
+
+ 
+ // ESLintに関する設定（この部分を丸ごと追記するイメージです）
+if (!mix.inProduction()) { // 本番環境ではESLintは使用しない
+    mix.webpackConfig({
+      module: {
+        rules: [
+          {
+            enforce: 'pre',
+            exclude: /node_modules/,
+            loader: 'eslint-loader',
+            test: /\.(js|vue)?$/,
+          },
+        ],
+      },
+    })
+  }
