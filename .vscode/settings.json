@@ -1,0 +1,5 @@
+{
+    "php.validate.executablePath": "/usr/local/bin/php",
+    // VSCode 標準の PHP サポートを無効
+    "php.suggest.basic": false,
+}
