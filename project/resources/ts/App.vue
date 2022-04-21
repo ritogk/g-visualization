@@ -8,8 +8,12 @@
 
 <script lang="ts">
 import { defineComponent, provide } from 'vue'
-import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
 import { useDevice, useDeviceKey } from '@/libs/device/device'
+import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
+import {
+  useAccelerationSensor,
+  useAccelerationSensortKey,
+} from '@/libs/device/accelerationSensor'
 
 import { Device } from '@/libs/constants'
 
@@ -20,12 +24,16 @@ export default defineComponent({
     provide(useDeviceKey, device)
     device.setDevice()
     if (device.stateRefs.device.value === Device.pc) {
-      alert('このページはスマートフォン専用サイトです。')
+      //alert('このページはスマートフォン専用サイトです。')
     }
 
     // ジャイロセンサー
     const gyroSensor = useGyroSensor()
     provide(useGyroSensortKey, gyroSensor)
+
+    // 加速度センサー
+    const accelerationSensor = useAccelerationSensor()
+    provide(useAccelerationSensortKey, accelerationSensor)
 
     return {}
   },
