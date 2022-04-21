@@ -13159,6 +13159,60 @@ const getGlobalThis = () => {
 
 /***/ }),
 
+/***/ "./resources/ts/main.ts":
+/*!******************************!*\
+  !*** ./resources/ts/main.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/ts/App.vue");
+/* harmony import */ var _route__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./route */ "./resources/ts/route.ts");
+//require('./bootstrap');
+
+
+ //createApp(App).mount("#app")
+
+var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+app.use(_route__WEBPACK_IMPORTED_MODULE_2__["default"]);
+app.mount('#app');
+
+/***/ }),
+
+/***/ "./resources/ts/route.ts":
+/*!*******************************!*\
+  !*** ./resources/ts/route.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/GAnalys.vue */ "./resources/ts/components/GAnalys.vue");
+/* harmony import */ var _components_Abb_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Abb.vue */ "./resources/ts/components/Abb.vue");
+
+
+
+var routes = [{
+  path: '/',
+  name: 'GAnalys',
+  component: _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+}, {
+  path: '/abb',
+  name: 'Abb',
+  component: _components_Abb_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+}];
+var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.createRouter)({
+  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.createWebHistory)(),
+  routes: routes
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/ts-loader/index.js??clonedRuleSet-6!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/ts/App.vue?vue&type=script&lang=ts":
 /*!*************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/ts-loader/index.js??clonedRuleSet-6!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/ts/App.vue?vue&type=script&lang=ts ***!
@@ -13190,10 +13244,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/GAnalys.vue */ "./resources/ts/components/GAnalys.vue");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  components: {
+    GAnalys: _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   setup: function setup() {
-    var message = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("Abb");
+    var message = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('Abb');
     return {
       message: message
     };
@@ -13216,16 +13275,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
   setup: function setup() {
-    // const message = ref<string>("Hello TypeScript")
-    // const router = useRouter()
-    var a = 1; // ジャイロセンサーの値
-
+    // ジャイロセンサーの値
     var gyro_x = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(0);
     var gyro_y = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(0);
     var gyro_z = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(0); // 「ジャイロセンサーを有効にする」押下
 
     var clickStartGyrosensor = function clickStartGyrosensor() {
       //. ユーザーに「許可」を求めるダイアログを表示
+      ;
       DeviceOrientationEvent.requestPermission().then(function (response) {
         alert(response);
 
@@ -13253,7 +13310,7 @@ __webpack_require__.r(__webpack_exports__);
       //alert(gyro_y);
     };
 
-    window.addEventListener("deviceorientation", deviceOrientation);
+    window.addEventListener('deviceorientation', deviceOrientation);
     return {
       clickStartGyrosensor: clickStartGyrosensor,
       gyro_x: gyro_x,
@@ -13310,7 +13367,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.message) + " aaaaa ";
+  var _component_GAnalys = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("GAnalys");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.message) + " aaaaa ", 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_GAnalys)]);
 }
 
 /***/ }),
@@ -13381,101 +13442,41 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn btn-primary",
     onClick: _cache[0] || (_cache[0] = //@ts-ignore
     function () {
-      var args = [];
-
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-
-      return _ctx.clickStartGyrosensor && _ctx.clickStartGyrosensor.apply(_ctx, args);
+      return _ctx.clickStartGyrosensor && _ctx.clickStartGyrosensor.apply(_ctx, arguments);
     })
-  }, "ジャイロセンサーを有効にする"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 傾きx "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    "class": "form-control",
+  }, " ジャイロセンサーを有効にする "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 傾きx "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     id: "inputGyroX",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return _ctx.gyro_x = $event;
-    })
+    }),
+    type: "text",
+    "class": "form-control"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.gyro_x]]), _hoisted_4])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 傾きy "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "email",
-    "class": "form-control",
     id: "floatingInputGrid",
-    placeholder: "name@example.com",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return _ctx.gyro_y = $event;
-    })
+    }),
+    type: "email",
+    "class": "form-control",
+    placeholder: "name@example.com"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.gyro_y]]), _hoisted_8])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 傾きz "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "email",
-    "class": "form-control",
     id: "floatingInputGrid",
-    placeholder: "name@example.com",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return _ctx.gyro_z = $event;
-    })
+    }),
+    type: "email",
+    "class": "form-control",
+    placeholder: "name@example.com"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.gyro_z]]), _hoisted_12])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
-
-/***/ }),
-
-/***/ "./resources/ts/main.ts":
-/*!******************************!*\
-  !*** ./resources/ts/main.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/ts/App.vue");
-/* harmony import */ var _route__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./route */ "./resources/ts/route.ts");
-//require('./bootstrap');
-
-
- //createApp(App).mount("#app")
-
-var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
-app.use(_route__WEBPACK_IMPORTED_MODULE_2__["default"]);
-app.mount('#app');
-
-/***/ }),
-
-/***/ "./resources/ts/route.ts":
-/*!*******************************!*\
-  !*** ./resources/ts/route.ts ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
-/* harmony import */ var _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/GAnalys.vue */ "./resources/ts/components/GAnalys.vue");
-/* harmony import */ var _components_Abb_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Abb.vue */ "./resources/ts/components/Abb.vue");
-
-
-
-var routes = [{
-  path: '/',
-  name: 'GAnalys',
-  component: _components_GAnalys_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-}, {
-  path: '/abb',
-  name: 'Abb',
-  component: _components_Abb_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-}];
-var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.createRouter)({
-  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.createWebHistory)(),
-  routes: routes
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
 /***/ }),
 
