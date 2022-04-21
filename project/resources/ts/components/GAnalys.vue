@@ -57,10 +57,7 @@
 <script lang="ts">
 import { defineComponent, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  useGyroSensortKey,
-  useGyroSensortType,
-} from '@/libs/device/gyro_sensor'
+import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 
 export default defineComponent({
   setup() {
