@@ -58,9 +58,11 @@
 import { defineComponent, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
+// import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
 export default defineComponent({
   setup() {
+    // const useDevice = inject(useDeviceKey) as useDeviceType
     const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
 
     // ジャイロセンサーの値
