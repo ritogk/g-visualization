@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
 
 /*
  |--------------------------------------------------------------------------
@@ -11,23 +11,31 @@ const mix = require('laravel-mix');
  |
  */
 
- mix.ts('resources/ts/main.ts', 'public/js/app.js')
- .vue()
- .sass('resources/scss/main.scss', 'public/css/app.css');
+mix
+  .ts('resources/ts/main.ts', 'public/js/app.js')
+  .vue()
+  .sass('resources/scss/main.scss', 'public/css/app.css')
 
- 
- // ESLintに関する設定（この部分を丸ごと追記するイメージです）
-if (!mix.inProduction()) { // 本番環境ではESLintは使用しない
-    mix.webpackConfig({
-      module: {
-        rules: [
-          {
-            enforce: 'pre',
-            exclude: /node_modules/,
-            loader: 'eslint-loader',
-            test: /\.(js|vue)?$/,
-          },
-        ],
+const path = require('path')
+
+mix.webpackConfig({
+  // ビルド後に静的チェックを実行するための設定
+  module: {
+    rules: [
+      {
+        enforce: 'pre', // preを指定することで、付いてないローダーより先に実行できる。
+        test: /\.(ts|vue)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          fix: true, // Lint実行時に自動整形を行うかどうか。（prettierのルールで自動整形してくれる）
+        },
       },
-    })
-  }
+    ],
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve('./resources/ts'),
+    },
+  },
+})

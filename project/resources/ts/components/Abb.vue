@@ -1,16 +1,23 @@
 <template>
-{{ message }}
-aaaaa
+  <div>
+    {{ message }}
+    aaaaa
+    <GAnalys />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent, ref } from 'vue'
+import GAnalys from '@/components/GAnalys.vue'
 export default defineComponent({
-    setup(){
-        const message = ref<string>("Abb")
-        return {
-            message
-        }
+  components: {
+    GAnalys,
+  },
+  setup() {
+    const message = ref<string>('Abb')
+    return {
+      message,
     }
+  },
 })
 </script>
