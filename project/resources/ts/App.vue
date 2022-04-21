@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, provide } from 'vue'
-import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyro_sensor'
+import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
 
 export default defineComponent({
   setup() {
