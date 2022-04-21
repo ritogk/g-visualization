@@ -10,5 +10,9 @@ module.exports = {
     parser: '@typescript-eslint/parser',
   },
   plugins: ['vue', '@typescript-eslint'],
-  rules: { 'vue/multi-word-component-names': 'off' },
+  rules: {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    'vue/multi-word-component-names': 'off',
+  },
 }
