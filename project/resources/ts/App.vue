@@ -7,10 +7,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, provide } from 'vue'
+import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyro_sensor'
 
 export default defineComponent({
   setup() {
+    const gyroSensor = useGyroSensor()
+    provide(useGyroSensortKey, gyroSensor)
+
     return {}
   },
 })
