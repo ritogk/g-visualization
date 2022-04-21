@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import GAnalys from './components/GAnalys.vue'
-import Abb from './components/Abb.vue'
+import GAnalys from './views/GAnalys.vue'
+import Abb from './views/Abb.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

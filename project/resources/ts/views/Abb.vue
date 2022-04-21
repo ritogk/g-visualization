@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import GAnalys from '@/components/GAnalys.vue'
+import GAnalys from '@/views/GAnalys.vue'
 export default defineComponent({
   components: {
     GAnalys,
