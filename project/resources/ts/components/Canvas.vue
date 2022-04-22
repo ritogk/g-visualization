@@ -26,12 +26,12 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const canvas_width = 424
-    const canvas_height = 424
+    const canvas_width = 375
+    const canvas_height = 375
     // gサークルの直径
-    const g_circle_diameter = 374
+    const g_circle_diameter = 342
     // gオブジェクトの直径
-    const g_object_diameter = 10
+    const g_object_diameter = 6
 
     let rgbRed = 255
     let rgbGreen = 255
@@ -50,7 +50,12 @@ export default defineComponent({
           // 図形の色を変更
           p.fill(rgbRed, rgbGreen, rgbBlue)
           // 1.1~-1.1Gを374~0の範囲内に変換して描画
-          p.rect(adjust_x(props.x), adjust_y(props.y), 10, 10)
+          p.rect(
+            adjust_x(props.x),
+            adjust_y(props.y),
+            g_object_diameter,
+            g_object_diameter
+          )
           if (rgbRed == 0) {
             initCanvas()
             rgbRed = 255
@@ -102,14 +107,14 @@ export default defineComponent({
         // ラベルを描画
         p.fill(0)
         const cicle_interval = canvas_height / 2 / 6
-        p.text('1.2G', canvas_width / 2 + 2, cicle_interval * 1 - 1 * 4)
-        p.text('1.0G', canvas_width / 2 + 2, cicle_interval * 2 - 2 * 4)
-        p.text('0.8G', canvas_width / 2 + 2, cicle_interval * 3 - 3 * 4)
-        p.text('0.6G', canvas_width / 2 + 2, cicle_interval * 4 - 4 * 4)
-        p.text('0.4G', canvas_width / 2 + 2, cicle_interval * 5 - 5 * 4)
-        p.text('0.2G', canvas_width / 2 + 2, cicle_interval * 6 - 6 * 4)
-        p.text('Y', canvas_width / 2 - 13, 18)
-        p.text('X', canvas_width - 17, canvas_height / 2 - 6)
+        p.text('1.2G', canvas_width / 2 + 2, cicle_interval * 1 - 10)
+        p.text('1.0G', canvas_width / 2 + 2, cicle_interval * 2 - 13)
+        p.text('0.8G', canvas_width / 2 + 2, cicle_interval * 3 - 16)
+        p.text('0.6G', canvas_width / 2 + 2, cicle_interval * 4 - 18)
+        p.text('0.4G', canvas_width / 2 + 2, cicle_interval * 5 - 20)
+        p.text('0.2G', canvas_width / 2 + 2, cicle_interval * 6 - 22)
+        p.text('Y', canvas_width / 2 - 13, 13)
+        p.text('X', canvas_width - 11, canvas_height / 2 - 5)
       }
     }
 
