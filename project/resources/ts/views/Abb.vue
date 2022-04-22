@@ -1,15 +1,15 @@
 <template>
   <div>
-    <Canvas :position-x="20" , :position-y="40" />
+    <GBowl :position-x="20" , :position-y="40" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import Canvas from '@/components/Canvas.vue'
+import GBowl from '@/components/GBowl.vue'
 export default defineComponent({
   components: {
-    Canvas,
+    GBowl,
   },
   setup() {
     const message = ref<string>('Abb')

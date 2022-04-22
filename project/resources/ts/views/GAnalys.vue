@@ -12,7 +12,7 @@
     加速度センサーを有効にする</button
   ><br />
   <!-- <LineChart :chart-data="chartAcceleration" /> -->
-  <Canvas
+  <GBowl
     :x="adjust_g_acceleration_x"
     :y="adjust_g_acceleration_y"
     :draw="draw"
@@ -57,14 +57,14 @@ import {
   useAccelerationSensortType,
 } from '@/libs/device/accelerationSensor'
 
-import Canvas from '@/components/Canvas.vue'
+import GBowl from '@/components/GBowl.vue'
 //import LineChart from '@/components/chart/LineChart'
 // import { max_g } from '@/libs/constants'
 // import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
 export default defineComponent({
   components: {
-    Canvas,
+    GBowl,
     //LineChart,
   },
   setup() {
