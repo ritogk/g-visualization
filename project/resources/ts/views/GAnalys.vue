@@ -1,58 +1,9 @@
 <template>
-  <BarChart :chart-data="chartData" />
   <button type="button" class="btn btn-primary" @click="router.push('/abb')">
     ページ遷移dayo</button
   ><br />
-  <button type="button" class="btn btn-primary" @click="clickStartGyrosensor">
-    ジャイロセンサーを有効にする</button
+  <button type="button" class="btn btn-primary" @click="clickDraw">作図</button
   ><br />
-  <button type="button" class="btn btn-primary" @click="clickStopGyrosensor">
-    ジャイロセンサーを無効にする</button
-  ><br />
-  <!-- 傾きx -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating">
-        <input
-          id="inputGyroX"
-          v-model="gyro_x"
-          type="text"
-          class="form-control"
-        />
-        <label for="inputGyroX">x</label>
-      </div>
-    </div>
-  </div>
-  <!-- 傾きy -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating">
-        <input
-          id="floatingInputGrid"
-          v-model="gyro_y"
-          type="email"
-          class="form-control"
-          placeholder="name@example.com"
-        />
-        <label for="floatingInputGrid">y</label>
-      </div>
-    </div>
-  </div>
-  <!-- 傾きz -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating">
-        <input
-          id="floatingInputGrid"
-          v-model="gyro_z"
-          type="email"
-          class="form-control"
-          placeholder="name@example.com"
-        />
-        <label for="floatingInputGrid">z</label>
-      </div>
-    </div>
-  </div>
   <button
     type="button"
     class="btn btn-primary"
@@ -60,13 +11,20 @@
   >
     加速度センサーを有効にする</button
   ><br />
-  <!-- 傾きx -->
+  <!-- <LineChart :chart-data="chartAcceleration" /> -->
+  <Canvas
+    :x="adjust_g_acceleration_x"
+    :y="adjust_g_acceleration_y"
+    :draw="draw"
+  />
+
+  <!-- G_X -->
   <div class="row">
     <div class="col">
       <div class="form-floating">
         <input
           id="inputGyroX"
-          v-model="acceleration_x"
+          v-model="adjust_g_acceleration_x"
           type="text"
           class="form-control"
         />
@@ -74,13 +32,13 @@
       </div>
     </div>
   </div>
-  <!-- 傾きy -->
+  <!-- G_Y -->
   <div class="row">
     <div class="col">
       <div class="form-floating">
         <input
           id="floatingInputGrid"
-          v-model="acceleration_y"
+          v-model="adjust_g_acceleration_y"
           type="email"
           class="form-control"
           placeholder="name@example.com"
@@ -89,153 +47,127 @@
       </div>
     </div>
   </div>
-  <!-- 傾きz -->
-  <div class="row">
-    <div class="col">
-      <div class="form-floating">
-        <input
-          id="floatingInputGrid"
-          v-model="acceleration_z"
-          type="email"
-          class="form-control"
-          placeholder="name@example.com"
-        />
-        <label for="floatingInputGrid">z</label>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, inject } from 'vue'
+import { defineComponent, ref, inject, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import {
   useAccelerationSensortKey,
   useAccelerationSensortType,
 } from '@/libs/device/accelerationSensor'
-import BarChart from '@/components/BarChart'
+
+import Canvas from '@/components/Canvas.vue'
+//import LineChart from '@/components/chart/LineChart'
+import { max_g } from '@/libs/constants'
 // import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
 export default defineComponent({
   components: {
-    BarChart,
+    Canvas,
+    //LineChart,
   },
   setup() {
     const router = useRouter()
     // const useDevice = inject(useDeviceKey) as useDeviceType
 
-    const chartData = reactive({
-      labels: ['1', '2', '3', '4', '5', '6', '8'],
+    const draw = ref(false)
+    const adjust_g_acceleration_x = ref(0)
+    const adjust_g_acceleration_y = ref(0)
+
+    const adjust_g_acceleration_x_log = [] as number[]
+    const adjust_g_acceleration_y_log = [] as number[]
+
+    // 加速度センサーのチャートデータ
+    const chartAcceleration = reactive({
+      labels: [] as string[],
       datasets: [
         {
-          label: 'Data One',
+          label: 'x',
           backgroundColor: '#f87979',
           borderColor: '#f87979',
-          data: [40, 39, 10, 40, 39, 80, 40],
+          data: [] as number[],
           fill: false,
           tension: 0.2,
         },
         {
-          label: 'Data Two',
+          label: 'y',
           backgroundColor: '#0d6efd',
           borderColor: '#0d6efd',
-          data: [1, 3, 1, 40, 3, 8, 40],
-          fill: false,
-          tension: 0.2,
-        },
-        {
-          label: 'Data Three',
-          backgroundColor: '#20c997',
-          borderColor: '#20c997',
-          data: [10, 3, 12, 2, 13, 38, 4],
-          fill: false,
-          tension: 0.2,
-        },
-        {
-          label: 'Data Three',
-          backgroundColor: '#ffff00',
-          borderColor: '#ffff00',
-          data: [70, 23, 23, 2, 13, 38, 4],
+          data: [] as number[],
           fill: false,
           tension: 0.2,
         },
       ],
     })
 
-    // ジャイロセンサーの値
-    const gyro_x = ref(0)
-    const gyro_y = ref(0)
-    const gyro_z = ref(0)
-    // 加速度センサーの値
-    const acceleration_x = ref(0)
-    const acceleration_y = ref(0)
-    const acceleration_z = ref(0)
-
-    // ジャイロセンサーモジュール
-    const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
-    // 「ジャイロセンサーを有効にする」押下
-    const clickStartGyrosensor = () => {
-      chartData.datasets.push({
-        label: 'Data Three',
-        backgroundColor: '#20c997',
-        borderColor: '#20c997',
-        data: [170, 223, 123, 12, 113, 38, 4],
-        fill: false,
-        tension: 0.2,
-      })
-      useGyroSensor.enableSensor()
-    }
-    // 「ジャイロセンサーを無効にする」押下
-    const clickStopGyrosensor = () => {
-      useGyroSensor.removeEvent(deviceOrientation)
-    }
-    const deviceOrientation = (e: DeviceOrientationEvent) => {
-      if (e.alpha === null || e.beta === null || e.gamma === null) return
-      //. スマホの傾きを取得
-      // iphoneとandroidで向きが逆なので-1を掛けて任意に修正
-      gyro_z.value = e.alpha //. 北極方向に対する向きの角度 z軸 0 - 360
-      gyro_x.value = e.beta //. 前後の傾き角度 x軸 -180 - 180
-      gyro_y.value = e.gamma //. 左右の傾き角度 y軸 -90 - 90
-    }
-    useGyroSensor.addEvent(deviceOrientation)
+    // 加速度センサーの調整値
+    let calibration_acceleration_x = 0
+    let calibration_acceleration_y = 0
 
     // 加速度センサーモジュール
     const useAccelerationSensor = inject(
       useAccelerationSensortKey
     ) as useAccelerationSensortType
+
     // 「加速度センサーを有効にする」押下
     const clickStartAccelerationSensor = () => {
       useAccelerationSensor.enableSensor()
     }
+    // 「作図」押下
+    const clickDraw = () => {
+      // LineChart
+      chartAcceleration.labels = [
+        ...Array(adjust_g_acceleration_x_log.length),
+      ].map(() => '')
+      chartAcceleration.datasets[0].data = adjust_g_acceleration_x_log
+      chartAcceleration.datasets[1].data = adjust_g_acceleration_y_log
+
+      draw.value = true
+    }
+
     const deviceAcceleration = (e: DeviceMotionEvent) => {
+      // 加速度センサーが有効になっているか？
+      if (!useAccelerationSensor.stateRefs.isEnable.value) return
       if (
-        e.accelerationIncludingGravity === null ||
-        e.accelerationIncludingGravity.x === null ||
-        e.accelerationIncludingGravity.y === null ||
-        e.accelerationIncludingGravity.z === null
+        e.acceleration === null ||
+        e.acceleration.x === null ||
+        e.acceleration.y === null ||
+        e.acceleration.z === null
       )
         return
-      //. スマホの傾きを取得
-      // iphoneとandroidで向きが逆なので-1を掛けて任意に修正
-      acceleration_z.value = e.accelerationIncludingGravity.z
-      acceleration_x.value = e.accelerationIncludingGravity.x
-      acceleration_y.value = e.accelerationIncludingGravity.y
+
+      // 加速度のキャリブレーション
+      if (
+        calibration_acceleration_x === 0 &&
+        calibration_acceleration_y === 0
+      ) {
+        calibration_acceleration_x = e.acceleration.x * -1
+        calibration_acceleration_y = e.acceleration.y * -1
+      }
+      // 加速度をGに変換
+      const g_x = (e.acceleration.x + calibration_acceleration_x) / 9.8
+      const g_y = (e.acceleration.y + calibration_acceleration_y) / 9.8
+
+      // Gを1.1~-1.1に収まるように調整を行う
+      adjust_g_acceleration_x.value =
+        g_x > 0 ? (g_x > max_g ? max_g : g_x) : g_x < -max_g ? -max_g : g_x
+      adjust_g_acceleration_y.value =
+        g_y > 0 ? (g_y > max_g ? max_g : g_y) : g_y < -max_g ? -max_g : g_y
+
+      // adjust_g_acceleration_x_log.push(adjust_g_acceleration_x.value)
+      // adjust_g_acceleration_y_log.push(adjust_g_acceleration_y.value)
     }
     useAccelerationSensor.addEvent(deviceAcceleration)
 
     return {
-      clickStartGyrosensor,
-      clickStopGyrosensor,
+      clickDraw,
       clickStartAccelerationSensor,
-      gyro_x,
-      gyro_y,
-      gyro_z,
-      acceleration_x,
-      acceleration_y,
-      acceleration_z,
       router,
-      chartData,
+      draw,
+      adjust_g_acceleration_x,
+      adjust_g_acceleration_y,
+      chartAcceleration,
     }
   },
   computed: {},
