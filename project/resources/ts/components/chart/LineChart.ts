@@ -55,6 +55,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    // チャートの内容は親コンポーネント側で「:chart-data="chartData"」データを渡すと何故か書き換わる。
     const chartData = {
       labels: ['1', '2', '3', '4', '5', '6', '7'],
       datasets: [
@@ -66,27 +67,11 @@ export default defineComponent({
           fill: false,
           tension: 0.2,
         },
-        {
-          label: 'Data Two',
-          backgroundColor: '#0d6efd',
-          borderColor: '#0d6efd',
-          data: [1, 3, 1, 40, 3, 8, 40],
-          fill: false,
-          tension: 0.2,
-        },
-        {
-          label: 'Data Three',
-          backgroundColor: '#20c997',
-          borderColor: '#20c997',
-          data: [10, 3, 12, 2, 13, 38, 4],
-          fill: false,
-          tension: 0.2,
-        },
       ],
     }
 
     const chartOptions = {
-      responsive: true,
+      responsive: false,
       maintainAspectRatio: false,
     }
 

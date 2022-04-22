@@ -1,17 +1,15 @@
 <template>
   <div>
-    {{ message }}
-    aaaaa
-    <GAnalys />
+    <Canvas :position-x="20" , :position-y="40" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import GAnalys from '@/views/GAnalys.vue'
+import Canvas from '@/components/Canvas.vue'
 export default defineComponent({
   components: {
-    GAnalys,
+    Canvas,
   },
   setup() {
     const message = ref<string>('Abb')
