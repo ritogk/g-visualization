@@ -59,7 +59,7 @@ import {
 
 import Canvas from '@/components/Canvas.vue'
 //import LineChart from '@/components/chart/LineChart'
-import { max_g } from '@/libs/constants'
+// import { max_g } from '@/libs/constants'
 // import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
 export default defineComponent({
@@ -150,10 +150,13 @@ export default defineComponent({
       const g_y = (e.acceleration.y + calibration_acceleration_y) / 9.8
 
       // Gを1.1~-1.1に収まるように調整を行う
-      adjust_g_acceleration_x.value =
-        g_x > 0 ? (g_x > max_g ? max_g : g_x) : g_x < -max_g ? -max_g : g_x
-      adjust_g_acceleration_y.value =
-        g_y > 0 ? (g_y > max_g ? max_g : g_y) : g_y < -max_g ? -max_g : g_y
+      adjust_g_acceleration_x.value = g_x
+      adjust_g_acceleration_y.value = g_y
+      //// Gを1.1~-1.1に収まるように調整を行う
+      // adjust_g_acceleration_x.value =
+      //   g_x > 0 ? (g_x > max_g ? max_g : g_x) : g_x < -max_g ? -max_g : g_x
+      // adjust_g_acceleration_y.value =
+      //   g_y > 0 ? (g_y > max_g ? max_g : g_y) : g_y < -max_g ? -max_g : g_y
 
       // adjust_g_acceleration_x_log.push(adjust_g_acceleration_x.value)
       // adjust_g_acceleration_y_log.push(adjust_g_acceleration_y.value)

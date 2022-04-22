@@ -6,5 +6,5 @@ enum Device {
   smartPhone = 'smartPhone',
 }
 
-const max_g = 1.1
+const max_g = 1.2
 export { Device, max_g }
