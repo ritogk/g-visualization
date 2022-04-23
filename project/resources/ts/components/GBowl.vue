@@ -47,15 +47,26 @@ export default defineComponent({
 
       p.draw = () => {
         if (props.draw) {
-          // 図形の色を変更
+          // gオブジェクトを描画
+          // 1.2~-1.2Gを342~0の範囲内に変換して描画
           p.fill(rgbRed, rgbGreen, rgbBlue)
-          // 1.1~-1.1Gを374~0の範囲内に変換して描画
+          p.stroke(0)
+          p.strokeWeight(1)
           p.rect(
             adjust_x(props.x),
             adjust_y(props.y),
             g_object_diameter,
             g_object_diameter
           )
+
+          // x軸とy軸のgの和を表示
+          p.fill(255)
+          p.noStroke()
+          p.rect(canvas_width - 29, 1, 23, 10)
+          p.fill(0)
+          const g_xy =
+            Math.ceil(Math.sqrt(props.x ** 2 + props.y ** 2) * 10) / 10
+          p.text(g_xy === 0 ? 0.0 : g_xy + 'G', canvas_width - 28, 10)
           if (rgbRed == 0) {
             initCanvas()
             rgbRed = 255
@@ -69,6 +80,8 @@ export default defineComponent({
 
       const initCanvas = () => {
         p.fill(255)
+        p.stroke(0, 0, 0)
+        p.strokeWeight(1)
         // キャンバスの枠を描画
         p.rect(0, 0, canvas_width, canvas_height)
         // gサークルを描画
@@ -106,6 +119,7 @@ export default defineComponent({
 
         // ラベルを描画
         p.fill(0)
+        p.strokeWeight(0)
         const cicle_interval = canvas_height / 2 / 6
         p.text('1.2G', canvas_width / 2 + 2, cicle_interval * 1 - 10)
         p.text('1.0G', canvas_width / 2 + 2, cicle_interval * 2 - 13)
