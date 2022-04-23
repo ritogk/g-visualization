@@ -113,6 +113,13 @@ export default defineComponent({
     // 「加速度センサーを有効にする」押下
     const clickStartAccelerationSensor = () => {
       useAccelerationSensor.enableSensor()
+      // // audioAPi
+      // const audioContext = new AudioContext()
+      // const oscillatorNode = audioContext.createOscillator()
+      // oscillatorNode.frequency.value = 523.251
+      // oscillatorNode.type = 'triangle'
+      // oscillatorNode.connect(audioContext.destination)
+      // oscillatorNode.start()
     }
     // 「作図」押下
     const clickDraw = () => {
