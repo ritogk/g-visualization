@@ -47,6 +47,21 @@
       </div>
     </div>
   </div>
+  <!-- ANGLE -->
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input
+          id="floatingInputGrid"
+          v-model="angle"
+          type="email"
+          class="form-control"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInputGrid">ANGLE</label>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -56,6 +71,8 @@ import {
   useAccelerationSensortKey,
   useAccelerationSensortType,
 } from '@/libs/device/accelerationSensor'
+
+import { pointToAtan2 } from '@/libs/trigonometric'
 
 import GBowl from '@/components/GBowl.vue'
 //import LineChart from '@/components/chart/LineChart'
@@ -156,6 +173,9 @@ export default defineComponent({
       // oscillatorNode.connect(audioContext.destination)
       // oscillatorNode.start()
     }
+
+    const angle = ref(0)
+
     // 「作図」押下
     const clickDraw = () => {
       // LineChart
@@ -241,6 +261,8 @@ export default defineComponent({
       }, 500)
     }
 
+    let before_g_x = 0
+    let before_g_y = 0
     const deviceAcceleration = (e: DeviceMotionEvent) => {
       // 加速度センサーが有効になっているか？
       if (!useAccelerationSensor.stateRefs.isEnable.value) return
@@ -264,9 +286,18 @@ export default defineComponent({
       const g_x = (e.acceleration.x + calibration_acceleration_x) / 9.8
       const g_y = (e.acceleration.y + calibration_acceleration_y) / 9.8
 
-      // Gを1.1~-1.1に収まるように調整を行う
-      adjust_g_acceleration_x.value = g_x
-      adjust_g_acceleration_y.value = g_y
+      // ローパスフィルタでのノイズ削除
+      adjust_g_acceleration_x.value = useAccelerationSensor
+        .filter(before_g_x, g_x)
+        .LPF()
+      adjust_g_acceleration_y.value = useAccelerationSensor
+        .filter(before_g_y, g_y)
+        .LPF()
+      before_g_x = g_x
+      before_g_y = g_y
+
+      // Gの角度を算出
+      angle.value = pointToAtan2({ x: g_x, y: g_y })
 
       //music.play()
 
@@ -292,6 +323,7 @@ export default defineComponent({
       adjust_g_acceleration_x,
       adjust_g_acceleration_y,
       chartAcceleration,
+      angle,
     }
   },
   computed: {},
