@@ -22,6 +22,10 @@ RUN apt install -y nodejs npm \
     && n latest 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+# 下2行もしかしたら動かないかも?動かなかったらコンテナ内で手動で実行してね。
+RUN curl https://sh.rustup.rs -sSf | sh
+RUN cargo install watchexec-cli
+
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 ENV COMPOSER_HOME /composer

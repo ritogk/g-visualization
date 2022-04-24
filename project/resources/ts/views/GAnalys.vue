@@ -297,7 +297,7 @@ export default defineComponent({
       before_g_y = g_y
 
       // Gの角度を算出
-      angle.value = pointToAtan2({ x: g_x, y: g_y })
+      angle.value = pointToAtan2({ x: g_x, y: g_y }) + 3
 
       //music.play()
 
