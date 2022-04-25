@@ -7,6 +7,7 @@
   <button type="button" class="btn btn-primary" @click="clickStartSensor">
     センサーを有効にする</button
   ><br />
+  <LineChart :chart-data="chartData" />
   <!-- <LineChart :chart-data="chartAcceleration" /> -->
   <GBowl :x="adjust_g_x" :y="adjust_g_y" :draw="draw" />
 
@@ -147,7 +148,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject } from 'vue'
+import { defineComponent, ref, reactive, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   useAccelerationSensortKey,
@@ -159,7 +160,7 @@ import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { pointToAtan2 } from '@/libs/trigonometric'
 
 import GBowl from '@/components/GBowl.vue'
-//import LineChart from '@/components/chart/LineChart'
+import LineChart from '@/components/chart/LineChart'
 // import { max_g } from '@/libs/constants'
 // import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
@@ -168,7 +169,7 @@ import { BigNumber } from 'bignumber.js'
 export default defineComponent({
   components: {
     GBowl,
-    //LineChart,
+    LineChart,
   },
   setup() {
     const router = useRouter()
@@ -260,99 +261,54 @@ export default defineComponent({
     const gyro_y = ref(0)
     const gyro_x = ref(0)
 
-    // 「センサーを有効」押下
-    const clickStartSensor = () => {
-      // 加速度センサーの有効化
-      useAccelerationSensor.addEvent(deviceAcceleration)
-      useAccelerationSensor.enableSensor()
-      // ジャイロセンサーの有効化
-      useGyroSensor.addEvent(deviceGyro)
-      useGyroSensor.enableSensor()
-    }
-
-    // 「作図」押下
-    const clickDraw = () => {
-      changeCarG()
-      draw.value = true
-      //const music_03G01 = new Audio(jG01)
-      const music_03G02 = new Audio(jG02)
-      const music_03G03 = new Audio(jG03)
-      const music_03G04 = new Audio(jG04)
-      const music_03G05 = new Audio(jG05)
-      const music_03G06 = new Audio(jG06)
-      const music_03G07 = new Audio(jG07)
-      const music_03G08 = new Audio(jG08)
-      const music_03G09 = new Audio(jG09)
-      const music_03G10 = new Audio(jG10)
-      const music_03G11 = new Audio(jG11)
-      const music_03G12 = new Audio(jG12)
-
-      // 音声出力に関する処理
-      setInterval(() => {
-        const g_xy =
-          Math.ceil(
-            Math.sqrt(adjust_g_x.value ** 2 + adjust_g_y.value ** 2) * 10
-          ) / 10
-
-        const round_g_xy = Math.round(g_xy * 10) / 10
-        // const angle_time = Math.round(Math.round(angle_g_xy.value / 30))
-
-        switch (round_g_xy) {
-          case 0.1:
-            return
-          case 0.2:
-            music_03G02.play()
-            break
-          case 0.3:
-            music_03G03.play()
-            break
-          case 0.4:
-            music_03G04.play()
-            break
-          case 0.5:
-            music_03G05.play()
-            break
-          case 0.6:
-            music_03G06.play()
-            break
-          case 0.7:
-            music_03G07.play()
-            break
-          case 0.8:
-            music_03G08.play()
-            break
-          case 0.9:
-            music_03G09.play()
-            break
-          case 1:
-            music_03G10.play()
-            break
-          case 1.1:
-            music_03G11.play()
-            break
-          case 1.2:
-            music_03G12.play()
-
-            break
-        }
-      }, 500)
-    }
+    // 加速度センサーのチャートデータ
+    const chartData = reactive({
+      labels: [] as string[],
+      datasets: [
+        {
+          label: 'x',
+          backgroundColor: '#f87979',
+          borderColor: '#f87979',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+        {
+          label: 'y',
+          backgroundColor: '#0d6efd',
+          borderColor: '#0d6efd',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+        {
+          label: 'z',
+          backgroundColor: '#777777',
+          borderColor: '#777777',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+      ],
+    })
+    const acceleration_x_log = [] as number[]
+    const acceleration_y_log = [] as number[]
+    const acceleration_z_log = [] as number[]
 
     // 加速度センサーから値が取得できた時に呼ばれるイベント処理
     const deviceAcceleration = (e: DeviceMotionEvent) => {
       // 加速度センサーが有効になっているかどうかのチェック
       if (!useAccelerationSensor.stateRefs.isEnable.value) return
-      if (
-        e.acceleration === null ||
-        e.acceleration.x === null ||
-        e.acceleration.y === null ||
-        e.acceleration.z === null
-      )
-        return
+      // 加速度取得
+      const acceleration = e.accelerationIncludingGravity
+      if (acceleration === null) return
+      const e_acceleration_x = acceleration.x ?? 0
+      const e_acceleration_y = acceleration.y ?? 0
+      const e_acceleration_z = acceleration.z ?? 0
 
       // 加速度をGに変換
-      const g_x = e.acceleration.x / 9.8
-      const g_y = e.acceleration.y / 9.8
+      const g_x = e_acceleration_x / 9.8
+      const g_y = e_acceleration_y / 9.8
 
       // ローパスフィルタでのノイズ削除
       adjust_g_x.value = useAccelerationSensor.filter(before_g_x, g_x).LPF()
@@ -363,9 +319,14 @@ export default defineComponent({
       // Gの角度を算出
       angle_g_xy.value = pointToAtan2({ x: g_x, y: g_y }) + 3
 
-      acceleration_x.value = e.acceleration.x / e.interval
-      acceleration_y.value = e.acceleration.y / e.interval
-      acceleration_z.value = e.acceleration.z / e.interval
+      //const acceleration_interval = e.interval
+      acceleration_x.value = e_acceleration_x
+      acceleration_y.value = e_acceleration_y
+      acceleration_z.value = e_acceleration_z
+
+      acceleration_x_log.push(e_acceleration_x)
+      acceleration_y_log.push(e_acceleration_y)
+      acceleration_z_log.push(e_acceleration_z)
     }
 
     // ジャイロセンサーから値が取得できた時に呼ばれるイベント処理
@@ -382,7 +343,7 @@ export default defineComponent({
     // スマホセンサーの加速度を車体に合わせて回転させる
     const changeCarG = () => {
       /**
-       * 3次元ベクトルを指定軸に回転させる。
+       * 3次元ベクトルを回転させる。
        */
       const rotate = (
         v: number[][],
@@ -449,22 +410,22 @@ export default defineComponent({
 
       // x軸の回転
       let result = rotate(matrix_x, [point.x, point.y, point.z])
-      alert(
-        `x:${result.x} y:${result.y} z:${result.z}
-        `
-      )
+      // alert(
+      //   `x:${result.x} y:${result.y} z:${result.z}
+      //   `
+      // )
       // y軸の回転
       result = rotate(matrix_y, [result.x, result.y, result.z])
-      alert(
-        `x:${result.x} y:${result.y} z:${result.z}
-        `
-      )
+      // alert(
+      //   `x:${result.x} y:${result.y} z:${result.z}
+      //   `
+      // )
       // z軸の回転
       result = rotate(matrix_z, [result.x, result.y, result.z])
-      alert(
-        `x:${result.x} y:${result.y} z:${result.z}
-        `
-      )
+      // alert(
+      //   `x:${result.x} y:${result.y} z:${result.z}
+      //   `
+      // )
       alert(
         `angle(ラジアン) \n
         x: ${razian_x} y:${razian_y} z:${radian_z} \n
@@ -476,6 +437,91 @@ export default defineComponent({
         x:${result.x} y:${result.y} z:${result.z}
         `
       )
+    }
+
+    // 「センサーを有効」押下
+    const clickStartSensor = () => {
+      // 加速度センサーの有効化
+      useAccelerationSensor.addEvent(deviceAcceleration)
+      useAccelerationSensor.enableSensor()
+      // ジャイロセンサーの有効化
+      useGyroSensor.addEvent(deviceGyro)
+      useGyroSensor.enableSensor()
+    }
+
+    // 「作図」押下
+    const clickDraw = () => {
+      // LineChart
+      chartData.labels = [...Array(acceleration_x_log.length)].map(() => '')
+      chartData.datasets[0].data = acceleration_x_log
+      chartData.datasets[1].data = acceleration_y_log
+      chartData.datasets[2].data = acceleration_z_log
+
+      changeCarG()
+
+      draw.value = true
+      //const music_03G01 = new Audio(jG01)
+      const music_03G02 = new Audio(jG02)
+      const music_03G03 = new Audio(jG03)
+      const music_03G04 = new Audio(jG04)
+      const music_03G05 = new Audio(jG05)
+      const music_03G06 = new Audio(jG06)
+      const music_03G07 = new Audio(jG07)
+      const music_03G08 = new Audio(jG08)
+      const music_03G09 = new Audio(jG09)
+      const music_03G10 = new Audio(jG10)
+      const music_03G11 = new Audio(jG11)
+      const music_03G12 = new Audio(jG12)
+
+      // 音声出力に関する処理
+      setInterval(() => {
+        const g_xy =
+          Math.ceil(
+            Math.sqrt(adjust_g_x.value ** 2 + adjust_g_y.value ** 2) * 10
+          ) / 10
+
+        const round_g_xy = Math.round(g_xy * 10) / 10
+        // const angle_time = Math.round(Math.round(angle_g_xy.value / 30))
+
+        switch (round_g_xy) {
+          case 0.1:
+            return
+          case 0.2:
+            music_03G02.play()
+            break
+          case 0.3:
+            music_03G03.play()
+            break
+          case 0.4:
+            music_03G04.play()
+            break
+          case 0.5:
+            music_03G05.play()
+            break
+          case 0.6:
+            music_03G06.play()
+            break
+          case 0.7:
+            music_03G07.play()
+            break
+          case 0.8:
+            music_03G08.play()
+            break
+          case 0.9:
+            music_03G09.play()
+            break
+          case 1:
+            music_03G10.play()
+            break
+          case 1.1:
+            music_03G11.play()
+            break
+          case 1.2:
+            music_03G12.play()
+
+            break
+        }
+      }, 500)
     }
 
     return {
@@ -492,6 +538,7 @@ export default defineComponent({
       acceleration_x,
       acceleration_y,
       acceleration_z,
+      chartData,
     }
   },
   computed: {},
