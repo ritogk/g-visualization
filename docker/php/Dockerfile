@@ -1,6 +1,8 @@
 FROM php:7.4-fpm
 COPY php.ini /usr/local/etc/php/
 
+# cargo install
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 #Composer install
 RUN cd /usr/bin && curl -s http://getcomposer.org/installer | php && ln -s /usr/bin/composer.phar /usr/bin/composer
@@ -21,10 +23,6 @@ RUN apt install -y nodejs npm \
     && npm install n -g \
     && n latest 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-
-# 下2行もしかしたら動かないかも?動かなかったらコンテナ内で手動で実行してね。
-RUN curl https://sh.rustup.rs -sSf | sh
-RUN cargo install watchexec-cli
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
