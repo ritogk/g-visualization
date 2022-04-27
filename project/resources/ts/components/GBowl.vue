@@ -86,31 +86,36 @@ export default defineComponent({
         p.rect(0, 0, canvas_width, canvas_height)
         // gサークルを描画
         p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter)
-        // gサークルを描画
+        const num = max_g * 10
         p.ellipse(
           canvas_width / 2,
           canvas_height / 2,
-          (g_circle_diameter * 10) / 12
+          (g_circle_diameter * 12) / num
         )
         p.ellipse(
           canvas_width / 2,
           canvas_height / 2,
-          (g_circle_diameter * 8) / 12
+          (g_circle_diameter * 10) / num
         )
         p.ellipse(
           canvas_width / 2,
           canvas_height / 2,
-          (g_circle_diameter * 6) / 12
+          (g_circle_diameter * 8) / num
         )
         p.ellipse(
           canvas_width / 2,
           canvas_height / 2,
-          (g_circle_diameter * 4) / 12
+          (g_circle_diameter * 6) / num
         )
         p.ellipse(
           canvas_width / 2,
           canvas_height / 2,
-          (g_circle_diameter * 2) / 12
+          (g_circle_diameter * 4) / num
+        )
+        p.ellipse(
+          canvas_width / 2,
+          canvas_height / 2,
+          (g_circle_diameter * 2) / num
         )
         // gサークルの横線を描画
         p.line(0, canvas_height / 2, canvas_width, canvas_height / 2)
@@ -120,15 +125,44 @@ export default defineComponent({
         // ラベルを描画
         p.fill(0)
         p.strokeWeight(0)
-        const cicle_interval = canvas_height / 2 / 6
-        p.text('1.2G', canvas_width / 2 + 2, cicle_interval * 1 - 10)
-        p.text('1.0G', canvas_width / 2 + 2, cicle_interval * 2 - 13)
-        p.text('0.8G', canvas_width / 2 + 2, cicle_interval * 3 - 16)
-        p.text('0.6G', canvas_width / 2 + 2, cicle_interval * 4 - 18)
-        p.text('0.4G', canvas_width / 2 + 2, cicle_interval * 5 - 20)
-        p.text('0.2G', canvas_width / 2 + 2, cicle_interval * 6 - 22)
-        p.text('Y', canvas_width / 2 - 13, 13)
-        p.text('X', canvas_width - 11, canvas_height / 2 - 5)
+        const cicle_interval = g_circle_diameter / 2 / 7
+        const diff_canvas_cicle = (canvas_height - g_circle_diameter) / 2
+        p.text('1.4', canvas_width / 2 + 2, diff_canvas_cicle + 5)
+        p.text(
+          '1.2',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval + 5
+        )
+        p.text(
+          '1.0',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval * 2 + 5
+        )
+
+        p.text(
+          '0.8',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval * 3 + 5
+        )
+        p.text(
+          '0.6',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval * 4 + 5
+        )
+        p.text(
+          '0.4',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval * 5 + 5
+        )
+        p.text(
+          '0.2',
+          canvas_width / 2 + 2,
+          diff_canvas_cicle + cicle_interval * 6 + 5
+        )
+        p.text('前', canvas_width / 2 - 13, 13)
+        p.text('後', canvas_width / 2 - 13, canvas_height - 4)
+        p.text('右', canvas_width - 13, canvas_height / 2 - 4)
+        p.text('左', 2, canvas_height / 2 - 4)
       }
     }
 
