@@ -336,8 +336,8 @@ export default defineComponent({
       if (e.alpha === null || e.beta === null || e.gamma === null) return
 
       gyro_z.value = e.alpha
-      gyro_y.value = e.beta
-      gyro_x.value = e.gamma
+      gyro_y.value = e.gamma
+      gyro_x.value = e.beta
     }
 
     // スマホセンサーの加速度を車体に合わせて回転させる
@@ -370,9 +370,9 @@ export default defineComponent({
       }
 
       // 回転方向(度)
-      const rotate_x = 2
-      const rotate_y = 3
-      const rotate_z = 4
+      const rotate_x = gyro_x.value * -1
+      const rotate_y = gyro_y.value
+      const rotate_z = gyro_z.value * -1
       // 角度→ラジアンに変換
       const radian_z = new BigNumber(rotate_z)
         .times(new BigNumber(Math.PI).div(180))
@@ -385,7 +385,12 @@ export default defineComponent({
         .toNumber()
 
       // 回転させる対象の座標
-      const point = { x: 1, y: 2, z: 3 }
+      // const point = { x: 1, y: 2, z: 3 }
+      const point = {
+        x: acceleration_x.value,
+        y: acceleration_y.value,
+        z: acceleration_z.value,
+      }
 
       // x軸周りにθ回転した座標を取得する表現行列
       const matrix_x = [
@@ -394,12 +399,12 @@ export default defineComponent({
         [0, Math.sin(razian_x), Math.cos(razian_x)],
       ]
 
-      // y軸周りにθ回転した座標を取得する表現行列
-      const matrix_y = [
-        [Math.cos(razian_y), 0, Math.sin(razian_y)],
-        [0, 1, 0],
-        [-Math.sin(razian_y), 0, Math.cos(razian_y)],
-      ]
+      // // y軸周りにθ回転した座標を取得する表現行列
+      // const matrix_y = [
+      //   [Math.cos(razian_y), 0, Math.sin(razian_y)],
+      //   [0, 1, 0],
+      //   [-Math.sin(razian_y), 0, Math.cos(razian_y)],
+      // ]
 
       // z軸周りにθ回転した座標を取得する表現行列
       const matrix_z = [
@@ -410,22 +415,28 @@ export default defineComponent({
 
       // x軸の回転
       let result = rotate(matrix_x, [point.x, point.y, point.z])
+
+      // // y軸の回転
+      // result = rotate(matrix_y, [result.x, result.y, result.z])
       // alert(
       //   `x:${result.x} y:${result.y} z:${result.z}
       //   `
       // )
-      // y軸の回転
-      result = rotate(matrix_y, [result.x, result.y, result.z])
-      // alert(
-      //   `x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
+
       // z軸の回転
       result = rotate(matrix_z, [result.x, result.y, result.z])
-      // alert(
-      //   `x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
+      alert(
+        `x:${result.x} y:${result.y} z:${result.z}
+        `
+      )
+      alert(
+        `angle_x:${rotate_x} \n
+        radian_x:${razian_x} \n
+        before x:${point.x} y:${point.y} z:${point.z} \n
+        after x:${result.x} y:${result.y} z:${result.z}
+        `
+      )
+
       alert(
         `angle(ラジアン) \n
         x: ${razian_x} y:${razian_y} z:${radian_z} \n
