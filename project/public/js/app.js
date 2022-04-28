@@ -13669,8 +13669,9 @@ __webpack_require__.r(__webpack_exports__);
     var sketch = function sketch(p) {
       p.setup = function () {
         p.createCanvas(canvas_width, canvas_height);
-        initCanvas();
+        p.angleMode('degrees');
         p.frameRate(60);
+        initCanvas();
       };
 
       p.draw = function () {
@@ -13714,16 +13715,16 @@ __webpack_require__.r(__webpack_exports__);
         p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter * 8 / num);
         p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter * 6 / num);
         p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter * 4 / num);
-        p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter * 2 / num); // gサークルの横線を描画
+        p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter * 2 / num);
+        var diff_canvas_cicle = (canvas_height - g_circle_diameter) / 2; // gサークルの横線を描画
 
-        p.line(0, canvas_height / 2, canvas_width, canvas_height / 2); // gサークルの縦線を描画
+        p.line(diff_canvas_cicle, canvas_height / 2, canvas_width - diff_canvas_cicle, canvas_height / 2); // gサークルの縦線を描画
 
-        p.line(canvas_width / 2, 0, canvas_width / 2, canvas_height); // ラベルを描画
+        p.line(canvas_width / 2, diff_canvas_cicle, canvas_width / 2, canvas_height - diff_canvas_cicle); // ラベルを描画
 
         p.fill(0);
         p.strokeWeight(0);
         var cicle_interval = g_circle_diameter / 2 / 7;
-        var diff_canvas_cicle = (canvas_height - g_circle_diameter) / 2;
         p.text('1.4', canvas_width / 2 + 2, diff_canvas_cicle + 5);
         p.text('1.2', canvas_width / 2 + 2, diff_canvas_cicle + cicle_interval + 5);
         p.text('1.0', canvas_width / 2 + 2, diff_canvas_cicle + cicle_interval * 2 + 5);
@@ -13731,10 +13732,24 @@ __webpack_require__.r(__webpack_exports__);
         p.text('0.6', canvas_width / 2 + 2, diff_canvas_cicle + cicle_interval * 4 + 5);
         p.text('0.4', canvas_width / 2 + 2, diff_canvas_cicle + cicle_interval * 5 + 5);
         p.text('0.2', canvas_width / 2 + 2, diff_canvas_cicle + cicle_interval * 6 + 5);
-        p.text('前', canvas_width / 2 - 13, 13);
-        p.text('後', canvas_width / 2 - 13, canvas_height - 4);
-        p.text('右', canvas_width - 13, canvas_height / 2 - 4);
-        p.text('左', 2, canvas_height / 2 - 4);
+        p.text('前', canvas_width / 2 - 22, 13);
+        p.text('後', canvas_width / 2 - 22, canvas_height - 4);
+        p.text('右', canvas_width - 13, canvas_height / 2 - 9);
+        p.text('左', 2, canvas_height / 2 - 9); // 時間軸を描画
+        //p.fill(0, 255, 0)
+
+        p.stroke(0, 0, 0);
+        p.strokeWeight(1);
+        p.translate(canvas_width / 2, canvas_height / 2); //表示したい場所へ移動
+
+        for (var i = 0; i < 12; i++) {
+          p.rotate(30);
+          p.strokeWeight(2);
+          p.line(0, -(g_circle_diameter / 2) - 3, 0, -(g_circle_diameter / 2) + 2);
+          p.fill(0);
+          p.strokeWeight(0);
+          p.text(i + 1, -4, -(g_circle_diameter / 2) - 6);
+        }
       };
     }; // gからキャンバス用のx座標に変換
 
