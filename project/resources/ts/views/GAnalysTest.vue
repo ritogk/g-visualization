@@ -412,10 +412,11 @@ export default defineComponent({
       result = rotate(matrix_y, [result.x, result.y, result.z])
       // z軸の回転
       result = rotate(matrix_z, [result.x, result.y, result.z])
+      console.log(result)
 
       // 加速度をGに変換
-      const g_x = result.x / 9.8
-      const g_y = result.y / 9.8
+      const g_x = e_acceleration_x / 9.8
+      const g_y = e_acceleration_y / 9.8
 
       // ローパスフィルタでのノイズ削除
       adjust_g_x.value = useAccelerationSensor.filter(before_g_x, g_x).LPF()

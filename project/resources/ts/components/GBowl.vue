@@ -42,16 +42,20 @@ export default defineComponent({
         p.createCanvas(canvas_width, canvas_height)
         p.angleMode('degrees')
         p.frameRate(60)
+        p.translate(canvas_width / 2, canvas_height / 2)
         initCanvas()
       }
 
       p.draw = () => {
         if (props.draw) {
+          // setupで定義していても何故か初期化される
+          p.translate(canvas_width / 2, canvas_height / 2)
           // gオブジェクトを描画
           // 1.2~-1.2Gを342~0の範囲内に変換して描画
           p.fill(rgbRed, rgbGreen, rgbBlue)
           p.stroke(0)
           p.strokeWeight(1)
+
           p.rect(
             adjust_x(props.x),
             adjust_y(props.y),
@@ -62,11 +66,17 @@ export default defineComponent({
           // x軸とy軸のgの和を表示
           p.fill(255)
           p.noStroke()
-          p.rect(canvas_width - 29, 1, 23, 10)
+          p.rect(canvas_width / 2 - 32, (canvas_height / 2) * -1 + 3, 30, 18)
           p.fill(0)
           const g_xy =
             Math.ceil(Math.sqrt(props.x ** 2 + props.y ** 2) * 10) / 10
-          p.text(g_xy === 0 ? 0.0 : g_xy + 'G', canvas_width - 28, 10)
+          p.text(
+            g_xy === 0 ? 0.0 : g_xy + 'G',
+            canvas_width / 2 - 32,
+            (canvas_height / 2) * -1 + 13
+          )
+
+          //p.text('前', 0 - 20, (canvas_height / 2) * -1 + 13)
           if (rgbRed == 0) {
             initCanvas()
             rgbRed = 255
@@ -83,104 +93,50 @@ export default defineComponent({
         p.stroke(0, 0, 0)
         p.strokeWeight(1)
         // キャンバスの枠を描画
-        p.rect(0, 0, canvas_width, canvas_height)
+        p.rect(
+          -canvas_width / 2,
+          -canvas_height / 2,
+          canvas_width,
+          canvas_height
+        )
         // gサークルを描画
-        p.ellipse(canvas_width / 2, canvas_height / 2, g_circle_diameter)
+        p.ellipse(0, 0, g_circle_diameter)
         const num = max_g * 10
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 12) / num
-        )
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 10) / num
-        )
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 8) / num
-        )
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 6) / num
-        )
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 4) / num
-        )
-        p.ellipse(
-          canvas_width / 2,
-          canvas_height / 2,
-          (g_circle_diameter * 2) / num
-        )
+        p.ellipse(0, 0, (g_circle_diameter * 12) / num)
+        p.ellipse(0, 0, (g_circle_diameter * 10) / num)
+        p.ellipse(0, 0, (g_circle_diameter * 8) / num)
+        p.ellipse(0, 0, (g_circle_diameter * 6) / num)
+        p.ellipse(0, 0, (g_circle_diameter * 4) / num)
+        p.ellipse(0, 0, (g_circle_diameter * 2) / num)
 
-        const diff_canvas_cicle = (canvas_height - g_circle_diameter) / 2
+        //const diff_canvas_cicle = (canvas_height - g_circle_diameter) / 2
 
         // gサークルの横線を描画
-        p.line(
-          diff_canvas_cicle,
-          canvas_height / 2,
-          canvas_width - diff_canvas_cicle,
-          canvas_height / 2
-        )
+        p.line((g_circle_diameter / 2) * -1, 0, g_circle_diameter / 2, 0)
         // gサークルの縦線を描画
-        p.line(
-          canvas_width / 2,
-          diff_canvas_cicle,
-          canvas_width / 2,
-          canvas_height - diff_canvas_cicle
-        )
+        p.line(0, (g_circle_diameter / 2) * -1, 0, g_circle_diameter / 2)
 
         // ラベルを描画
         p.fill(0)
         p.strokeWeight(0)
         const cicle_interval = g_circle_diameter / 2 / 7
-        p.text('1.4', canvas_width / 2 + 2, diff_canvas_cicle + 5)
-        p.text(
-          '1.2',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval + 5
-        )
-        p.text(
-          '1.0',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval * 2 + 5
-        )
 
-        p.text(
-          '0.8',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval * 3 + 5
-        )
-        p.text(
-          '0.6',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval * 4 + 5
-        )
-        p.text(
-          '0.4',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval * 5 + 5
-        )
-        p.text(
-          '0.2',
-          canvas_width / 2 + 2,
-          diff_canvas_cicle + cicle_interval * 6 + 5
-        )
-        p.text('前', canvas_width / 2 - 22, 13)
-        p.text('後', canvas_width / 2 - 22, canvas_height - 4)
-        p.text('右', canvas_width - 13, canvas_height / 2 - 9)
-        p.text('左', 2, canvas_height / 2 - 9)
+        p.text('1.4', 0, cicle_interval * 7 * -1 + 5)
+        p.text('1.2', 0, cicle_interval * 6 * -1 + 5)
+        p.text('1.0', 0, cicle_interval * 5 * -1 + 5)
+        p.text('0.8', 0, cicle_interval * 4 * -1 + 5)
+        p.text('0.6', 0, cicle_interval * 3 * -1 + 5)
+        p.text('0.4', 0, cicle_interval * 2 * -1 + 5)
+        p.text('0.2', 0, cicle_interval * -1 + 5)
+
+        p.text('前', 0 - 20, (canvas_height / 2) * -1 + 13)
+        p.text('後', 0 - 20, canvas_height / 2 - 4)
+        p.text('右', canvas_width / 2 - 15, -10)
+        p.text('左', (canvas_width / 2) * -1 + 1, -10)
 
         // 時間軸を描画
-        //p.fill(0, 255, 0)
         p.stroke(0, 0, 0)
         p.strokeWeight(1)
-        p.translate(canvas_width / 2, canvas_height / 2) //表示したい場所へ移動
         for (let i = 0; i < 12; i++) {
           p.rotate(30)
           p.strokeWeight(2)
@@ -199,27 +155,16 @@ export default defineComponent({
 
     // gからキャンバス用のx座標に変換
     const adjust_x = (g: number) => {
-      // キャンバスと円の隙間の幅
-      const gap = (canvas_width - g_circle_diameter) / 2
       // gオブジェクトの半径
       const g_object_radius = g_object_diameter / 2
-      return (
-        gap - g_object_radius + ((g + max_g) * g_circle_diameter) / (max_g * 2)
-      )
+      return (g * (g_circle_diameter / 2)) / max_g - g_object_radius
     }
 
     // gからキャンバス用のy座標に変換
     const adjust_y = (g: number) => {
-      // キャンバスと円の隙間の幅
-      const gap = (canvas_width - g_circle_diameter) / 2
       // gオブジェクトの半径
       const g_object_radius = g_object_diameter / 2
-      return (
-        gap -
-        g_object_radius +
-        (((g + max_g) * g_circle_diameter) / (max_g * 2) - g_circle_diameter) *
-          -1
-      )
+      return ((g * (g_circle_diameter / 2)) / max_g + g_object_radius) * -1
     }
 
     new p5(sketch)
