@@ -1,22 +1,69 @@
 <template>
-  <button type="button" class="btn btn-primary" @click="router.push('/abb')">
-    ページ遷移dayo</button
+  <button type="button" class="btn btn-primary" @click="cickCalibration1">
+    キャリブレーション1</button
   ><br />
-
-  <button type="button" class="btn btn-primary" @click="gyro_save">
-    角度保存</button
+  <button type="button" class="btn btn-primary" @click="cickCalibration2">
+    キャリブレーション2
+  </button>
+  <button type="button" class="btn btn-success" @click="clickDef">角度差</button
   ><br />
-  <button type="button" class="btn btn-primary" @click="gyro_result">
-    角度差</button
-  ><br />
-  <button type="button" class="btn btn-primary" @click="clickDraw">作図</button
-  ><br />
-  <button type="button" class="btn btn-primary" @click="clickStartSensor">
+  <button type="button" class="btn btn-primary" @click="clickDraw">作図</button>
+  <button type="button" class="btn btn-success" @click="clickStartSensor">
     センサーを有効にする</button
   ><br />
-  <LineChart :chart-data="chartData" />
+  <button type="button" class="btn btn-success" @click="clickNamSensor">
+    生センサー</button
+  ><br />
+
   <!-- <LineChart :chart-data="chartAcceleration" /> -->
-  <GBowl :x="adjust_g_x" :y="adjust_g_y" :draw="draw" />
+  <GBowl :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
+
+  <!-- rotate_acceleration_x -->
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input
+          id="inputGyroX"
+          v-model="rotate_acceleration_x"
+          type="text"
+          class="form-control"
+        />
+        <label for="inputGyroX">rotate_acceleration_x</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- rotate_acceleration_y -->
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input
+          id="floatingInputGrid"
+          v-model="rotate_acceleration_y"
+          type="email"
+          class="form-control"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInputGrid">rotate_acceleration_y</label>
+      </div>
+    </div>
+  </div>
+  <!-- rotate_acceleration_z -->
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input
+          id="floatingInputGrid"
+          v-model="rotate_acceleration_z"
+          type="email"
+          class="form-control"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInputGrid">rotate_acceleration_z</label>
+      </div>
+    </div>
+  </div>
+  <br />
 
   <!-- gyro_z -->
   <div class="row">
@@ -167,7 +214,6 @@ import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { pointToAtan2 } from '@/libs/trigonometric'
 
 import GBowl from '@/components/GBowl.vue'
-import LineChart from '@/components/chart/LineChart'
 // import { max_g } from '@/libs/constants'
 // import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 
@@ -176,7 +222,6 @@ import { BigNumber } from 'bignumber.js'
 export default defineComponent({
   components: {
     GBowl,
-    LineChart,
   },
   setup() {
     const router = useRouter()
@@ -198,11 +243,33 @@ export default defineComponent({
     let before_x = 0
     let before_y = 0
     let before_z = 0
+    let after_x = 0
+    let after_y = 0
+    let after_z = 0
 
-    const gyro_save = () => {
+    // 車の加速度を計測する際の角度を計測する
+    const cickCalibration1 = () => {
       before_x = gyro_x.value
       before_y = gyro_y.value
       before_z = gyro_z.value
+      alert(
+        `angle(角度) \n
+        x: ${before_x} y:${before_y} z:${before_z} \n
+        `
+      )
+    }
+
+    // スマホを固定しときの角度を記憶する
+    const cickCalibration2 = () => {
+      after_x = gyro_x.value
+      after_y = gyro_y.value
+      after_z = gyro_z.value
+      alert(
+        `angle(角度) \n
+        before x: ${before_x} y:${before_y} z:${before_z} \n
+        before x: ${after_x} y:${after_y} z:${after_z} \n
+        `
+      )
     }
 
     const gyro_result = () => {
@@ -281,17 +348,37 @@ export default defineComponent({
     const acceleration_y = ref(0)
     const acceleration_z = ref(0)
 
+    let before_rotate_g_x = 0
+    let before_rotate_g_y = 0
+    const adjust_rotate_g_x = ref(0)
+    const adjust_rotate_g_y = ref(0)
+    // 回転後の加速度の値
+    const rotate_acceleration_x = ref(0)
+    const rotate_acceleration_y = ref(0)
+    const rotate_acceleration_z = ref(0)
+
     // ジャイロの値
     const gyro_z = ref(0)
     const gyro_y = ref(0)
     const gyro_x = ref(0)
 
+    const def_angle_x = ref(0)
+    const def_angle_y = ref(0)
+    const def_angle_z = ref(0)
+
+    const acceleration_x_log = [] as number[]
+    const acceleration_y_log = [] as number[]
+    const acceleration_z_log = [] as number[]
+    const rotate_acceleration_x_log = [] as number[]
+    const rotate_acceleration_y_log = [] as number[]
+    const rotate_acceleration_z_log = [] as number[]
+
     // 加速度センサーのチャートデータ
-    const chartData = reactive({
+    const chartAccelerationX = reactive({
       labels: [] as string[],
       datasets: [
         {
-          label: 'x',
+          label: 'x_before',
           backgroundColor: '#f87979',
           borderColor: '#f87979',
           data: [] as number[],
@@ -299,27 +386,59 @@ export default defineComponent({
           tension: 0.2,
         },
         {
-          label: 'y',
+          label: 'x_after',
           backgroundColor: '#0d6efd',
           borderColor: '#0d6efd',
           data: [] as number[],
           fill: false,
           tension: 0.2,
         },
+      ],
+    })
+    const chartAccelerationY = reactive({
+      labels: [] as string[],
+      datasets: [
         {
-          label: 'z',
-          backgroundColor: '#777777',
-          borderColor: '#777777',
+          label: 'y_before',
+          backgroundColor: '#f87979',
+          borderColor: '#f87979',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+        {
+          label: 'y_after',
+          backgroundColor: '#0d6efd',
+          borderColor: '#0d6efd',
           data: [] as number[],
           fill: false,
           tension: 0.2,
         },
       ],
     })
-    const acceleration_x_log = [] as number[]
-    const acceleration_y_log = [] as number[]
-    const acceleration_z_log = [] as number[]
+    const chartAccelerationZ = reactive({
+      labels: [] as string[],
+      datasets: [
+        {
+          label: 'z_before',
+          backgroundColor: '#f87979',
+          borderColor: '#f87979',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+        {
+          label: '_after',
+          backgroundColor: '#0d6efd',
+          borderColor: '#0d6efd',
+          data: [] as number[],
+          fill: false,
+          tension: 0.2,
+        },
+      ],
+    })
 
+    let nama = false
     // 加速度センサーから値が取得できた時に呼ばれるイベント処理
     const deviceAcceleration = (e: DeviceMotionEvent) => {
       // 加速度センサーが有効になっているかどうかのチェック
@@ -327,92 +446,11 @@ export default defineComponent({
       // 加速度取得
       const acceleration = e.acceleration
       if (acceleration === null) return
+
+      const startTime = Date.now()
       const e_acceleration_x = acceleration.x ?? 0
       const e_acceleration_y = acceleration.y ?? 0
       const e_acceleration_z = acceleration.z ?? 0
-
-      /**
-       * 3次元ベクトルを回転させる。
-       */
-      const rotate = (
-        v: number[][],
-        b: number[]
-      ): {
-        x: number
-        y: number
-        z: number
-      } => {
-        return {
-          x:
-            new BigNumber(v[0][0]).times(b[0]).toNumber() +
-            new BigNumber(v[0][1]).times(b[1]).toNumber() +
-            new BigNumber(v[0][2]).times(b[2]).toNumber(),
-          y:
-            +new BigNumber(v[1][0]).times(b[0]).toNumber() +
-            new BigNumber(v[1][1]).times(b[1]).toNumber() +
-            new BigNumber(v[1][2]).times(b[2]).toNumber(),
-          z:
-            new BigNumber(v[2][0]).times(b[0]).toNumber() +
-            new BigNumber(v[2][1]).times(b[1]).toNumber() +
-            new BigNumber(v[2][2]).times(b[2]).toNumber(),
-        }
-      }
-
-      // 回転させる対象の座標
-      //const point = { x: 0, y: 0, z: -9.8 }
-      const point = {
-        x: e_acceleration_x,
-        y: e_acceleration_y,
-        z: e_acceleration_z,
-      }
-
-      // 回転方向(度)
-      const rotate_x = (gyro_x.value - before_x) * -1
-      const rotate_y = (gyro_y.value - before_y) * -1
-      const rotate_z = (gyro_z.value - before_z) * -1
-
-      // alert(rotate_x)
-      // alert(rotate_y)
-      // alert(rotate_z)
-
-      // 角度→ラジアンに変換
-      const radian_z = new BigNumber(rotate_z)
-        .times(new BigNumber(Math.PI).div(180))
-        .toNumber()
-      const razian_y = new BigNumber(rotate_y)
-        .times(new BigNumber(Math.PI).div(180).toNumber())
-        .toNumber()
-      const razian_x = new BigNumber(rotate_x)
-        .times(new BigNumber(Math.PI).div(180).toNumber())
-        .toNumber()
-
-      // x軸周りにθ回転した座標を取得する表現行列
-      const matrix_x = [
-        [1, 0, 0],
-        [0, Math.cos(razian_x), -Math.sin(razian_x)],
-        [0, Math.sin(razian_x), Math.cos(razian_x)],
-      ]
-
-      // y軸周りにθ回転した座標を取得する表現行列
-      const matrix_y = [
-        [Math.cos(razian_y), 0, Math.sin(razian_y)],
-        [0, 1, 0],
-        [-Math.sin(razian_y), 0, Math.cos(razian_y)],
-      ]
-
-      // z軸周りにθ回転した座標を取得する表現行列
-      const matrix_z = [
-        [Math.cos(radian_z), -Math.sin(radian_z), 0],
-        [Math.sin(radian_z), Math.cos(radian_z), 0],
-        [0, 0, 1],
-      ]
-      // x軸の回転
-      let result = rotate(matrix_x, [point.x, point.y, point.z])
-      // y軸の回転
-      result = rotate(matrix_y, [result.x, result.y, result.z])
-      // z軸の回転
-      result = rotate(matrix_z, [result.x, result.y, result.z])
-      console.log(result)
 
       // 加速度をGに変換
       const g_x = e_acceleration_x / 9.8
@@ -427,14 +465,89 @@ export default defineComponent({
       // Gの角度を算出
       angle_g_xy.value = pointToAtan2({ x: g_x, y: g_y }) + 3
 
-      //const acceleration_interval = e.interval
       acceleration_x.value = e_acceleration_x
       acceleration_y.value = e_acceleration_y
       acceleration_z.value = e_acceleration_z
 
-      acceleration_x_log.push(e_acceleration_x)
-      acceleration_y_log.push(e_acceleration_y)
-      acceleration_z_log.push(e_acceleration_z)
+      // 回転
+      def_angle_x.value = after_x - before_x
+      def_angle_y.value = after_y - before_y
+      def_angle_z.value = Math.abs(before_z - after_z)
+      let rotate_acceration = null
+      if (!nama) {
+        rotate_acceration = rotate(
+          acceleration_x.value,
+          acceleration_y.value,
+          acceleration_z.value,
+          def_angle_x.value,
+          def_angle_y.value,
+          def_angle_z.value
+        )
+      } else {
+        rotate_acceration = {
+          x: acceleration_x.value,
+          y: acceleration_y.value,
+          z: acceleration_z.value,
+        }
+      }
+
+      // 速度をGに変換
+      const rotate_g_x = rotate_acceration.x / 9.8
+      const rotate_g_y = rotate_acceration.y / 9.8
+
+      // ローパスフィルタでのノイズ削除
+      adjust_rotate_g_x.value = useAccelerationSensor
+        .filter(before_rotate_g_x, rotate_g_x)
+        .LPF()
+      adjust_rotate_g_y.value = useAccelerationSensor
+        .filter(before_rotate_g_y, rotate_g_y)
+        .LPF()
+      before_rotate_g_x = rotate_g_x
+      before_rotate_g_y = rotate_g_y
+
+      rotate_acceleration_x.value = rotate_acceration.x
+      rotate_acceleration_y.value = rotate_acceration.y
+      rotate_acceleration_z.value = rotate_acceration.z
+
+      // // 回転
+      // def_angle_x.value = (gyro_x.value - before_x) * -1
+      // def_angle_y.value = (gyro_y.value - before_y) * -1
+      // def_angle_z.value = (gyro_z.value - before_z) * -1
+      // const rotate_acceration = rotate(
+      //   e_acceleration_x,
+      //   e_acceleration_y,
+      //   e_acceleration_z,
+      //   def_angle_x.value,
+      //   def_angle_y.value,
+      //   def_angle_z.value
+      // )
+
+      // // 速度をGに変換
+      // const rotate_g_x = rotate_acceration.x / 9.8
+      // const rotate_g_y = rotate_acceration.y / 9.8
+
+      // // ローパスフィルタでのノイズ削除
+      // adjust_rotate_g_x.value = useAccelerationSensor
+      //   .filter(before_rotate_g_x, rotate_g_x)
+      //   .LPF()
+      // adjust_rotate_g_y.value = useAccelerationSensor
+      //   .filter(before_rotate_g_y, rotate_g_y)
+      //   .LPF()
+      // before_rotate_g_x = rotate_g_x
+      // before_rotate_g_y = rotate_g_y
+
+      // rotate_acceleration_x.value = rotate_acceration.x
+      // rotate_acceleration_y.value = rotate_acceration.y
+      // rotate_acceleration_z.value = rotate_acceration.z
+
+      console.log(before_rotate_g_x)
+      console.log(before_rotate_g_y)
+
+      const endTime = Date.now() // 終了時間
+
+      if (before_x != 0 && after_x != 0) {
+        alert(endTime - startTime) // 何ミリ秒かかったかを表示する
+      }
     }
 
     // ジャイロセンサーから値が取得できた時に呼ばれるイベント処理
@@ -455,108 +568,111 @@ export default defineComponent({
     }
 
     // スマホセンサーの加速度を車体に合わせて回転させる
-    const changeCarG = () => {
-      // /**
-      //  * 3次元ベクトルを回転させる。
-      //  */
-      // const rotate = (
-      //   v: number[][],
-      //   b: number[]
-      // ): {
-      //   x: number
-      //   y: number
-      //   z: number
-      // } => {
-      //   return {
-      //     x:
-      //       new BigNumber(v[0][0]).times(b[0]).toNumber() +
-      //       new BigNumber(v[0][1]).times(b[1]).toNumber() +
-      //       new BigNumber(v[0][2]).times(b[2]).toNumber(),
-      //     y:
-      //       +new BigNumber(v[1][0]).times(b[0]).toNumber() +
-      //       new BigNumber(v[1][1]).times(b[1]).toNumber() +
-      //       new BigNumber(v[1][2]).times(b[2]).toNumber(),
-      //     z:
-      //       new BigNumber(v[2][0]).times(b[0]).toNumber() +
-      //       new BigNumber(v[2][1]).times(b[1]).toNumber() +
-      //       new BigNumber(v[2][2]).times(b[2]).toNumber(),
-      //   }
-      // }
-      // // 回転させる対象の座標
-      // //const point = { x: 0, y: 0, z: -9.8 }
-      // const point = {
-      //   x: acceleration_x.value,
-      //   y: acceleration_y.value,
-      //   z: acceleration_z.value,
-      // }
-      // // 回転方向(度)
+    const rotate = (
+      acceleration_x: number,
+      acceleration_y: number,
+      acceleration_z: number,
+      angle_x: number,
+      angle_y: number,
+      angle_z: number
+    ) => {
+      // ３次元回転行列の公式が右回りなのでマイナス角度の場合は変換処理を挟む。
+      // z軸は0-360度なので変換は不要。
+      if (angle_x < 0) {
+        angle_x = 360 + angle_x
+      }
+      if (angle_y < 0) {
+        angle_y = 360 + angle_y
+      }
+      /**
+       * 3次元ベクトルを回転させる。
+       */
+      const rotate = (
+        v: number[][],
+        b: number[]
+      ): {
+        x: number
+        y: number
+        z: number
+      } => {
+        return {
+          x:
+            new BigNumber(v[0][0]).times(b[0]).toNumber() +
+            new BigNumber(v[0][1]).times(b[1]).toNumber() +
+            new BigNumber(v[0][2]).times(b[2]).toNumber(),
+          y:
+            new BigNumber(v[1][0]).times(b[0]).toNumber() +
+            new BigNumber(v[1][1]).times(b[1]).toNumber() +
+            new BigNumber(v[1][2]).times(b[2]).toNumber(),
+          z:
+            new BigNumber(v[2][0]).times(b[0]).toNumber() +
+            new BigNumber(v[2][1]).times(b[1]).toNumber() +
+            new BigNumber(v[2][2]).times(b[2]).toNumber(),
+        }
+      }
+
+      // 回転させる対象の座標
+      const point = {
+        x: acceleration_x,
+        y: acceleration_y,
+        z: acceleration_z,
+      }
+
+      // 回転方向(度)
       // const rotate_x = (gyro_x.value - before_x) * -1
       // const rotate_y = (gyro_y.value - before_y) * -1
       // const rotate_z = (gyro_z.value - before_z) * -1
-      // // 角度→ラジアンに変換
-      // const radian_z = new BigNumber(rotate_z)
-      //   .times(new BigNumber(Math.PI).div(180))
-      //   .toNumber()
-      // const razian_y = new BigNumber(rotate_y)
-      //   .times(new BigNumber(Math.PI).div(180).toNumber())
-      //   .toNumber()
-      // const razian_x = new BigNumber(rotate_x)
-      //   .times(new BigNumber(Math.PI).div(180).toNumber())
-      //   .toNumber()
-      // // x軸周りにθ回転した座標を取得する表現行列
-      // const matrix_x = [
-      //   [1, 0, 0],
-      //   [0, Math.cos(razian_x), -Math.sin(razian_x)],
-      //   [0, Math.sin(razian_x), Math.cos(razian_x)],
-      // ]
+
+      // 角度→ラジアンに変換
+      const razian_x = new BigNumber(angle_x)
+        .times(new BigNumber(Math.PI).div(180))
+        .toNumber()
+      const razian_y = new BigNumber(angle_y)
+        .times(new BigNumber(Math.PI).div(180).toNumber())
+        .toNumber()
+      const razian_z = new BigNumber(angle_z)
+        .times(new BigNumber(Math.PI).div(180).toNumber())
+        .toNumber()
+
+      // x軸周りにθ回転した座標を取得する表現行列
+      const matrix_x = [
+        [1, 0, 0],
+        [0, Math.cos(razian_x), -Math.sin(razian_x)],
+        [0, Math.sin(razian_x), Math.cos(razian_x)],
+      ]
+
       // // y軸周りにθ回転した座標を取得する表現行列
-      // const matrix_y = [
-      //   [Math.cos(razian_y), 0, Math.sin(razian_y)],
-      //   [0, 1, 0],
-      //   [-Math.sin(razian_y), 0, Math.cos(razian_y)],
-      // ]
-      // // z軸周りにθ回転した座標を取得する表現行列
-      // const matrix_z = [
-      //   [Math.cos(radian_z), -Math.sin(radian_z), 0],
-      //   [Math.sin(radian_z), Math.cos(radian_z), 0],
-      //   [0, 0, 1],
-      // ]
-      // alert(
-      //   `point x :${point.x} y:${point.y} z:${point.z}
-      //   `
-      // )
+      const matrix_y = [
+        [Math.cos(razian_y), 0, Math.sin(razian_y)],
+        [0, 1, 0],
+        [-Math.sin(razian_y), 0, Math.cos(razian_y)],
+      ]
+
+      // z軸周りにθ回転した座標を取得する表現行列
+      const matrix_z = [
+        [Math.cos(razian_z), -Math.sin(razian_z), 0],
+        [Math.sin(razian_z), Math.cos(razian_z), 0],
+        [0, 0, 1],
+      ]
+
       // // x軸の回転
-      // let result = rotate(matrix_x, [point.x, point.y, point.z])
-      // alert(
-      //   `x angle:${rotate_x}
-      //   x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
-      // // y軸の回転
-      // result = rotate(matrix_y, [result.x, result.y, result.z])
-      // alert(
-      //   `y angle:${rotate_y}
-      //   x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
+      let result = rotate(matrix_x, [point.x, point.y, point.z])
+      // y軸の回転
+      result = rotate(matrix_y, [result.x, result.y, result.z])
       // // z軸の回転
-      // result = rotate(matrix_z, [result.x, result.y, result.z])
+      result = rotate(matrix_z, [result.x, result.y, result.z])
+
       // alert(
-      //   `z angle:${rotate_z}
-      //   x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
-      // alert(
-      //   `angle(ラジアン) \n
-      //   x: ${razian_x} y:${razian_y} z:${radian_z} \n
-      //   angle(角度) \n
-      //   x: ${rotate_x} y:${rotate_y} z:${rotate_z} \n
+      //   `angle(角度) \n
+      //   x: ${angle_x} y:${angle_y} z:${angle_z} \n
       //   before \n
       //   x:${point.x} y:${point.y} z:${point.z} \n
       //   after \n
       //   x:${result.x} y:${result.y} z:${result.z}
       //   `
       // )
+
+      return { x: result.x, y: result.y, z: result.z }
     }
 
     // 「センサーを有効」押下
@@ -571,13 +687,26 @@ export default defineComponent({
 
     // 「作図」押下
     const clickDraw = () => {
-      // LineChart
-      chartData.labels = [...Array(acceleration_x_log.length)].map(() => '')
-      chartData.datasets[0].data = acceleration_x_log
-      chartData.datasets[1].data = acceleration_y_log
-      chartData.datasets[2].data = acceleration_z_log
+      // LineChart X
+      chartAccelerationX.labels = [...Array(acceleration_x_log.length)].map(
+        () => ''
+      )
+      chartAccelerationX.datasets[0].data = acceleration_x_log
+      chartAccelerationX.datasets[1].data = rotate_acceleration_x_log
 
-      changeCarG()
+      // LineChart Y
+      chartAccelerationY.labels = [...Array(acceleration_y_log.length)].map(
+        () => ''
+      )
+      chartAccelerationY.datasets[0].data = acceleration_y_log
+      chartAccelerationY.datasets[1].data = rotate_acceleration_y_log
+
+      // LineChart Z
+      chartAccelerationZ.labels = [...Array(acceleration_z_log.length)].map(
+        () => ''
+      )
+      chartAccelerationZ.datasets[0].data = acceleration_z_log
+      chartAccelerationZ.datasets[1].data = rotate_acceleration_z_log
 
       draw.value = true
       //const music_03G01 = new Audio(jG01)
@@ -597,7 +726,9 @@ export default defineComponent({
       setInterval(() => {
         const g_xy =
           Math.ceil(
-            Math.sqrt(adjust_g_x.value ** 2 + adjust_g_y.value ** 2) * 10
+            Math.sqrt(
+              adjust_rotate_g_x.value ** 2 + adjust_rotate_g_y.value ** 2
+            ) * 10
           ) / 10
 
         const round_g_xy = Math.round(g_xy * 10) / 10
@@ -644,7 +775,38 @@ export default defineComponent({
       }, 500)
     }
 
+    const clickDef = () => {
+      alert(`x before:${before_x} after:${after_x}
+            y before:${before_y} after:${after_y}
+            z before:${before_z} after:${after_z}
+      `)
+      // const x = gyro_x.value
+      // const y = gyro_y.value
+      // const z = gyro_z.value
+      // alert(`x before:${before_x} after:${x}
+      //       y before:${before_y} after:${y}
+      //       z before:${before_z} after:${z}
+      // `)
+      // // 回転
+      // def_angle_x.value = gyro_x.value - before_x
+      // def_angle_y.value = gyro_y.value - before_y
+      // def_angle_z.value = Math.abs(before_z - gyro_z.value)
+      // rotate(
+      //   acceleration_x.value,
+      //   acceleration_y.value,
+      //   acceleration_z.value,
+      //   def_angle_x.value,
+      //   def_angle_y.value,
+      //   def_angle_z.value
+      // )
+    }
+
+    const clickNamSensor = () => {
+      nama = true
+    }
+
     return {
+      clickNamSensor,
       clickDraw,
       clickStartSensor,
       router,
@@ -658,9 +820,21 @@ export default defineComponent({
       acceleration_x,
       acceleration_y,
       acceleration_z,
-      chartData,
-      gyro_save,
+      cickCalibration1,
+      cickCalibration2,
       gyro_result,
+      rotate_acceleration_x,
+      rotate_acceleration_y,
+      rotate_acceleration_z,
+      chartAccelerationX,
+      chartAccelerationY,
+      chartAccelerationZ,
+      def_angle_x,
+      def_angle_y,
+      def_angle_z,
+      adjust_rotate_g_x,
+      adjust_rotate_g_y,
+      clickDef,
     }
   },
   computed: {},
