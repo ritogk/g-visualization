@@ -1,44 +1,52 @@
 <template>
   <div class="d-flex flex-row">
     <div class="w-50">
-      <p class="text-center">←(G)→</p>
+      <p class="text-center text-white-50">←(X)→</p>
       <div
         v-for="item in g_x_bar.items"
         :key="item"
         class="d-flex align-items-center justify-content-center bar-style border border-secondary"
-        :class="{
-          'bar-gray': !item.show,
-          'bar-red': item.show && item.color == Indicator.red,
-          'bar-orange': item.show && item.color == Indicator.orange,
-          'bar-green': item.show && item.color == Indicator.green,
-          'bar-yellow': item.show && item.color == Indicator.yellow,
-        }"
       >
-        {{ item.value.toFixed(1) }} G
+        <span
+          class="indicator-style"
+          :class="{
+            'indicator-gray': !item.show,
+            'indicator-red': item.show && item.color == Indicator.red,
+            'indicator-orange': item.show && item.color == Indicator.orange,
+            'indicator-green': item.show && item.color == Indicator.green,
+            'indicator-yellow': item.show && item.color == Indicator.yellow,
+          }"
+          >■</span
+        >
+        <span class="text-white-50"> {{ item.value.toFixed(1) }} G </span>
       </div>
     </div>
     <div class="w-50">
-      <p class="text-center">↑(G)↓</p>
+      <p class="text-center text-white-50">↑(Y)↓</p>
       <div
         v-for="item in g_y_bar.items"
         :key="item"
-        class="d-flex align-items-center justify-content-center bar-style border border-secondary"
-        :class="{
-          'bar-gray': !item.show,
-          'bar-red': item.show && item.color == Indicator.red,
-          'bar-orange': item.show && item.color == Indicator.orange,
-          'bar-green': item.show && item.color == Indicator.green,
-          'bar-yellow': item.show && item.color == Indicator.yellow,
-        }"
+        class="d-flex align-items-center justify-content-center bar-style text-white-50 border border-secondary"
       >
-        {{ item.value.toFixed(1) }} G
+        <span
+          class="indicator-style"
+          :class="{
+            'indicator-gray': !item.show,
+            'indicator-red': item.show && item.color == Indicator.red,
+            'indicator-orange': item.show && item.color == Indicator.orange,
+            'indicator-green': item.show && item.color == Indicator.green,
+            'indicator-yellow': item.show && item.color == Indicator.yellow,
+          }"
+          >■</span
+        >
+        <span class="text-white-50"> {{ item.value.toFixed(1) }} G </span>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, toRefs } from 'vue'
+import { defineComponent, reactive, watch, toRefs, ref } from 'vue'
 import { max_g } from '@/libs/constants'
 
 export default defineComponent({
@@ -72,17 +80,17 @@ export default defineComponent({
         { value: 1.4, show: false, color: Indicator.red },
         { value: 1.3, show: false, color: Indicator.red },
         { value: 1.2, show: false, color: Indicator.red },
-        { value: 1.1, show: false, color: Indicator.orange },
-        { value: 1.0, show: false, color: Indicator.orange },
+        { value: 1.1, show: false, color: Indicator.red },
+        { value: 1.0, show: false, color: Indicator.red },
         { value: 0.9, show: false, color: Indicator.orange },
         { value: 0.8, show: false, color: Indicator.orange },
-        { value: 0.7, show: false, color: Indicator.green },
-        { value: 0.6, show: false, color: Indicator.green },
-        { value: 0.5, show: false, color: Indicator.green },
+        { value: 0.7, show: false, color: Indicator.orange },
+        { value: 0.6, show: false, color: Indicator.orange },
+        { value: 0.5, show: false, color: Indicator.orange },
         { value: 0.4, show: false, color: Indicator.green },
-        { value: 0.3, show: false, color: Indicator.yellow },
-        { value: 0.2, show: false, color: Indicator.yellow },
-        { value: 0.1, show: false, color: Indicator.yellow },
+        { value: 0.3, show: false, color: Indicator.green },
+        { value: 0.2, show: false, color: Indicator.green },
+        { value: 0.1, show: false, color: Indicator.green },
       ],
       isMinus: false,
     })
@@ -104,17 +112,17 @@ export default defineComponent({
         { value: 1.4, show: false, color: Indicator.red },
         { value: 1.3, show: false, color: Indicator.red },
         { value: 1.2, show: false, color: Indicator.red },
-        { value: 1.1, show: false, color: Indicator.orange },
-        { value: 1.0, show: false, color: Indicator.orange },
+        { value: 1.1, show: false, color: Indicator.red },
+        { value: 1.0, show: false, color: Indicator.red },
         { value: 0.9, show: false, color: Indicator.orange },
         { value: 0.8, show: false, color: Indicator.orange },
-        { value: 0.7, show: false, color: Indicator.green },
-        { value: 0.6, show: false, color: Indicator.green },
-        { value: 0.5, show: false, color: Indicator.green },
+        { value: 0.7, show: false, color: Indicator.orange },
+        { value: 0.6, show: false, color: Indicator.orange },
+        { value: 0.5, show: false, color: Indicator.orange },
         { value: 0.4, show: false, color: Indicator.green },
-        { value: 0.3, show: false, color: Indicator.yellow },
-        { value: 0.2, show: false, color: Indicator.yellow },
-        { value: 0.1, show: false, color: Indicator.yellow },
+        { value: 0.3, show: false, color: Indicator.green },
+        { value: 0.2, show: false, color: Indicator.green },
+        { value: 0.1, show: false, color: Indicator.green },
       ],
       isMinus: false,
     })
@@ -129,7 +137,20 @@ export default defineComponent({
       }
     })
 
-    return { g_x_bar, g_y_bar, g_x: x, g_y: y, bar_max_count, Indicator }
+    const change = ref(false)
+    setInterval(function () {
+      change.value = !change.value
+    }, 1000)
+
+    return {
+      g_x_bar,
+      g_y_bar,
+      g_x: x,
+      g_y: y,
+      bar_max_count,
+      Indicator,
+      change,
+    }
   },
 })
 </script>
@@ -138,19 +159,23 @@ export default defineComponent({
 .bar-style {
   height: calc(100vh / 15);
 }
-.bar-gray {
-  background: rgb(172, 172, 172);
+.indicator-style {
+  font-size: 35px;
 }
-.bar-red {
-  background: red;
+
+.indicator-gray {
+  color: #2f2f2f;
 }
-.bar-orange {
-  background: orange;
+.indicator-red {
+  color: red;
 }
-.bar-green {
-  background: rgb(32, 224, 25);
+.indicator-orange {
+  color: orange;
 }
-.bar-yellow {
-  background: yellow;
+.indicator-green {
+  color: rgb(32, 224, 25);
+}
+.indicator-yellow {
+  color: rgb(219, 219, 33);
 }
 </style>
