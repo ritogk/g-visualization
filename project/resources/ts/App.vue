@@ -24,7 +24,7 @@ export default defineComponent({
     provide(useDeviceKey, device)
     device.setDevice()
     if (device.stateRefs.device.value === Device.pc) {
-      //alert('このページはスマートフォン専用サイトです。')
+      alert('このアプリはスマホ専用です。')
     }
 
     // ジャイロセンサー
