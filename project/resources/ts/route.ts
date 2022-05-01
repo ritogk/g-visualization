@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'root',
-    component: GAnalys1,
+    component: GAnalys2,
   },
   {
     path: '/gbowl',
