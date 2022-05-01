@@ -1,5 +1,5 @@
 <template>
-  <p>作図</p>
+  <p></p>
 </template>
 
 <script lang="ts">

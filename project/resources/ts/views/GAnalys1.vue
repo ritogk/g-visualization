@@ -1,4 +1,7 @@
 <template>
+  <button type="button" class="btn btn-success" @click="clickStartSensor">
+    センサーを有効にする</button
+  ><br />
   <button type="button" class="btn btn-primary" @click="cickCalibration1()">
     キャリブレーション1
   </button>
@@ -9,20 +12,18 @@
   </button>
   <span v-if="isCalibrated2">完了</span>
   <br />
-  <button type="button" class="btn btn-success" @click="clickStartSensor">
-    センサーを有効にする</button
+  <button type="button" class="btn btn-success" @click="clickDef">
+    キャリブレーションした内容を出力</button
   ><br />
   <button type="button" class="btn btn-success" @click="clickNamSensor">
-    生センサーONOFFa
+    3次元ベクトルの回転を行わない
   </button>
-  <span v-show="isNama"> 生</span>
-  <span v-show="!isNama"> 加工</span><br />
-  <button type="button" class="btn btn-success" @click="clickDef">角度差</button
-  ><br />
+  <span v-show="isNama"> YES</span>
+  <span v-show="!isNama"> NO</span><br />
   <button type="button" class="btn btn-primary" @click="clickDraw">開始</button
   ><br />
 
-  <!-- <GBowl :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" /> -->
+  <GBowl :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
 </template>
 
 <script lang="ts">
@@ -37,15 +38,13 @@ import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 
 import { pointToAtan2 } from '@/libs/trigonometric'
 
-//import GBowl from '@/components/GBowl.vue'
-// import { max_g } from '@/libs/constants'
-// import { useDeviceKey, useDeviceType } from '@/libs/device/device'
+import GBowl from '@/components/GBowl.vue'
 
 import { BigNumber } from 'bignumber.js'
 
 export default defineComponent({
   components: {
-    //GBowl,
+    GBowl,
   },
   setup() {
     const router = useRouter()

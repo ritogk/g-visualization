@@ -1,18 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-//import GAnalys from './views/GAnalys.vue'
-import GAnalys from './views/GAnalysTest.vue'
-import Abb from './views/Abb.vue'
+import GAnalys1 from './views/GAnalys1.vue'
+import GAnalys2 from './views/GAnalys2.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'GAnalys',
-    component: GAnalys,
+    name: 'root',
+    component: GAnalys1,
   },
   {
-    path: '/abb',
-    name: 'Abb',
-    component: Abb,
+    path: '/gbowl',
+    name: 'GAnalays1',
+    component: GAnalys1,
+  },
+  {
+    path: '/gbar',
+    name: 'GAnalays2',
+    component: GAnalys2,
   },
 ]
 
