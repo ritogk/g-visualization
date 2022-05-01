@@ -1,6 +1,5 @@
 
-# gcheck
-
+# アプリ概要
 加速度を可視化するアプリ  
 
 ## 動作環境
@@ -8,7 +7,7 @@ iphone(safari, chrome)
 
 ## できる事
 加速度の可視化  
-スマホ側の加速度の3次元ベクトル回転
+スマホ側の加速度(x,y,z)の3次元ベクトル回転
 
 ## デモ(Gバー)
 <video src="https://user-images.githubusercontent.com/72111956/166136026-dba5f1d5-05be-4bd0-8f69-6ac219e26059.mp4"></video>
