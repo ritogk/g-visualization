@@ -1,26 +1,52 @@
 <template>
-  <button type="button" class="btn btn-success" @click="clickStartSensor">
-    センサーを有効にする</button
-  ><br />
-  <button type="button" class="btn btn-primary" @click="cickCalibration1()">
-    キャリブレーション1
-  </button>
-  <span v-if="isCalibrated1">完了</span>
-  <br />
-  <button type="button" class="btn btn-primary" @click="cickCalibration2()">
-    キャリブレーション2
-  </button>
-  <span v-if="isCalibrated2">完了</span>
-  <br />
-  <button type="button" class="btn btn-success" @click="clickNamSensor">
-    3次元ベクトルの回転を行わない
-  </button>
-  <span v-show="isNama"> YES</span>
-  <span v-show="!isNama"> NO</span><br />
-  <button type="button" class="btn btn-primary" @click="clickDraw">開始</button
-  ><br />
+  <div style="background: #24292e">
+    <button
+      :disabled="isEnabledSensor"
+      type="button"
+      class="btn btn-success w-100"
+      @click="clickStartSensor()"
+    >
+      ①センサーを有効にする</button
+    ><br />
+    <button
+      :disabled="!isEnabledSensor || isCalibrated1"
+      type="button"
+      class="btn btn-primary w-100"
+      @click="cickCalibration1()"
+    >
+      ②キャリブレーション1
+    </button>
+    <br />
+    <button
+      :disabled="!isCalibrated1 || isCalibrated2"
+      type="button"
+      class="btn btn-primary w-100"
+      @click="cickCalibration2()"
+    >
+      ③キャリブレーション2
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      hidden
+      @click="clickNamSensor"
+    >
+      3次元ベクトルの回転を行わない
+    </button>
+    <button
+      type="button"
+      class="btn btn-light w-100"
+      :disabled="!isCalibrated2"
+      :class="{
+        'bg-danger': isDriving,
+      }"
+      @click="clickDrivingStart"
+    >
+      ④ドライビングスタート</button
+    ><br />
 
-  <GBar :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
+    <GBar :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -77,8 +103,10 @@ export default defineComponent({
     let after_y = 0
     let after_z = 0
 
+    const isEnabledSensor = ref(false)
     const isCalibrated1 = ref(false)
     const isCalibrated2 = ref(false)
+    const isDriving = ref(false)
 
     const isNama = ref(false)
 
@@ -88,10 +116,13 @@ export default defineComponent({
       before_y = gyro_y.value
       before_z = gyro_z.value
       isCalibrated1.value = true
+      // alert(
+      //   `angle(角度) \n
+      //   x: ${before_x} y:${before_y} z:${before_z} \n
+      //   `
+      // )
       alert(
-        `angle(角度) \n
-        x: ${before_x} y:${before_y} z:${before_z} \n
-        `
+        'キャリブレーション1が完了しました。\nスマホをスタンドに固定し終えたら「キャリブレーション2」を押して下さい。'
       )
     }
 
@@ -101,12 +132,35 @@ export default defineComponent({
       after_y = gyro_y.value
       after_z = gyro_z.value
       isCalibrated2.value = true
+      // alert(
+      //   `angle(角度) \n
+      //   before x: ${before_x} y:${before_y} z:${before_z} \n
+      //   after x: ${after_x} y:${after_y} z:${after_z} \n
+      //   `
+      // )
       alert(
-        `angle(角度) \n
-        before x: ${before_x} y:${before_y} z:${before_z} \n
-        before x: ${after_x} y:${after_y} z:${after_z} \n
-        `
+        'キャリブレーション2が完了しました。\n 「ドライビングスタート」を押して下さい。'
       )
+    }
+
+    // 「センサーを有効」押下
+    const clickStartSensor = () => {
+      // 加速度センサーの有効化
+      useAccelerationSensor.addEvent(deviceAcceleration)
+      useAccelerationSensor.enableSensor()
+      // ジャイロセンサーの有効化
+      useGyroSensor.addEvent(deviceGyro)
+      useGyroSensor.enableSensor()
+      isEnabledSensor.value = true
+      alert(
+        'センサーを有効にしました。\nスマホと地面が並行になるようにした状態で「キャリブレーション1」を押して下さい。'
+      )
+    }
+
+    // 「ドライビングスタート」押下
+    const clickDrivingStart = () => {
+      draw.value = true
+      isDriving.value = true
     }
 
     const gyro_result = () => {
@@ -329,21 +383,6 @@ export default defineComponent({
       return { x: result.x, y: result.y, z: result.z }
     }
 
-    // 「センサーを有効」押下
-    const clickStartSensor = () => {
-      // 加速度センサーの有効化
-      useAccelerationSensor.addEvent(deviceAcceleration)
-      useAccelerationSensor.enableSensor()
-      // ジャイロセンサーの有効化
-      useGyroSensor.addEvent(deviceGyro)
-      useGyroSensor.enableSensor()
-    }
-
-    // 「作図」押下
-    const clickDraw = () => {
-      draw.value = true
-    }
-
     const clickDef = () => {
       alert(`x before:${before_x} after:${after_x}
             y before:${before_y} after:${after_y}
@@ -357,8 +396,11 @@ export default defineComponent({
 
     return {
       clickNamSensor,
-      clickDraw,
+      clickDrivingStart,
       clickStartSensor,
+      cickCalibration1,
+      cickCalibration2,
+      clickDef,
       router,
       draw,
       adjust_g_x,
@@ -367,17 +409,16 @@ export default defineComponent({
       gyro_z,
       gyro_y,
       gyro_x,
-      cickCalibration1,
-      cickCalibration2,
       gyro_result,
       rotate_acceleration_x,
       rotate_acceleration_y,
       rotate_acceleration_z,
       adjust_rotate_g_x,
       adjust_rotate_g_y,
-      clickDef,
+      isEnabledSensor,
       isCalibrated1,
       isCalibrated2,
+      isDriving,
       isNama,
     }
   },
