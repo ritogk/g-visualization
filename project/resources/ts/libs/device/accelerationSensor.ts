@@ -58,7 +58,7 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
   const filter = (before: number, after: number) => {
     // ローパスフィルター
     const LPF = (): number => {
-      return before * 0.2 + after * 0.8
+      return before * 0.9 + after * 0.1
     }
     return {
       LPF: LPF,
