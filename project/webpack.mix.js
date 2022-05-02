@@ -15,6 +15,7 @@ mix
   .ts('resources/ts/main.ts', 'public/js/app.js')
   .vue()
   .sass('resources/scss/main.scss', 'public/css/app.css')
+  .version()
 
 const path = require('path')
 

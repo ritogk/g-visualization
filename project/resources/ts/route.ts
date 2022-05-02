@@ -5,7 +5,7 @@ import GAnalys2 from './views/GAnalys2.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'root',
+    name: 'index',
     component: GAnalys2,
   },
   {
@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     component: GAnalys1,
   },
   {
-    path: '/gbar',
+    path: '/gindicator',
     name: 'GAnalays2',
     component: GAnalys2,
   },

@@ -45,7 +45,7 @@
       ④ドライビングスタート</button
     ><br />
 
-    <GBar :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
+    <GIndicator :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
   </div>
 </template>
 
@@ -58,11 +58,11 @@ import {
 } from '@/libs/device/accelerationSensor'
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { pointToAtan2 } from '@/libs/trigonometric'
-import GBar from '@/components/GBar.vue'
+import GIndicator from '@/components/GIndicator.vue'
 
 export default defineComponent({
   components: {
-    GBar,
+    GIndicator,
   },
   setup() {
     const router = useRouter()
