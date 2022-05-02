@@ -35,12 +35,8 @@ import {
 } from '@/libs/device/accelerationSensor'
 
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
-
 import { pointToAtan2 } from '@/libs/trigonometric'
-
 import GBowl from '@/components/GBowl.vue'
-
-import { BigNumber } from 'bignumber.js'
 
 export default defineComponent({
   components: {
@@ -56,12 +52,6 @@ export default defineComponent({
     const useAccelerationSensor = inject(
       useAccelerationSensortKey
     ) as useAccelerationSensortType
-
-    // BigNumberの初期設定
-    BigNumber.config({
-      DECIMAL_PLACES: 4, // 小数部2桁
-      ROUNDING_MODE: BigNumber.ROUND_DOWN, // 切り上げ})
-    })
 
     const adjust_g_x = ref(0)
     const adjust_g_y = ref(0)
@@ -175,7 +165,7 @@ export default defineComponent({
       // 加速度センサーが有効になっているかどうかのチェック
       if (!useAccelerationSensor.stateRefs.isEnable.value) return
       // 加速度取得
-      const acceleration = e.acceleration
+      const acceleration = e.accelerationIncludingGravity
       if (acceleration === null) return
 
       // const startTime = Date.now()
@@ -202,7 +192,7 @@ export default defineComponent({
       const angle_z = Math.abs(before_z - after_z)
       let rotate_acceration = null
       if (!isNama.value) {
-        rotate_acceration = rotate(
+        rotate_acceration = rotate3dVector(
           e_acceleration_x,
           e_acceleration_y,
           e_acceleration_z,
@@ -236,13 +226,9 @@ export default defineComponent({
       rotate_acceleration_y.value = rotate_acceration.y
       rotate_acceleration_z.value = rotate_acceration.z
 
-      console.log(before_rotate_g_x)
-      console.log(before_rotate_g_y)
-
-      // const endTime = Date.now() // 終了時間
-
-      // if (before_x != 0 && after_x != 0) {
-      //   alert(endTime - startTime) // 何ミリ秒かかったかを表示する
+      // console.log(rotate_acceration.z)
+      // if(isCalibrated2.value){
+      //   alert(rotate_acceration.z)
       // }
     }
 
@@ -263,15 +249,25 @@ export default defineComponent({
       }
     }
 
-    // スマホセンサーの加速度を車体に合わせて回転させる
-    const rotate = (
-      acceleration_x: number,
-      acceleration_y: number,
-      acceleration_z: number,
+    /**
+     * 3次元ベクトルの回転を行う。
+     *
+     * @param number $vector_x
+     * @param number $vector_y
+     * @param number $vector_z
+     * @param number $angle_x
+     * @param number $angle_y
+     * @param number $angle_z
+     * @return {x:number, y:number, z:number}
+     */
+    const rotate3dVector = (
+      vector_x: number,
+      vector_y: number,
+      vector_z: number,
       angle_x: number,
       angle_y: number,
       angle_z: number
-    ) => {
+    ): {x:number, y:number, z:number}=> {
       // ３次元回転行列の公式が右回りなのでマイナス角度の場合は変換処理を挟む。
       // z軸は0-360度なので変換は不要。
       if (angle_x < 0) {
@@ -280,95 +276,68 @@ export default defineComponent({
       if (angle_y < 0) {
         angle_y = 360 + angle_y
       }
-      /**
-       * 3次元ベクトルを回転させる。
-       */
-      const rotate = (
-        v: number[][],
-        b: number[]
-      ): {
-        x: number
-        y: number
-        z: number
-      } => {
-        return {
-          x:
-            new BigNumber(v[0][0]).times(b[0]).toNumber() +
-            new BigNumber(v[0][1]).times(b[1]).toNumber() +
-            new BigNumber(v[0][2]).times(b[2]).toNumber(),
-          y:
-            new BigNumber(v[1][0]).times(b[0]).toNumber() +
-            new BigNumber(v[1][1]).times(b[1]).toNumber() +
-            new BigNumber(v[1][2]).times(b[2]).toNumber(),
-          z:
-            new BigNumber(v[2][0]).times(b[0]).toNumber() +
-            new BigNumber(v[2][1]).times(b[1]).toNumber() +
-            new BigNumber(v[2][2]).times(b[2]).toNumber(),
-        }
-      }
-
-      // 回転させる対象の座標
-      const point = {
-        x: acceleration_x,
-        y: acceleration_y,
-        z: acceleration_z,
-      }
-
-      // 回転方向(度)
-      // const rotate_x = (gyro_x.value - before_x) * -1
-      // const rotate_y = (gyro_y.value - before_y) * -1
-      // const rotate_z = (gyro_z.value - before_z) * -1
 
       // 角度→ラジアンに変換
-      const razian_x = new BigNumber(angle_x)
-        .times(new BigNumber(Math.PI).div(180))
-        .toNumber()
-      const razian_y = new BigNumber(angle_y)
-        .times(new BigNumber(Math.PI).div(180).toNumber())
-        .toNumber()
-      const razian_z = new BigNumber(angle_z)
-        .times(new BigNumber(Math.PI).div(180).toNumber())
-        .toNumber()
+      const razian_x = angle_x * (Math.PI/ 180)
+      const razian_y = angle_y * (Math.PI/ 180)
+      const razian_z = angle_z * (Math.PI/ 180)
 
-      // x軸周りにθ回転した座標を取得する表現行列
+      // x軸周りに右回転した座標を取得する表現行列
       const matrix_x = [
         [1, 0, 0],
         [0, Math.cos(razian_x), -Math.sin(razian_x)],
         [0, Math.sin(razian_x), Math.cos(razian_x)],
       ]
 
-      // // y軸周りにθ回転した座標を取得する表現行列
+      // // y軸周り右回転した座標を取得する表現行列
       const matrix_y = [
         [Math.cos(razian_y), 0, Math.sin(razian_y)],
         [0, 1, 0],
         [-Math.sin(razian_y), 0, Math.cos(razian_y)],
       ]
 
-      // z軸周りにθ回転した座標を取得する表現行列
+      // z軸周りに右回転した座標を取得する表現行列
       const matrix_z = [
         [Math.cos(razian_z), -Math.sin(razian_z), 0],
         [Math.sin(razian_z), Math.cos(razian_z), 0],
         [0, 0, 1],
       ]
 
-      // // x軸の回転
-      let result = rotate(matrix_x, [point.x, point.y, point.z])
-      // y軸の回転
-      result = rotate(matrix_y, [result.x, result.y, result.z])
-      // // z軸の回転
-      result = rotate(matrix_z, [result.x, result.y, result.z])
+      /**
+       * 回転行列を使ってベクトルの回転を行う。
+       *
+       * @param number[][] matrix
+       * @param number[] vector
+       * @return {x:number, y:number, z:number}
+       */
+      const calc = (
+        matrix: number[][],
+        vector: number[]
+      ): {x:number, y:number, z:number} => {
+        return {
+          x:
+            matrix[0][0] * vector[0] +
+            matrix[0][1] * vector[1] +
+            matrix[0][2] * vector[2],
+          y:
+            matrix[1][0] * vector[0] +
+            matrix[1][1] * vector[1] +
+            matrix[1][2] * vector[2],
+          z:
+            matrix[2][0] * vector[0] +
+            matrix[2][1] * vector[1] +
+            matrix[2][2] * vector[2],
+        }
+      }
 
-      // alert(
-      //   `angle(角度) \n
-      //   x: ${angle_x} y:${angle_y} z:${angle_z} \n
-      //   before \n
-      //   x:${point.x} y:${point.y} z:${point.z} \n
-      //   after \n
-      //   x:${result.x} y:${result.y} z:${result.z}
-      //   `
-      // )
+      // x軸回りの回転
+      let rotational_vector = calc(matrix_x, [vector_x, vector_y, vector_z])
+      // y軸回りの回転
+      rotational_vector = calc(matrix_y, [rotational_vector.x, rotational_vector.y, rotational_vector.z])
+      // z軸回りの回転
+      rotational_vector = calc(matrix_z, [rotational_vector.x, rotational_vector.y, rotational_vector.z])
 
-      return { x: result.x, y: result.y, z: result.z }
+      return { x: rotational_vector.x, y: rotational_vector.y, z: rotational_vector.z }
     }
 
     // 「センサーを有効」押下
