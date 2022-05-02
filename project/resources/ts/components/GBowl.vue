@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { max_g } from '@/libs/constants'
 import p5 from 'p5'
 
@@ -26,18 +26,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const canvas_width = 375
-    const canvas_height = 375
-    // gサークルの直径
-    const g_circle_diameter = 342
-    // gオブジェクトの直径
-    const g_object_diameter = 6
-
-    let rgbRed = 255
-    let rgbGreen = 255
-    let rgbBlue = 255
-
     const sketch = (p: p5) => {
+      const canvas_width = 375
+      const canvas_height = 375
+      // gサークルの直径
+      const g_circle_diameter = 342
+      // gオブジェクトの直径
+      const g_object_diameter = 6
+
+      // 初期化
       p.setup = () => {
         const canvas = p.createCanvas(canvas_width, canvas_height)
         canvas.parent('p5Canvas')
@@ -48,6 +45,10 @@ export default defineComponent({
         initCanvas()
       }
 
+      // メインの描画
+      let rgbRed = 255
+      let rgbGreen = 255
+      let rgbBlue = 255
       p.draw = () => {
         if (props.draw) {
           // setupで定義していても何故か初期化される
@@ -90,6 +91,7 @@ export default defineComponent({
         }
       }
 
+      // キャンバスの初期化
       const initCanvas = () => {
         // キャンバスの枠を描画
         p.fill(43, 53, 63)
@@ -153,23 +155,25 @@ export default defineComponent({
           //p.text(i + 1, -4, -(g_circle_diameter / 2) - 6)
         }
       }
+
+      // gからキャンバス用のx座標に変換
+      const adjust_x = (g: number) => {
+        // gオブジェクトの半径
+        const g_object_radius = g_object_diameter / 2
+        return (g * (g_circle_diameter / 2)) / max_g - g_object_radius
+      }
+
+      // gからキャンバス用のy座標に変換
+      const adjust_y = (g: number) => {
+        // gオブジェクトの半径
+        const g_object_radius = g_object_diameter / 2
+        return ((g * (g_circle_diameter / 2)) / max_g + g_object_radius) * -1
+      }
     }
 
-    // gからキャンバス用のx座標に変換
-    const adjust_x = (g: number) => {
-      // gオブジェクトの半径
-      const g_object_radius = g_object_diameter / 2
-      return (g * (g_circle_diameter / 2)) / max_g - g_object_radius
-    }
-
-    // gからキャンバス用のy座標に変換
-    const adjust_y = (g: number) => {
-      // gオブジェクトの半径
-      const g_object_radius = g_object_diameter / 2
-      return ((g * (g_circle_diameter / 2)) / max_g + g_object_radius) * -1
-    }
-
-    new p5(sketch)
+    onMounted(() => {
+      new p5(sketch)
+    })
 
     return {}
   },
