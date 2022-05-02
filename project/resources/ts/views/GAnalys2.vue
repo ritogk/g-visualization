@@ -60,7 +60,6 @@ import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { pointToAtan2 } from '@/libs/trigonometric'
 import GBar from '@/components/GBar.vue'
 
-
 export default defineComponent({
   components: {
     GBar,
