@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #24292e">
+  <div>
     <button
       :disabled="isEnabledSensor"
       type="button"
@@ -275,7 +275,7 @@ export default defineComponent({
       angle_x: number,
       angle_y: number,
       angle_z: number
-    ): {x:number, y:number, z:number}=> {
+    ): { x: number; y: number; z: number } => {
       // ３次元回転行列の公式が右回りなのでマイナス角度の場合は変換処理を挟む。
       // z軸は0-360度なので変換は不要。
       if (angle_x < 0) {
@@ -286,9 +286,9 @@ export default defineComponent({
       }
 
       // 角度→ラジアンに変換
-      const razian_x = angle_x * (Math.PI/ 180)
-      const razian_y = angle_y * (Math.PI/ 180)
-      const razian_z = angle_z * (Math.PI/ 180)
+      const razian_x = angle_x * (Math.PI / 180)
+      const razian_y = angle_y * (Math.PI / 180)
+      const razian_z = angle_z * (Math.PI / 180)
 
       // x軸周りに右回転した座標を取得する表現行列
       const matrix_x = [
@@ -321,7 +321,7 @@ export default defineComponent({
       const calc = (
         matrix: number[][],
         vector: number[]
-      ): {x:number, y:number, z:number} => {
+      ): { x: number; y: number; z: number } => {
         return {
           x:
             matrix[0][0] * vector[0] +
@@ -341,11 +341,23 @@ export default defineComponent({
       // x軸回りの回転
       let rotational_vector = calc(matrix_x, [vector_x, vector_y, vector_z])
       // y軸回りの回転
-      rotational_vector = calc(matrix_y, [rotational_vector.x, rotational_vector.y, rotational_vector.z])
+      rotational_vector = calc(matrix_y, [
+        rotational_vector.x,
+        rotational_vector.y,
+        rotational_vector.z,
+      ])
       // z軸回りの回転
-      rotational_vector = calc(matrix_z, [rotational_vector.x, rotational_vector.y, rotational_vector.z])
+      rotational_vector = calc(matrix_z, [
+        rotational_vector.x,
+        rotational_vector.y,
+        rotational_vector.z,
+      ])
 
-      return { x: rotational_vector.x, y: rotational_vector.y, z: rotational_vector.z }
+      return {
+        x: rotational_vector.x,
+        y: rotational_vector.y,
+        z: rotational_vector.z,
+      }
     }
 
     const clickDef = () => {
@@ -390,4 +402,3 @@ export default defineComponent({
   computed: {},
 })
 </script>
-
