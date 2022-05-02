@@ -3,7 +3,7 @@
 重力加速度を可視化するアプリ
 
 ## リンク
-https://gvisualization.homisoftware.net/
+https://gvisual.homisoftware.net/
 
 ## 動作環境
 iphone(safari, chrome)
