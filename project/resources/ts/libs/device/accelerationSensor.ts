@@ -66,7 +66,6 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     }
   }
 
-  // ローパスフィルター用の値
   let beforeGX = 0
   let beforeGY = 0
   let beforeGZ = 0
