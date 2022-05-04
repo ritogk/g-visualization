@@ -18,8 +18,14 @@ const useDevice = (): useDeviceType => {
    * 端末がpc、スマホかどうかの判別を行います。
    */
   const setDevice = () => {
-    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
-      state.device = Device.smartPhone
+    const ua = navigator.userAgent
+    if (/android/i.test(ua)) {
+      state.device = Device.android
+    } else if (
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    ) {
+      state.device = Device.ios
     } else {
       state.device = Device.pc
     }
