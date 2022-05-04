@@ -16,10 +16,7 @@
       <div id="navbarNavDropdown" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#" @click="clickGBowl">GBowl</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="clickGIndicator">GIndicator</a>
+            <a class="nav-link" href="#" @click="clickInquiry">お問い合わせ</a>
           </li>
         </ul>
       </div>
@@ -76,14 +73,9 @@ export default defineComponent({
     )
 
     const router = useRouter()
-    // 「GBowl」クリックイベント
-    const clickGBowl = () => {
-      router.push({ name: 'GAnalays1' })
-    }
-
-    // 「GIndicator」クリックイベント
-    const clickGIndicator = () => {
-      router.push({ name: 'GAnalays2' })
+    // 「お問い合わせ」クリックイベント
+    const clickInquiry = () => {
+      location.href = 'https://twitter.com/homing_fd2'
     }
 
     // 「ヘッダー」クリックイベント
@@ -91,7 +83,7 @@ export default defineComponent({
       router.push({ name: 'index' })
     }
 
-    return { clickGBowl, clickGIndicator, clickHeader }
+    return { clickInquiry, clickHeader }
   },
 })
 </script>

@@ -35,9 +35,42 @@
   >
     ④ドライビングスタート</button
   ><br />
+
+  <div class="row">
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-secondary w-100"
+        :class="{
+          active: isGBowl,
+        }"
+        @click="clickGBowl"
+      >
+        GBowl
+      </button>
+    </div>
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-secondary w-100"
+        :class="{
+          active: isGIndicator,
+        }"
+        @click="clickGIndicator"
+      >
+        GIndicator
+      </button>
+    </div>
+  </div>
   <br />
 
-  <GBowl :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
+  <GBowl v-if="isGBowl" :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
+  <GIndicator
+    v-if="isGIndicator"
+    :x="rotate_g_x"
+    :y="rotate_g_y"
+    :draw="true"
+  />
 </template>
 
 <script lang="ts">
@@ -49,10 +82,12 @@ import {
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { rotate3dVector } from '@/libs/trigonometric'
 import GBowl from '@/components/GBowl.vue'
+import GIndicator from '@/components/GIndicator.vue'
 
 export default defineComponent({
   components: {
     GBowl,
+    GIndicator,
   },
   setup() {
     // ジャイロセンサーのモジュール
@@ -103,6 +138,8 @@ export default defineComponent({
     const isCalibrated1 = ref(false)
     const isCalibrated2 = ref(false)
     const isDriving = ref(false)
+    const isGIndicator = ref(true)
+    const isGBowl = ref(false)
 
     // 車の加速度を計測する際の角度を計測する
     const cickCalibration1 = () => {
@@ -142,6 +179,22 @@ export default defineComponent({
       isDriving.value = true
     }
 
+    /**
+     * 「gbowl」押下
+     */
+    const clickGBowl = () => {
+      isGBowl.value = true
+      isGIndicator.value = false
+    }
+
+    /**
+     * 「gindicator」押下
+     */
+    const clickGIndicator = () => {
+      isGBowl.value = false
+      isGIndicator.value = true
+    }
+
     return {
       rotate_g_x,
       rotate_g_y,
@@ -149,10 +202,14 @@ export default defineComponent({
       cickCalibration2,
       clickDrivingStart,
       clickStartSensor,
+      clickGIndicator,
+      clickGBowl,
       isEnabledSensor,
       isCalibrated1,
       isCalibrated2,
       isDriving,
+      isGIndicator,
+      isGBowl,
     }
   },
 })
