@@ -3,7 +3,8 @@
  */
 enum Device {
   pc = 'pc',
-  smartPhone = 'smartPhone',
+  ios = 'ios',
+  android = 'android',
 }
 
 const max_g = 1.4

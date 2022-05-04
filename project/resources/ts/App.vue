@@ -50,10 +50,10 @@ export default defineComponent({
     const device = useDevice()
     provide(useDeviceKey, device)
 
-    // 端末がスマホ出ない場合は警告文を表示
+    // 端末がiphoneでない場合は警告文を表示
     device.setDevice()
-    if (device.stateRefs.device.value === Device.pc) {
-      alert('このアプリはスマホ専用です。')
+    if (device.stateRefs.device.value !== Device.ios) {
+      alert('このアプリはios専用です。')
     }
 
     // ジャイロセンサー
