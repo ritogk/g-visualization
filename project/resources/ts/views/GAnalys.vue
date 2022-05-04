@@ -2,27 +2,18 @@
   <button
     :disabled="isEnabledSensor"
     type="button"
-    class="btn btn-success w-100"
+    class="btn btn-success w-100 mb-1"
     @click="clickStartSensor()"
   >
     ①センサーを有効にする</button
   ><br />
   <button
-    :disabled="!isEnabledSensor || isCalibrated1"
     type="button"
-    class="btn btn-primary w-100"
-    @click="cickCalibration1()"
+    class="btn btn-primary w-100 mb-1"
+    :disabled="!isEnabledSensor || isCalibrated1 || isCalibrated2"
+    @click="cickCalibration()"
   >
-    ②キャリブレーション1
-  </button>
-  <br />
-  <button
-    :disabled="!isCalibrated1 || isCalibrated2"
-    type="button"
-    class="btn btn-primary w-100"
-    @click="cickCalibration2()"
-  >
-    ③キャリブレーション2
+    ②キャリブレーション
   </button>
   <button
     type="button"
@@ -31,6 +22,7 @@
     :class="{
       'bg-danger': isDriving,
     }"
+    hidden
     @click="clickDrivingStart"
   >
     ④ドライビングスタート</button
@@ -64,6 +56,65 @@
   </div>
   <br />
 
+  <!-- モーダル表示エリア -->
+  <div
+    id="modalJobDetail"
+    class="modal fade"
+    tabindex="-1"
+    aria-labelledby="modalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">キャリブレーション</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <!-- キャリブレーション1 -->
+        <div v-show="!isCalibrated1">
+          <div class="modal-body">
+            <p>
+              スマホをホルダーで固定して使用するためのキャリブレーションを行います。
+            </p>
+            <p>
+              スマホを地面と平行にした状態で車の進行方向に向けて「確定」を押して下さい。
+            </p>
+            <img src="/calibration.jpg" alt="Logo" class="rounded img-fluid" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary w-100"
+              @click="cickCalibration1"
+            >
+              確定
+            </button>
+          </div>
+        </div>
+        <!-- キャリブレーション2 -->
+        <div v-show="isCalibrated1 && !isCalibrated2">
+          <div class="modal-body">
+            <p>スマホをホルダーに固定して「確定」を押して下さい。</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary w-100"
+              @click="cickCalibration2"
+            >
+              確定
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <GBowl v-if="isGBowl" :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
   <GIndicator
     v-if="isGIndicator"
@@ -74,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject, watch } from 'vue'
+import { defineComponent, ref, inject, watch, onMounted } from 'vue'
 import {
   useAccelerationSensortKey,
   useAccelerationSensortType,
@@ -83,6 +134,7 @@ import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { rotate3dVector } from '@/libs/trigonometric'
 import GBowl from '@/components/GBowl.vue'
 import GIndicator from '@/components/GIndicator.vue'
+import { Modal } from 'bootstrap'
 
 export default defineComponent({
   components: {
@@ -141,15 +193,17 @@ export default defineComponent({
     const isGIndicator = ref(true)
     const isGBowl = ref(false)
 
+    // 「キャリブレーション」押下
+    const cickCalibration = () => {
+      modalInfo.show()
+    }
+
     // 車の加速度を計測する際の角度を計測する
     const cickCalibration1 = () => {
       before_gyro_x = gyro_x.value
       before_gyro_y = gyro_y.value
       before_gyro_z = gyro_z.value
       isCalibrated1.value = true
-      alert(
-        'キャリブレーション1が完了しました。\nスマホをスタンドに固定し終えたら「キャリブレーション2」を押して下さい。'
-      )
     }
 
     // スマホを固定しときの角度を記憶する
@@ -158,9 +212,8 @@ export default defineComponent({
       after_gyro_y = gyro_y.value
       after_gyro_z = gyro_z.value
       isCalibrated2.value = true
-      alert(
-        'キャリブレーション2が完了しました。\n 「ドライビングスタート」を押して下さい。'
-      )
+      modalInfo.hide()
+      alert('キャリブレーションが完了しました。')
     }
 
     // 「センサーを有効」押下
@@ -170,7 +223,7 @@ export default defineComponent({
       // ジャイロセンサーの有効化
       useGyroSensor.enableSensor()
       alert(
-        'センサーを有効にしました。\nスマホと地面が並行になるようにした状態で「キャリブレーション1」を押して下さい。'
+        'センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
       )
     }
 
@@ -195,9 +248,17 @@ export default defineComponent({
       isGIndicator.value = true
     }
 
+    let modalInfo = {} as Modal
+    onMounted(() => {
+      modalInfo = new Modal('#modalJobDetail', {
+        keyboard: false,
+      })
+    })
+
     return {
       rotate_g_x,
       rotate_g_y,
+      cickCalibration,
       cickCalibration1,
       cickCalibration2,
       clickDrivingStart,
