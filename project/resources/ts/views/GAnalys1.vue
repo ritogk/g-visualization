@@ -24,9 +24,6 @@
   >
     ③キャリブレーション2
   </button>
-  <button type="button" class="btn btn-success" hidden @click="clickNamSensor">
-    3次元ベクトルの回転を行わない
-  </button>
   <button
     type="button"
     class="btn btn-light w-100"
@@ -40,7 +37,7 @@
   ><br />
   <br />
 
-  <GBowl :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="draw" />
+  <GBowl :x="adjust_rotate_g_x" :y="adjust_rotate_g_y" :draw="true" />
 </template>
 
 <script lang="ts">
@@ -50,9 +47,7 @@ import {
   useAccelerationSensortKey,
   useAccelerationSensortType,
 } from '@/libs/device/accelerationSensor'
-
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
-import { pointToAtan2 } from '@/libs/trigonometric'
 import GBowl from '@/components/GBowl.vue'
 
 export default defineComponent({
@@ -70,41 +65,39 @@ export default defineComponent({
       useAccelerationSensortKey
     ) as useAccelerationSensortType
 
+    // 加速度センサーから取得できるリアルタイムな値
     const adjust_g_x = ref(0)
     const adjust_g_y = ref(0)
     let before_g_x = 0
     let before_g_y = 0
-    let angle_g_xy = 0
 
+    // スマホの加速度から車の加速度に変換した内容
+    const adjust_rotate_g_x = ref(0)
+    const adjust_rotate_g_y = ref(0)
+
+    // ジャイロセンサーから取得できるリアルタイムな値
     const gyro_x = ref(0)
     const gyro_y = ref(0)
     const gyro_z = ref(0)
+    let before_gyro_x = 0
+    let before_gyro_y = 0
+    let before_gyro_z = 0
+    let after_gyro_x = 0
+    let after_gyro_y = 0
+    let after_gyro_z = 0
 
-    let before_x = 0
-    let before_y = 0
-    let before_z = 0
-    let after_x = 0
-    let after_y = 0
-    let after_z = 0
-
-    const isEnabledSensor = ref(false)
+    // 画面の制御フラグ
+    const isEnabledSensor = useAccelerationSensor.stateRefs.isEnable
     const isCalibrated1 = ref(false)
     const isCalibrated2 = ref(false)
     const isDriving = ref(false)
 
-    const isNama = ref(false)
-
     // 車の加速度を計測する際の角度を計測する
     const cickCalibration1 = () => {
-      before_x = gyro_x.value
-      before_y = gyro_y.value
-      before_z = gyro_z.value
+      before_gyro_x = gyro_x.value
+      before_gyro_y = gyro_y.value
+      before_gyro_z = gyro_z.value
       isCalibrated1.value = true
-      // alert(
-      //   `angle(角度) \n
-      //   x: ${before_x} y:${before_y} z:${before_z} \n
-      //   `
-      // )
       alert(
         'キャリブレーション1が完了しました。\nスマホをスタンドに固定し終えたら「キャリブレーション2」を押して下さい。'
       )
@@ -112,40 +105,14 @@ export default defineComponent({
 
     // スマホを固定しときの角度を記憶する
     const cickCalibration2 = () => {
-      after_x = gyro_x.value
-      after_y = gyro_y.value
-      after_z = gyro_z.value
+      after_gyro_x = gyro_x.value
+      after_gyro_y = gyro_y.value
+      after_gyro_z = gyro_z.value
       isCalibrated2.value = true
-      // alert(
-      //   `angle(角度) \n
-      //   before x: ${before_x} y:${before_y} z:${before_z} \n
-      //   after x: ${after_x} y:${after_y} z:${after_z} \n
-      //   `
-      // )
       alert(
         'キャリブレーション2が完了しました。\n 「ドライビングスタート」を押して下さい。'
       )
     }
-
-    const gyro_result = () => {
-      alert(
-        `x:${gyro_x.value - before_x} y:${gyro_y.value - before_y} z:${
-          gyro_z.value - before_z
-        }`
-      )
-    }
-
-    // gサークルを描画するかどうかのフラグ
-    const draw = ref(false)
-
-    let before_rotate_g_x = 0
-    let before_rotate_g_y = 0
-    const adjust_rotate_g_x = ref(0)
-    const adjust_rotate_g_y = ref(0)
-    // 回転後の加速度の値
-    const rotate_acceleration_x = ref(0)
-    const rotate_acceleration_y = ref(0)
-    const rotate_acceleration_z = ref(0)
 
     // 加速度センサーから値が取得できた時に呼ばれるイベント処理
     const deviceAcceleration = (e: DeviceMotionEvent) => {
@@ -170,53 +137,23 @@ export default defineComponent({
       before_g_x = g_x
       before_g_y = g_y
 
-      // Gの角度を算出
-      angle_g_xy = pointToAtan2({ x: g_x, y: g_y }) + 3
-
       // 回転
-      const angle_x = after_x - before_x
-      const angle_y = after_y - before_y
-      const angle_z = Math.abs(before_z - after_z)
+      const angle_x = after_gyro_x - before_gyro_x
+      const angle_y = after_gyro_y - before_gyro_y
+      const angle_z = Math.abs(before_gyro_z - after_gyro_z)
       let rotate_acceration = null
-      if (!isNama.value) {
-        rotate_acceration = rotate3dVector(
-          e_acceleration_x,
-          e_acceleration_y,
-          e_acceleration_z,
-          angle_x,
-          angle_y,
-          angle_z
-        )
-      } else {
-        rotate_acceration = {
-          x: e_acceleration_x,
-          y: e_acceleration_y,
-          z: e_acceleration_z,
-        }
-      }
+      rotate_acceration = rotate3dVector(
+        e_acceleration_x,
+        e_acceleration_y,
+        e_acceleration_z,
+        angle_x,
+        angle_y,
+        angle_z
+      )
 
       // 速度をGに変換
-      const rotate_g_x = rotate_acceration.x / 9.8
-      const rotate_g_y = rotate_acceration.y / 9.8
-
-      // ローパスフィルタでのノイズ削除
-      adjust_rotate_g_x.value = useAccelerationSensor
-        .filter(before_rotate_g_x, rotate_g_x)
-        .LPF()
-      adjust_rotate_g_y.value = useAccelerationSensor
-        .filter(before_rotate_g_y, rotate_g_y)
-        .LPF()
-      before_rotate_g_x = rotate_g_x
-      before_rotate_g_y = rotate_g_y
-
-      rotate_acceleration_x.value = rotate_acceration.x
-      rotate_acceleration_y.value = rotate_acceration.y
-      rotate_acceleration_z.value = rotate_acceration.z
-
-      // console.log(rotate_acceration.z)
-      // if(isCalibrated2.value){
-      //   alert(rotate_acceration.z)
-      // }
+      adjust_rotate_g_x.value = rotate_acceration.x / 9.8
+      adjust_rotate_g_y.value = rotate_acceration.y / 9.8
     }
 
     // ジャイロセンサーから値が取得できた時に呼ばれるイベント処理
@@ -229,10 +166,10 @@ export default defineComponent({
       gyro_y.value = e.gamma
       gyro_x.value = e.beta
 
-      if (before_x == 0 && before_y == 0 && before_z == 0) {
-        before_x = gyro_x.value
-        before_y = gyro_y.value
-        before_z = gyro_z.value
+      if (before_gyro_x == 0 && before_gyro_y == 0 && before_gyro_z == 0) {
+        before_gyro_x = gyro_x.value
+        before_gyro_y = gyro_y.value
+        before_gyro_z = gyro_z.value
       }
     }
 
@@ -355,47 +292,26 @@ export default defineComponent({
 
     // 「ドライビングスタート」押下
     const clickDrivingStart = () => {
-      draw.value = true
       isDriving.value = true
     }
 
-    const clickDef = () => {
-      alert(`x before:${before_x} after:${after_x}
-            y before:${before_y} after:${after_y}
-            z before:${before_z} after:${after_z}
-      `)
-    }
-
-    const clickNamSensor = () => {
-      isNama.value = !isNama.value
-    }
-
     return {
-      clickNamSensor,
-      clickDrivingStart,
-      clickStartSensor,
       router,
-      draw,
       adjust_g_x,
       adjust_g_y,
-      angle_g_xy,
+      adjust_rotate_g_x,
+      adjust_rotate_g_y,
       gyro_z,
       gyro_y,
       gyro_x,
       cickCalibration1,
       cickCalibration2,
-      gyro_result,
-      rotate_acceleration_x,
-      rotate_acceleration_y,
-      rotate_acceleration_z,
-      adjust_rotate_g_x,
-      adjust_rotate_g_y,
-      clickDef,
+      clickDrivingStart,
+      clickStartSensor,
       isEnabledSensor,
       isCalibrated1,
       isCalibrated2,
       isDriving,
-      isNama,
     }
   },
   computed: {},
