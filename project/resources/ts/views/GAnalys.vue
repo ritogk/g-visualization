@@ -28,32 +28,26 @@
     ④ドライビングスタート</button
   ><br />
 
-  <div class="row">
-    <div class="col-6">
-      <button
-        type="button"
-        class="btn btn-secondary w-100"
-        :class="{
-          active: isGBowl,
-        }"
-        @click="clickGBowl"
-      >
-        GBowl
-      </button>
-    </div>
-    <div class="col-6">
-      <button
-        type="button"
-        class="btn btn-secondary w-100"
-        :class="{
-          active: isGIndicator,
-        }"
-        @click="clickGIndicator"
-      >
-        GIndicator
-      </button>
-    </div>
-  </div>
+  <button
+    type="button"
+    class="btn btn-secondary w-50"
+    :class="{
+      active: isGBowl,
+    }"
+    @click="clickGBowl"
+  >
+    GBowl
+  </button>
+  <button
+    type="button"
+    class="btn btn-secondary w-50"
+    :class="{
+      active: isGIndicator,
+    }"
+    @click="clickGIndicator"
+  >
+    GIndicator
+  </button>
   <br />
 
   <!-- モーダル表示エリア -->
@@ -79,7 +73,7 @@
         <div v-show="!isCalibrated1">
           <div class="modal-body">
             <p>
-              スマホをホルダーで固定した状態でGを計測するためのキャリブレーションを行います。
+              スマホをホルダーに固定した状態でGを計測するためのキャリブレーションを行います。
             </p>
             <p>
               スマホを地面と平行にした状態で車の進行方向に向けて「確定」を押して下さい。
