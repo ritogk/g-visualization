@@ -19,13 +19,19 @@ iphone(safari, chrome)
 
 |                                                                                                                   |                                                                                                                   |
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
-| <img src="https://user-images.githubusercontent.com/72111956/166178600-a957397e-cf89-47c0-84d9-ab5e1d437fd9.png"> | <img src="https://user-images.githubusercontent.com/72111956/166178790-ebe70478-27cf-4684-b2e8-700a1529a779.png"> |
+| <img src="https://user-images.githubusercontent.com/72111956/166639073-b499d0bb-d600-42f0-9762-6afed325f72c.png"> | <img src="https://user-images.githubusercontent.com/72111956/166639451-d9b7f3f7-fe85-4bbd-ae03-fc3357141e68.PNG"> |
 
 ## G ボール
 
 |                                                                                                                   |                                                                                                                   |
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
-| <img src="https://user-images.githubusercontent.com/72111956/166178744-db78bbb1-88bf-4114-bf97-85a5a2baedae.png"> | <img src="https://user-images.githubusercontent.com/72111956/166178799-93f5a453-0e5d-40f0-8a0b-8b269e08cf75.png"> |
+| <img src="https://user-images.githubusercontent.com/72111956/166639656-af566e7f-f37f-4bcb-9e9d-85ac533b7f10.png"> | <img src="https://user-images.githubusercontent.com/72111956/166639455-31419185-d52c-4d17-a530-b067ab87962c.PNG"> |
+
+## キャリブレーション
+
+|                                                                                                                   |                                                                                                                   |
+| :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
+| <img src="https://user-images.githubusercontent.com/72111956/166639071-71d8d948-bf4d-42ac-9812-a2ea3610f11d.PNG"> | <img src="https://user-images.githubusercontent.com/72111956/166639066-5c035886-1728-474b-aaf3-951096c15134.PNG"> |
 
 ## デモ
 <video src="https://user-images.githubusercontent.com/72111956/166638366-cfec4c24-a204-4b16-849c-c13498022557.mp4"></video>
