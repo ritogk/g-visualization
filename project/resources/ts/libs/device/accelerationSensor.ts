@@ -74,7 +74,7 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     // 加速度センサーが有効になっているかどうかのチェック
     if (!state.isEnable) return
     // 加速度取得
-    const acceleration = e.accelerationIncludingGravity
+    const acceleration = e.acceleration
     if (acceleration === null) return
 
     // const startTime = Date.now()
