@@ -28,6 +28,13 @@
     ④ドライビングスタート</button
   ><br />
 
+  <button type="button" class="btn btn-light w-100" @click="clickEnabledLog">
+    ログ無効化</button
+  ><br />
+  <button type="button" class="btn btn-light w-100" @click="clickLogDownload">
+    ログダウンロード</button
+  ><br />
+
   <button
     type="button"
     class="btn btn-secondary w-50"
@@ -160,20 +167,43 @@ export default defineComponent({
     // 回転したG
     const rotate_g_x = ref(0)
     const rotate_g_y = ref(0)
+
+    //const rotate_log: { time: number; x: number; y: number; z: number }[] = []
+    const log: { time: number; x: number; y: number; z: number }[] = []
+    let enabled_log = true
+
     // スマホで検出したGを車のGに変換する
-    watch([g_x, g_y, g_z], () => {
+    watch([g_z], () => {
+      let timeStamp = 0
+      if (enabled_log) {
+        timeStamp = Math.round(new Date().getTime() / 1000)
+      }
+
       const angle_x = after_gyro_x - before_gyro_x
       const angle_y = after_gyro_y - before_gyro_y
       const angle_z = Math.abs(before_gyro_z - after_gyro_z)
       let rotate_acceration = null
-      rotate_acceration = rotate3dVector(
-        g_x.value,
-        g_y.value,
-        g_z.value,
-        angle_x,
-        angle_y,
-        angle_z
-      )
+
+      const x = g_x.value
+      const y = g_y.value
+      const z = g_z.value
+      rotate_acceration = rotate3dVector(x, y, z, angle_x, angle_y, angle_z)
+
+      if (enabled_log) {
+        log.push({
+          time: timeStamp,
+          x: rotate_acceration.x,
+          y: rotate_acceration.y,
+          z: rotate_acceration.z,
+        })
+      }
+
+      // rotate_log.push({
+      //   time: timeStamp,
+      //   x: rotate_acceration.x,
+      //   y: rotate_acceration.y,
+      //   z: rotate_acceration.z,
+      // })
 
       rotate_g_x.value = rotate_acceration.x
       rotate_g_y.value = rotate_acceration.y
@@ -242,6 +272,24 @@ export default defineComponent({
       isGIndicator.value = true
     }
 
+    // 「ログダウンロード」押下
+    const clickLogDownload = () => {
+      const text = JSON.stringify(log)
+      const fileName = 'test.txt'
+      const blob = new Blob([text], { type: 'text/plain' })
+      const aTag = document.createElement('a')
+      aTag.href = URL.createObjectURL(blob)
+      aTag.target = '_blank'
+      aTag.download = fileName
+      aTag.click()
+      URL.revokeObjectURL(aTag.href)
+    }
+
+    const clickEnabledLog = () => {
+      enabled_log = false
+      alert('ログを無効化しました。')
+    }
+
     let modalInfo = {} as Modal
     onMounted(() => {
       modalInfo = new Modal('#modalJobDetail', {
@@ -259,6 +307,8 @@ export default defineComponent({
       clickStartSensor,
       clickGIndicator,
       clickGBowl,
+      clickLogDownload,
+      clickEnabledLog,
       isEnabledSensor,
       isCalibrated1,
       isCalibrated2,

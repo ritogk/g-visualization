@@ -49,26 +49,13 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     window.removeEventListener('devicemotion', func, false)
   }
 
-  /**
-   * フィルター
-   * @param before
-   * @param after
-   * @returns
-   */
+  // 移動平均を計算するためのログ
+  const g_x_log: number[] = []
+  const g_y_log: number[] = []
+  const g_z_log: number[] = []
+  // 移動平均用の区間数
+  const log_section_cnt = 10
 
-  const filter = (before: number, after: number) => {
-    // ローパスフィルター
-    const LPF = (): number => {
-      return before * 0.9 + after * 0.1
-    }
-    return {
-      LPF: LPF,
-    }
-  }
-
-  let beforeGX = 0
-  let beforeGY = 0
-  let beforeGZ = 0
   // 加速度センサーから値が取得できた時に呼ばれるイベント処理
   const deviceAcceleration = (e: DeviceMotionEvent) => {
     // 加速度センサーが有効になっているかどうかのチェック
@@ -87,13 +74,32 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     const g_y = e_acceleration_y / 9.8
     const g_z = e_acceleration_z / 9.8
 
-    // ローパスフィルタでのノイズ削除
-    state.gX = filter(beforeGX, g_x).LPF()
-    state.gY = filter(beforeGY, g_y).LPF()
-    state.gZ = filter(beforeGZ, g_z).LPF()
-    beforeGX = g_x
-    beforeGY = g_y
-    beforeGZ = g_z
+    // x軸に対して移動平均の計算を行う。
+    if (g_x_log.length >= log_section_cnt) {
+      const avg =
+        g_x_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+      state.gX = avg
+      g_x_log.splice(0, 1)
+    }
+    g_x_log.push(g_x)
+
+    // y軸に対して移動平均の計算を行う。
+    if (g_y_log.length >= log_section_cnt) {
+      const avg =
+        g_y_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+      state.gY = avg
+      g_y_log.splice(0, 1)
+    }
+    g_y_log.push(g_y)
+
+    // z軸に対して移動平均の計算を行う。
+    if (g_z_log.length >= log_section_cnt) {
+      const avg =
+        g_z_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+      state.gZ = avg
+      g_z_log.splice(0, 1)
+    }
+    g_z_log.push(g_z)
   }
 
   return {
