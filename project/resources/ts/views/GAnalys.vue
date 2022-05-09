@@ -116,6 +116,14 @@
     </div>
   </div>
 
+  <div class="mx-5 mb-4 mt-2">
+    <div class="d-flex bd-highlight text-white">
+      <div class="me-auto p-2 bd-highlight">G感度(-)</div>
+      <div class="p-2 bd-highlight">G感度(+)</div>
+    </div>
+    <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
+  </div>
+
   <GBowl v-if="isGBowl" :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
   <GIndicator
     v-if="isGIndicator"
@@ -136,11 +144,13 @@ import { rotate3dVector } from '@/libs/trigonometric'
 import GBowl from '@/components/GBowl.vue'
 import GIndicator from '@/components/GIndicator.vue'
 import { Modal } from 'bootstrap'
+import Slider from '@vueform/slider'
 
 export default defineComponent({
   components: {
     GBowl,
     GIndicator,
+    Slider,
   },
   setup() {
     // ジャイロセンサーのモジュール
@@ -167,6 +177,9 @@ export default defineComponent({
     // 回転したG
     const rotate_g_x = ref(0)
     const rotate_g_y = ref(0)
+    // Gの感度調整用
+    const adjust_moving_average =
+      useAccelerationSensor.stateRefs.adjustMovingAverage
 
     //const rotate_log: { time: number; x: number; y: number; z: number }[] = []
     const log: { time: number; x: number; y: number; z: number }[] = []
@@ -197,13 +210,6 @@ export default defineComponent({
           z: rotate_acceration.z,
         })
       }
-
-      // rotate_log.push({
-      //   time: timeStamp,
-      //   x: rotate_acceration.x,
-      //   y: rotate_acceration.y,
-      //   z: rotate_acceration.z,
-      // })
 
       rotate_g_x.value = rotate_acceration.x
       rotate_g_y.value = rotate_acceration.y
@@ -315,6 +321,7 @@ export default defineComponent({
       isDriving,
       isGIndicator,
       isGBowl,
+      adjust_moving_average,
     }
   },
 })
