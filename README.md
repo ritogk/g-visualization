@@ -4,7 +4,8 @@
 
 ## リンク
 
-https://gvisual.homisoftware.net/
+https://gvisual.homisoftware.net/  
+https://twitter.com/homing_fd2/status/1521749005360779265?s=20&t=qpOtG8M4-zggtwA0-cncgw
 
 ## 動作環境
 
