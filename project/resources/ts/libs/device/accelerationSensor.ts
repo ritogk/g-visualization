@@ -4,7 +4,13 @@ import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
  * 加速度センサーに関係するモジュール
  **/
 type useAccelerationSensortType = {
-  stateRefs: ToRefs<{ isEnable: boolean; gX: number; gY: number; gZ: number }>
+  stateRefs: ToRefs<{
+    isEnable: boolean
+    gX: number
+    gY: number
+    gZ: number
+    adjustMovingAverage: number
+  }>
   enableSensor(): void
   addEvent(): void
   removeEvent(func: any): void
@@ -12,7 +18,13 @@ type useAccelerationSensortType = {
 
 const useAccelerationSensor = (): useAccelerationSensortType => {
   // 状態
-  const state = reactive({ isEnable: false, gX: 0, gY: 0, gZ: 0 })
+  const state = reactive({
+    isEnable: false,
+    gX: 0,
+    gY: 0,
+    gZ: 0,
+    adjustMovingAverage: 0,
+  })
 
   /**
    * センサーを有効にします。
@@ -53,8 +65,8 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
   const g_x_log: number[] = []
   const g_y_log: number[] = []
   const g_z_log: number[] = []
-  // 移動平均用の区間数
-  const log_section_cnt = 10
+  // 移動平均用の区間数(デフォルト)
+  const deafult_moving_average_section_cnt = 10
 
   // 加速度センサーから値が取得できた時に呼ばれるイベント処理
   const deviceAcceleration = (e: DeviceMotionEvent) => {
@@ -74,28 +86,33 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     const g_y = e_acceleration_y / 9.8
     const g_z = e_acceleration_z / 9.8
 
+    const moving_average_section_cnt =
+      deafult_moving_average_section_cnt + state.adjustMovingAverage * -1
     // x軸に対して移動平均の計算を行う。
-    if (g_x_log.length >= log_section_cnt) {
+    if (g_x_log.length >= moving_average_section_cnt) {
       const avg =
-        g_x_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+        g_x_log.reduce((sum, element) => sum + element, 0) /
+        moving_average_section_cnt
       state.gX = avg
       g_x_log.splice(0, 1)
     }
     g_x_log.push(g_x)
 
     // y軸に対して移動平均の計算を行う。
-    if (g_y_log.length >= log_section_cnt) {
+    if (g_y_log.length >= moving_average_section_cnt) {
       const avg =
-        g_y_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+        g_y_log.reduce((sum, element) => sum + element, 0) /
+        moving_average_section_cnt
       state.gY = avg
       g_y_log.splice(0, 1)
     }
     g_y_log.push(g_y)
 
     // z軸に対して移動平均の計算を行う。
-    if (g_z_log.length >= log_section_cnt) {
+    if (g_z_log.length >= moving_average_section_cnt) {
       const avg =
-        g_z_log.reduce((sum, element) => sum + element, 0) / log_section_cnt
+        g_z_log.reduce((sum, element) => sum + element, 0) /
+        moving_average_section_cnt
       state.gZ = avg
       g_z_log.splice(0, 1)
     }

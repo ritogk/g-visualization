@@ -1,0 +1,11 @@
+//$blue: #389cee;
+
+@import '@vueform/slider/themes/default.scss';
+
+:root {
+  --slider-connect-bg: #0d6efd;
+  --slider-tooltip-bg: #0d6efd;
+  --slider-handle-ring-color: #3b82f630;
+  --slider-handle-width: 26px;
+  --slider-handle-height: 26px;
+}
