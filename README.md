@@ -17,17 +17,17 @@ Gの可視化
 Gの感度調整
 G(x,y,z)の3次元ベクトル回転
 
-## G インジケーター
+## G インジケーター]]
 
 |                                                                                                                   |                                                                                                                   |
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
-| <img src="https://user-images.githubusercontent.com/72111956/166639073-b499d0bb-d600-42f0-9762-6afed325f72c.png"> | <img src="https://user-images.githubusercontent.com/72111956/166639451-d9b7f3f7-fe85-4bbd-ae03-fc3357141e68.PNG"> |
+| <img src="https://user-images.githubusercontent.com/72111956/167336480-bb207c66-b289-4197-ba51-4dda7eed0a04.png"> | <img src="https://user-images.githubusercontent.com/72111956/167336769-50288979-6ccf-4dd5-a106-bdcc471ab45d.png"> |
 
 ## G ボール
 
 |                                                                                                                   |                                                                                                                   |
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
-| <img src="https://user-images.githubusercontent.com/72111956/166639656-af566e7f-f37f-4bcb-9e9d-85ac533b7f10.png"> | <img src="https://user-images.githubusercontent.com/72111956/166639455-31419185-d52c-4d17-a530-b067ab87962c.PNG"> |
+| <img src="https://user-images.githubusercontent.com/72111956/167336420-ae7cfb1f-8ceb-4c2b-a7c2-2d58dfcc6bda.png"> | <img src="https://user-images.githubusercontent.com/72111956/166639455-31419185-d52c-4d17-a530-b067ab87962c.PNG"> |
 
 ## キャリブレーション
 
