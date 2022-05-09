@@ -1,11 +1,15 @@
 <template>
   <div class="d-flex flex-row">
-    <div class="w-50">
+    <div class="w-50 border border-secondary">
       <p class="text-center text-white-50">←(X)→</p>
       <div
         v-for="item in g_x_bar.items"
         :key="item"
-        class="d-flex align-items-center justify-content-center bar-style border border-secondary"
+        class="d-flex align-items-center justify-content-center bar-style"
+        :class="{
+          'border-3 border-top border-orange': item.value == 0.4,
+          'border-3 border-top border-red': item.value == 0.9,
+        }"
       >
         <span
           class="indicator-style"
@@ -21,12 +25,16 @@
         <span class="text-white-50"> {{ item.value.toFixed(1) }} G </span>
       </div>
     </div>
-    <div class="w-50">
+    <div class="w-50 border border-secondary">
       <p class="text-center text-white-50">↑(Y)↓</p>
       <div
         v-for="item in g_y_bar.items"
         :key="item"
-        class="d-flex align-items-center justify-content-center bar-style text-white-50 border border-secondary"
+        class="d-flex align-items-center justify-content-center bar-style text-white-50"
+        :class="{
+          'border-3 border-top border-orange': item.value == 0.4,
+          'border-3 border-top border-red': item.value == 0.9,
+        }"
       >
         <span
           class="indicator-style"
@@ -177,5 +185,12 @@ export default defineComponent({
 }
 .indicator-yellow {
   color: rgb(219, 219, 33);
+}
+
+.border-orange {
+  border-color: #ffa500c2 !important;
+}
+.border-red {
+  border-color: #d36363 !important;
 }
 </style>
