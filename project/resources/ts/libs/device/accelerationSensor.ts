@@ -66,7 +66,7 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
   const g_y_log: number[] = []
   const g_z_log: number[] = []
   // 移動平均用の区間数(デフォルト)
-  const deafult_moving_average_section_cnt = 10
+  const deafult_moving_average_section_cnt = 8
 
   // 加速度センサーから値が取得できた時に呼ばれるイベント処理
   const deviceAcceleration = (e: DeviceMotionEvent) => {
