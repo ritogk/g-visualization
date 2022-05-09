@@ -28,12 +28,14 @@
     ④ドライビングスタート</button
   ><br />
 
-  <button type="button" class="btn btn-light w-100" @click="clickEnabledLog">
-    ログ無効化</button
-  ><br />
-  <button type="button" class="btn btn-light w-100" @click="clickLogDownload">
-    ログダウンロード</button
-  ><br />
+  <button
+    type="button"
+    class="btn btn-light w-100"
+    hidden
+    @click="clickLogDownload"
+  >
+    ログダウンロード
+  </button>
 
   <button
     type="button"
@@ -183,7 +185,7 @@ export default defineComponent({
 
     //const rotate_log: { time: number; x: number; y: number; z: number }[] = []
     const log: { time: number; x: number; y: number; z: number }[] = []
-    let enabled_log = true
+    let enabled_log = false
 
     // スマホで検出したGを車のGに変換する
     watch([g_z], () => {
@@ -291,11 +293,6 @@ export default defineComponent({
       URL.revokeObjectURL(aTag.href)
     }
 
-    const clickEnabledLog = () => {
-      enabled_log = false
-      alert('ログを無効化しました。')
-    }
-
     let modalInfo = {} as Modal
     onMounted(() => {
       modalInfo = new Modal('#modalJobDetail', {
@@ -314,7 +311,6 @@ export default defineComponent({
       clickGIndicator,
       clickGBowl,
       clickLogDownload,
-      clickEnabledLog,
       isEnabledSensor,
       isCalibrated1,
       isCalibrated2,
