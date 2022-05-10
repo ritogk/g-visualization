@@ -2,7 +2,8 @@ export default {
   'お問い合わせ': 'Inquiry',
   '次へ': 'Next',
 
-  'このアプリはios専用です。': 'This app is for IOS only.',
+  'このアプリはios専用です。':
+    'This app is for IOS only.\nAndroid will be supported soon',
 
   '①センサーを有効にする': '①Enable sensor',
   '②キャリブレーション': '②Calibrate ',
