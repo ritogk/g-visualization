@@ -43,6 +43,7 @@
     "bootstrap": "^5.1.3",
     "chart.js": "^3.7.1",
     "nosleep.js": "^0.12.0",
+    "startbootstrap-new-age": "^6.0.6",
     "vue-chartjs": "^4.0.5",
     "vue-router": "^4.0.14"
   }

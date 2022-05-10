@@ -3,7 +3,7 @@ import GAnalys from './views/GAnalys.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '/app/index',
     name: 'index',
     component: GAnalys,
   },
