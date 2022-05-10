@@ -1,7 +1,23 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" @click="clickHeader">GVisual</a>
+      <div class="me-auto">
+        <a class="navbar-brand" href="#" @click="clickHeader">GVisual</a>
+      </div>
+      <div>
+        <img
+          src="/lp/img/flags/Japan.png"
+          width="24"
+          height="24"
+          @click="clickChangeLang(Lang.ja)"
+        />
+      </div>
+      <div>
+        <img
+          src="/lp/img/flags/United-States.png"
+          @click="clickChangeLang(Lang.en)"
+        />
+      </div>
       <button
         class="navbar-toggler"
         type="button"
@@ -40,14 +56,14 @@ import {
   useAccelerationSensor,
   useAccelerationSensortKey,
 } from '@/libs/device/accelerationSensor'
-import { Device } from '@/libs/constants'
+import { Device, Lang } from '@/libs/constants'
 import NoSleep from 'nosleep.js'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   setup() {
     // i18n
-    const { t } = useI18n()
+    const { t, locale } = useI18n()
 
     // 端末情報
     const device = useDevice()
@@ -91,7 +107,12 @@ export default defineComponent({
       router.push({ name: 'index' })
     }
 
-    return { clickInquiry, clickHeader, t }
+    // 言語変更
+    const clickChangeLang = (lang: Lang) => {
+      locale.value = lang
+    }
+
+    return { clickInquiry, clickHeader, clickChangeLang, Lang, t }
   },
 })
 </script>
