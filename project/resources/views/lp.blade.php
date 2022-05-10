@@ -184,9 +184,8 @@
             </div>
         </section>
         <!-- App demo section-->
-        <section class="bg-white">
+        <section id="demo" class="bg-white">
             <div class="container px-5">
-                
                 <h2 class="display-4 lh-1 mb-2">{{__('lp.デモ')}}</h2>
                 <video controls width="100%" autoplay muted>
                     <source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/gvisual_real_demo.mp4') }}" type="video/webm">
@@ -208,7 +207,7 @@
             <div class="container px-5">
                 <div class="text-white-50 small">
                     <div class="mb-2">Copyright (c) 2013-2022 Start Bootstrap LLC</div>
-                    <a href="https://twitter.com/homing_fd2">twitter</a>
+                    <a href="https://twitter.com/homing_fd2">{{__('lp.お問い合わせ')}}</a>
                     
                 </div>
             </div>
