@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/lp', function () {
+Route::get('/landingpage', function () {
     return view('lp');
 });
 
