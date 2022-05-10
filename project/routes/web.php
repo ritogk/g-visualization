@@ -1,21 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/landingpage', function () {
-    return view('lp');
-});
+Route::get('/ja/lp', [Controllers\LPController::class, 'show_ja'])->name('ja.lp');
+Route::get('/en/lp', [Controllers\LPController::class, 'show_en'])->name('en.lp');
 
 
 // spaのルートを「/」から「/app/*」に変えたのでリダイレクトを挟む。
