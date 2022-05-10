@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <link rel=”alternate” hreflang=”ja” lang="ja" href="{{ route('ja.lp') }}">
-        <link rel="alternate" hreflang="en-gb" lang="en" href="{{ route('en.lp') }}" />
-        <link rel="alternate" hreflang="en-us" lang="en" href="{{ route('en.lp') }}" />
-        <link rel="alternate" hreflang="en-au" lang="en" href="{{ route('en.lp') }}" />
+        <link rel=”alternate” hreflang=”ja” lang="ja" href="{{ route('lp.ja') }}">
+        <link rel="alternate" hreflang="en-gb" lang="en" href="{{ route('lp.en') }}" />
+        <link rel="alternate" hreflang="en-us" lang="en" href="{{ route('lp.en') }}" />
+        <link rel="alternate" hreflang="en-au" lang="en" href="{{ route('lp.en') }}" />
 
         <title>GVisual LP</title>
         <link rel="icon" type="image/x-icon" href="lp/favicon.ico" />
@@ -209,8 +209,8 @@
                     
                 </div>
             </div>
-            <a class="" href="{{ route('ja.lp')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/Japan.png') }}" alt="..." /></a>
-            <a class="" href="{{ route('en.lp')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/United-States.png') }}" alt="..." /></a>
+            <a class="" href="{{ route('lp.ja')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/Japan.png') }}" alt="..." /></a>
+            <a class="" href="{{ route('lp.en')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/United-States.png') }}" alt="..." /></a>
         </footer>
         <!-- Feedback Modal-->
         <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
