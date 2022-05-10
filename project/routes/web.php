@@ -13,11 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/lp', function () {
+    return view('lp');
+});
+
+
+// spaのルートを「/」から「/app/*」に変えたのでリダイレクトを挟む。
+Route::get('/', function () {
+    return redirect('/app/g-analys');
+});
 
 // spaのルーティング
-Route::get('{any}', function () {
+Route::get('/app/{any}', function () {
     return view('app');
 })->where('any', '.*');
