@@ -6,7 +6,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>GVisual LP</title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="lp/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Google fonts-->
@@ -15,7 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="{{ App\Assets\Helpers::cacheBusting('lp/css/styles.css') }}" rel="stylesheet" />
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -46,7 +46,7 @@
                             <h1 class="display-1 lh-1 mb-3">スポーツ走行に特化したGを可視化するアプリ</h1>
                             <p class="lead fw-normal text-muted mb-5">簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。</p>
                             <div class="d-flex flex-column flex-lg-row align-items-center">
-                                <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="assets/img/startapp.png" alt="..." /></a>
+                                <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('lp/img/startapp.png') }}" alt="..." /></a>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="assets/img/iphone-demo.mp4" type="video/mp4" /></video>
+                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                 <div class="row gx-5 justify-content-center">
                     <div class="col-xl-8">
                         <div class="h2 fs-1 text-white mb-4">Gを....操れ....!!</div>
-                        <img src="assets/img/homisoftware-logo.svg" alt="..." style="width:200px" />
+                        <img src="{{ App\Assets\Helpers::cacheBusting('lp/img/homisoftware-logo.svg') }}" alt="..." style="width:200px" />
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="assets/img/iphone-demo.mp4" type="video/mp4" /></video>
+                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                 
                 <h2 class="display-4 lh-1 mb-2">デモ</h2>
                 <video controls width="100%" autoplay muted>
-                    <source src="/assets/img/gvisual_real_demo.mp4" type="video/webm">
+                    <source src="{{ App\Assets\Helpers::cacheBusting('lp/img/gvisual_real_demo.mp4') }}" type="video/webm">
                 </video>
             </div>
         </section>
@@ -195,7 +195,7 @@
             <div class="container px-5">
                 <h2 class="text-center text-white font-alt mb-4">iPhone対応、androidは近日対応予定</h2>
                 <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center">
-                    <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="assets/img/startapp.png" alt="..." /></a>
+                    <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('lp/img/startapp.png') }}" alt="..." /></a>
                 </div>
             </div>
         </section>
@@ -277,6 +277,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="{{ App\Assets\Helpers::cacheBusting('lp/js/scripts.js') }}"></script>
     </body>
 </html>
