@@ -80,7 +80,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        <img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.gif') }}" style="max-width: 100%; height: 100%" alt="..." />
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +171,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video controls muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        <img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.gif') }}" style="max-width: 100%; height: 100%" alt="..." />
                                     </div>
                                 </div>
                             </div>
