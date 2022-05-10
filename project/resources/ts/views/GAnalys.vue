@@ -5,7 +5,7 @@
     class="btn btn-success w-100 mb-1"
     @click="clickStartSensor()"
   >
-    ①センサーを有効にする</button
+    {{ t('message.①センサーを有効にする') }}</button
   ><br />
   <button
     type="button"
@@ -13,7 +13,7 @@
     :disabled="!isEnabledSensor || isCalibrated1 || isCalibrated2"
     @click="cickCalibration()"
   >
-    ②キャリブレーション
+    {{ t('message.②キャリブレーション') }}
   </button>
   <button
     type="button"
@@ -70,7 +70,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
-          <h5 class="modal-title">キャリブレーション</h5>
+          <h5 class="modal-title">{{ t('message.キャリブレーション') }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -82,10 +82,18 @@
         <div v-show="!isCalibrated1">
           <div class="modal-body">
             <p>
-              スマホをホルダーに固定した状態でGを計測するためのキャリブレーションを行います。
+              {{
+                t(
+                  'message.スマホをホルダーに固定した状態でGを計測するためのキャリブレーションを行います。'
+                )
+              }}
             </p>
             <p>
-              スマホを地面と平行にした状態で車の進行方向に向けて「確定」を押して下さい。
+              {{
+                t(
+                  'message.スマホを地面と平行にした状態で車の進行方向に向けて「次へ」を押して下さい。'
+                )
+              }}
             </p>
             <img src="/calibration.jpg" alt="Logo" class="rounded img-fluid" />
           </div>
@@ -95,14 +103,18 @@
               class="btn btn-primary w-100"
               @click="cickCalibration1"
             >
-              確定
+              {{ t('message.次へ') }}
             </button>
           </div>
         </div>
         <!-- キャリブレーション2 -->
         <div v-show="isCalibrated1 && !isCalibrated2">
           <div class="modal-body">
-            <p>スマホをホルダーに固定して「確定」を押して下さい。</p>
+            <p>
+              {{
+                t('message.スマホをホルダーに固定して「次へ」を押して下さい。')
+              }}
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -110,7 +122,7 @@
               class="btn btn-primary w-100"
               @click="cickCalibration2"
             >
-              確定
+              {{ t('message.次へ') }}
             </button>
           </div>
         </div>
@@ -120,8 +132,8 @@
 
   <div class="mx-5 mb-4 mt-2">
     <div class="d-flex bd-highlight text-white">
-      <div class="me-auto p-2 bd-highlight">G感度(-)</div>
-      <div class="p-2 bd-highlight">G感度(+)</div>
+      <div class="me-auto p-2 bd-highlight">{{ t('message.G感度(-)') }}</div>
+      <div class="p-2 bd-highlight">{{ t('message.G感度(+)') }}</div>
     </div>
     <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
   </div>
@@ -147,6 +159,7 @@ import GBowl from '@/components/GBowl.vue'
 import GIndicator from '@/components/GIndicator.vue'
 import { Modal } from 'bootstrap'
 import Slider from '@vueform/slider'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: {
@@ -155,6 +168,9 @@ export default defineComponent({
     Slider,
   },
   setup() {
+    // i18n
+    const { t } = useI18n({ useScope: 'global' })
+
     // ジャイロセンサーのモジュール
     const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
     // ジャイロセンサーから取得できるリアルタイムな値
@@ -245,7 +261,8 @@ export default defineComponent({
       after_gyro_z = gyro_z.value
       isCalibrated2.value = true
       modalInfo.hide()
-      alert('キャリブレーションが完了しました。')
+
+      alert(t('message.キャリブレーションが完了しました。'))
     }
 
     // 「センサーを有効」押下
@@ -255,7 +272,9 @@ export default defineComponent({
       // ジャイロセンサーの有効化
       useGyroSensor.enableSensor()
       alert(
-        'センサーを有効にしました。\nスマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
+        t(
+          'message.センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
+        )
       )
     }
 
@@ -318,6 +337,7 @@ export default defineComponent({
       isGIndicator,
       isGBowl,
       adjust_moving_average,
+      t,
     }
   },
 })

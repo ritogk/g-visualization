@@ -16,7 +16,9 @@
       <div id="navbarNavDropdown" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#" @click="clickInquiry">お問い合わせ</a>
+            <a class="nav-link" href="#" @click="clickInquiry">{{
+              t('message.お問い合わせ')
+            }}</a>
           </li>
         </ul>
       </div>
@@ -30,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide } from 'vue'
+import { defineComponent, provide, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDevice, useDeviceKey } from '@/libs/device/device'
 import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
@@ -40,18 +42,17 @@ import {
 } from '@/libs/device/accelerationSensor'
 import { Device } from '@/libs/constants'
 import NoSleep from 'nosleep.js'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   setup() {
+    // i18n
+    const { t } = useI18n()
+
     // 端末情報
     const device = useDevice()
     provide(useDeviceKey, device)
-
-    // 端末がiphoneでない場合は警告文を表示
     device.setDevice()
-    if (device.stateRefs.device.value !== Device.ios) {
-      alert('このアプリはios専用です。')
-    }
 
     // ジャイロセンサー
     const gyroSensor = useGyroSensor()
@@ -72,6 +73,13 @@ export default defineComponent({
       false
     )
 
+    onMounted(() => {
+      // 端末がiphoneでない場合は警告文を表示
+      if (device.stateRefs.device.value !== Device.ios) {
+        alert(t('message.このアプリはios専用です。'))
+      }
+    })
+
     const router = useRouter()
     // 「お問い合わせ」クリックイベント
     const clickInquiry = () => {
@@ -83,7 +91,7 @@ export default defineComponent({
       router.push({ name: 'index' })
     }
 
-    return { clickInquiry, clickHeader }
+    return { clickInquiry, clickHeader, t }
   },
 })
 </script>
