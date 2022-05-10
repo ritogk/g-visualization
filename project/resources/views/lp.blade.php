@@ -69,7 +69,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        {{-- <video controls muted="muted" playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video> --}}
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        {{-- <video controls muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video> --}}
                                     </div>
                                 </div>
                             </div>
@@ -185,11 +185,9 @@
         </section>
         <!-- App demo section-->
         <section id="demo" class="bg-white">
-            <div class="container px-5">
+            <div class="container px-2">
                 <h2 class="display-4 lh-1 mb-2">{{__('lp.デモ')}}</h2>
-                <video controls width="100%" autoplay muted playsinline>
-                    <source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/gvisual_real_demo.mp4') }}" type="video/webm">
-                </video>
+                <iframe style=" aspect-ratio: 16 / 9;width: 100%;height: 200;" src="https://www.youtube.com/embed/_0PG_Q7EbHo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
         <!-- Footer-->
