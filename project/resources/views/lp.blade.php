@@ -50,7 +50,7 @@
                             <h1 class="display-1 lh-1 mb-3">{{__('lp.スポーツ走行に特化したGを可視化するアプリ')}}</h1>
                             <p class="lead fw-normal text-muted mb-5">{{__('lp.簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。')}}</p>
                             <div class="d-flex flex-column flex-lg-row align-items-center">
-                                <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
+                                <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        <video muted="muted" playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        <video muted="muted" autoplay="" loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
+                                        <video muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
         <section id="demo" class="bg-white">
             <div class="container px-5">
                 <h2 class="display-4 lh-1 mb-2">{{__('lp.デモ')}}</h2>
-                <video controls width="100%" autoplay muted>
+                <video controls width="100%" autoplay muted playsinline>
                     <source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/gvisual_real_demo.mp4') }}" type="video/webm">
                 </video>
             </div>
@@ -198,7 +198,7 @@
             <div class="container px-5">
                 <h2 class="text-center text-white font-alt mb-4">{{__('lp.iPhone対応、androidは近日対応予定')}}</h2>
                 <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center">
-                    <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
+                    <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
                 </div>
             </div>
         </section>
