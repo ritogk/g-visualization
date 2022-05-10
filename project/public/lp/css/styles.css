@@ -11682,10 +11682,7 @@ html {
 }
 
 .text-gradient {
-  background: -webkit-linear-gradient(#2937f0, #9f1ae2);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: blue;
 }
 
 aside,
@@ -11699,8 +11696,8 @@ section {
 }
 
 #mainNav {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 4px;
+  padding-bottom: 4px;
   background-color: #fff;
 }
 #mainNav .navbar-brand {

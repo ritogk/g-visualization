@@ -14,6 +14,7 @@
         <link rel="icon" type="image/x-icon" href="lp/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        
         <!-- Google fonts-->
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
@@ -24,9 +25,18 @@
     </head>
     <body id="page-top">
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
-            <div class="container px-5">
-                <a class="navbar-brand fw-bold" href="#page-top">GVisual</a>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm " id="mainNav">
+            <div class="container px-4">
+                <div>
+                    <a class="navbar-brand fw-bold" href="#page-top">GVisual</a>
+                </div>
+                <div class="ms-auto">
+                    <a class="border me-1" href="{{ route('lp.ja')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/Japan.png') }}" alt="..." /></a>
+                </div>
+                <div>
+                    <a class="border me-1" href="{{ route('lp.en')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/United-States.png') }}" alt="..." /></a>
+                    
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="bi-list"></i>
@@ -40,6 +50,7 @@
                 </div>
             </div>
         </nav>
+        
         <!-- Mashead header-->
         <header class="masthead">
             <div class="container px-5">
@@ -48,9 +59,9 @@
                         <!-- Mashead text and app badges-->
                         <div class="mb-5 mb-lg-0 text-center text-lg-start">
                             <h1 class="display-1 lh-1 mb-3">{{__('lp.スポーツ走行に特化したGを可視化するアプリ')}}</h1>
-                            <p class="lead fw-normal text-muted mb-5">{{__('lp.簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。')}}</p>
+                            <p class="lead fw-normal text-muted mb-4">{{__('lp.簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。')}}</p>
                             <div class="d-flex flex-column flex-lg-row align-items-center">
-                                <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
+                                <a class="me-lg-3 mb-1 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
                             </div>
                         </div>
                     </div>
@@ -69,7 +80,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        {{-- <video controls muted="muted" playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video> --}}
+                                        <video muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +137,7 @@
                                 <div class="col-md-6 mb-5">
                                     <!-- Feature item-->
                                     <div class="text-center">
-                                        <i class="bi-phone icon-feature text-gradient d-block mb-3"></i>
+                                        <i class="bi bi-phone icon-feature text-gradient d-block mb-3"></i>
                                         <h3 class="font-alt">{{__('lp.iphone対応')}}</h3>
                                         <p class="text-muted mb-0">{{__('lp.safari, chromeで動作確認済。androidは後日対応します。')}}</p>
                                     </div>
@@ -160,7 +171,7 @@
                             <div class="device-wrapper">
                                 <div class="device" data-device="iPhoneX" data-orientation="portrait" data-color="black">
                                     <div class="screen bg-black">
-                                        {{-- <video controls muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video> --}}
+                                        <video controls muted="muted" autoplay playsinline loop="" style="max-width: 100%; height: 100%"><source src="{{ App\Assets\Helpers::cacheBusting('/lp/img/iphone-demo.mp4') }}" type="video/mp4" /></video>
                                     </div>
                                 </div>
                             </div>
@@ -209,8 +220,6 @@
                     
                 </div>
             </div>
-            <a class="" href="{{ route('lp.ja')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/Japan.png') }}" alt="..." /></a>
-            <a class="" href="{{ route('lp.en')}}"><img src="{{ App\Assets\Helpers::cacheBusting('/lp/img/flags/United-States.png') }}" alt="..." /></a>
         </footer>
         <!-- Feedback Modal-->
         <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
