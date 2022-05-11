@@ -87,11 +87,13 @@ export default defineComponent({
     device.setDevice()
 
     // ジャイロセンサー
-    const gyroSensor = useGyroSensor()
+    const gyroSensor = useGyroSensor(device.stateRefs.device.value)
     provide(useGyroSensortKey, gyroSensor)
 
     // 加速度センサー
-    const accelerationSensor = useAccelerationSensor()
+    const accelerationSensor = useAccelerationSensor(
+      device.stateRefs.device.value
+    )
     provide(useAccelerationSensortKey, accelerationSensor)
 
     // スリープを防ぐ
@@ -107,8 +109,8 @@ export default defineComponent({
 
     onMounted(() => {
       // 端末がiphoneでない場合は警告文を表示
-      if (device.stateRefs.device.value !== Device.ios) {
-        alert(t('message.このアプリはios専用です。'))
+      if (device.stateRefs.device.value === Device.pc) {
+        alert(t('message.このアプリはスマホ専用です。'))
       }
     })
 

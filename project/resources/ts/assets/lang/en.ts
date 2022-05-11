@@ -3,8 +3,7 @@ export default {
   'このアプリについて': 'About this app',
   '次へ': 'Next',
 
-  'このアプリはios専用です。':
-    'This app is for IOS only.\nAndroid will be supported soon',
+  'このアプリはスマホ専用です。': 'This application is for smartphones only.',
 
   '①センサーを有効にする': '①Enable sensor',
   '②キャリブレーション': '②Calibrate ',
