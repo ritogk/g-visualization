@@ -1,4 +1,5 @@
 import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
+import { Device } from '@/libs/constants'
 
 /**
  * 加速度センサーに関係するモジュール
@@ -11,12 +12,12 @@ type useAccelerationSensortType = {
     gZ: number
     adjustMovingAverage: number
   }>
-  enableSensor(): Promise<void>
+  enableSensor(): Promise<boolean>
   addEvent(): void
   removeEvent(): void
 }
 
-const useAccelerationSensor = (): useAccelerationSensortType => {
+const useAccelerationSensor = (device: Device): useAccelerationSensortType => {
   // 状態
   const state = reactive({
     isEnable: false,
@@ -29,12 +30,22 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
   /**
    * センサーを有効にします。
    */
-  const enableSensor = async (): Promise<void> => {
-    // prettier-ignore
-    const response = await (DeviceMotionEvent as any).requestPermission()
-    if (response === 'granted') {
+  const enableSensor = async (): Promise<boolean> => {
+    if (device === Device.ios) {
+      // ios
+      const response = await (DeviceMotionEvent as any).requestPermission()
+      if (response === 'granted') {
+        state.isEnable = true
+        addEvent()
+        return true
+      } else {
+        return false
+      }
+    } else {
+      // android
       state.isEnable = true
       addEvent()
+      return true
     }
   }
 
@@ -69,10 +80,11 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
     const acceleration = e.acceleration
     if (acceleration === null) return
 
-    // const startTime = Date.now()
-    const e_acceleration_x = acceleration.x ?? 0
-    const e_acceleration_y = acceleration.y ?? 0
-    const e_acceleration_z = acceleration.z ?? 0
+    // androidとiosでセンサーの値が+-逆になるのでその対応
+    const coefficient = device === Device.ios ? 1 : -1
+    const e_acceleration_x = acceleration.x ? acceleration.x * coefficient : 0
+    const e_acceleration_y = acceleration.y ? acceleration.y * coefficient : 0
+    const e_acceleration_z = acceleration.z ? acceleration.z * coefficient : 0
 
     // 加速度をGに変換
     const g_x = e_acceleration_x / 9.8

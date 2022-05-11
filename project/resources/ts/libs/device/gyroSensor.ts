@@ -1,4 +1,5 @@
 import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
+import { Device } from '@/libs/constants'
 
 /**
  * ジャイロセンサーに関係するモジュール
@@ -6,23 +7,34 @@ import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
 
 type useGyroSensortType = {
   stateRefs: ToRefs<{ isEnable: boolean; x: number; y: number; z: number }>
-  enableSensor(): Promise<void>
+  enableSensor(): Promise<boolean>
   addEvent(): void
   removeEvent(): void
 }
 
-const useGyroSensor = (): useGyroSensortType => {
+const useGyroSensor = (device: Device): useGyroSensortType => {
   // 状態
   const state = reactive({ isEnable: false, x: 0, y: 0, z: 0 })
 
   /**
    * センサーを有効にします。
    */
-  const enableSensor = async (): Promise<void> => {
-    const response = await (DeviceOrientationEvent as any).requestPermission()
-    if (response === 'granted') {
+  const enableSensor = async (): Promise<boolean> => {
+    if (device === Device.ios) {
+      // ios
+      const response = await (DeviceOrientationEvent as any).requestPermission()
+      if (response === 'granted') {
+        state.isEnable = true
+        addEvent()
+        return true
+      } else {
+        return false
+      }
+    } else {
+      // android
       state.isEnable = true
       addEvent()
+      return true
     }
   }
 
