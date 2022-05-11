@@ -7,8 +7,8 @@
         :key="item"
         class="d-flex align-items-center justify-content-center bar-style"
         :class="{
-          'border-3 border-top border-orange': item.value == 0.4,
-          'border-3 border-top border-red': item.value == 0.9,
+          'border-3 border-top border-orange': item.value == 0.3,
+          'border-3 border-top border-red': item.value == 0.7,
         }"
       >
         <span
@@ -32,8 +32,8 @@
         :key="item"
         class="d-flex align-items-center justify-content-center bar-style text-white-50"
         :class="{
-          'border-3 border-top border-orange': item.value == 0.4,
-          'border-3 border-top border-red': item.value == 0.9,
+          'border-3 border-top border-orange': item.value == 0.3,
+          'border-3 border-top border-red': item.value == 0.7,
         }"
       >
         <span
@@ -83,17 +83,13 @@ export default defineComponent({
     // g(x)バーの状態
     const g_x_bar = reactive({
       items: [
-        { value: 1.4, show: false, color: Indicator.red },
-        { value: 1.3, show: false, color: Indicator.red },
-        { value: 1.2, show: false, color: Indicator.red },
-        { value: 1.1, show: false, color: Indicator.red },
         { value: 1.0, show: false, color: Indicator.red },
-        { value: 0.9, show: false, color: Indicator.orange },
-        { value: 0.8, show: false, color: Indicator.orange },
+        { value: 0.9, show: false, color: Indicator.red },
+        { value: 0.8, show: false, color: Indicator.red },
         { value: 0.7, show: false, color: Indicator.orange },
         { value: 0.6, show: false, color: Indicator.orange },
         { value: 0.5, show: false, color: Indicator.orange },
-        { value: 0.4, show: false, color: Indicator.green },
+        { value: 0.4, show: false, color: Indicator.orange },
         { value: 0.3, show: false, color: Indicator.green },
         { value: 0.2, show: false, color: Indicator.green },
         { value: 0.1, show: false, color: Indicator.green },
@@ -115,17 +111,13 @@ export default defineComponent({
     // g(y)バーの状態
     const g_y_bar = reactive({
       items: [
-        { value: 1.4, show: false, color: Indicator.red },
-        { value: 1.3, show: false, color: Indicator.red },
-        { value: 1.2, show: false, color: Indicator.red },
-        { value: 1.1, show: false, color: Indicator.red },
         { value: 1.0, show: false, color: Indicator.red },
-        { value: 0.9, show: false, color: Indicator.orange },
-        { value: 0.8, show: false, color: Indicator.orange },
+        { value: 0.9, show: false, color: Indicator.red },
+        { value: 0.8, show: false, color: Indicator.red },
         { value: 0.7, show: false, color: Indicator.orange },
         { value: 0.6, show: false, color: Indicator.orange },
         { value: 0.5, show: false, color: Indicator.orange },
-        { value: 0.4, show: false, color: Indicator.green },
+        { value: 0.4, show: false, color: Indicator.orange },
         { value: 0.3, show: false, color: Indicator.green },
         { value: 0.2, show: false, color: Indicator.green },
         { value: 0.1, show: false, color: Indicator.green },
@@ -156,7 +148,7 @@ export default defineComponent({
 
 <style scoped>
 .bar-style {
-  height: calc(100vh / 15);
+  height: calc(100vh / 11);
 }
 .indicator-style {
   font-size: 35px;

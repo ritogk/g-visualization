@@ -15,5 +15,6 @@ enum Lang {
   en = 'en',
 }
 
-const max_g = 1.4
-export { Device, Lang, max_g }
+const circuit_max_g = 1.4
+const touge_max_g = 1.0
+export { Device, Lang, circuit_max_g, touge_max_g }

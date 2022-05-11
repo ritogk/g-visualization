@@ -37,27 +37,86 @@
     ログダウンロード
   </button>
 
-  <button
-    type="button"
-    class="btn btn-secondary w-50"
-    :class="{
-      active: isGBowl,
-    }"
-    @click="clickGBowl"
-  >
-    GBowl
-  </button>
-  <button
-    type="button"
-    class="btn btn-secondary w-50"
-    :class="{
-      active: isGIndicator,
-    }"
-    @click="clickGIndicator"
-  >
-    GIndicator
-  </button>
-  <br />
+  <!-- maxg変更-->
+  <div class="mb-1">
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
+        active: isCircuit,
+      }"
+      @click="clickMaxG14"
+    >
+      MaxG:1.4
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
+        active: isTouge,
+      }"
+      @click="clickMaxG10"
+    >
+      MaxG:1.0
+    </button>
+  </div>
+
+  <div class="mb-1">
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
+        active: isGBowl,
+      }"
+      @click="clickGBowl"
+    >
+      GBowl
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
+        active: isGIndicator,
+      }"
+      @click="clickGIndicator"
+    >
+      GIndicator
+    </button>
+  </div>
+
+  <!-- G感度調整 -->
+  <div class="mx-5 mb-4 mt-2">
+    <div class="d-flex bd-highlight text-white">
+      <div class="me-auto p-2 bd-highlight">{{ t('message.G感度(-)') }}</div>
+      <div class="p-2 bd-highlight">{{ t('message.G感度(+)') }}</div>
+    </div>
+    <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
+  </div>
+
+  <GBowl
+    v-if="isGBowl && isCircuit"
+    :x="rotate_g_x"
+    :y="rotate_g_y"
+    :draw="true"
+  />
+  <GBowlTouge
+    v-if="isGBowl && isTouge"
+    :x="rotate_g_x"
+    :y="rotate_g_y"
+    :draw="true"
+  />
+  <GIndicator
+    v-if="isGIndicator && isCircuit"
+    :x="rotate_g_x"
+    :y="rotate_g_y"
+    :draw="true"
+  />
+  <GIndicatorTouge
+    v-if="isGIndicator && isTouge"
+    :x="rotate_g_x"
+    :y="rotate_g_y"
+    :draw="true"
+  />
 
   <!-- モーダル表示エリア -->
   <div
@@ -129,22 +188,6 @@
       </div>
     </div>
   </div>
-
-  <div class="mx-5 mb-4 mt-2">
-    <div class="d-flex bd-highlight text-white">
-      <div class="me-auto p-2 bd-highlight">{{ t('message.G感度(-)') }}</div>
-      <div class="p-2 bd-highlight">{{ t('message.G感度(+)') }}</div>
-    </div>
-    <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
-  </div>
-
-  <GBowl v-if="isGBowl" :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
-  <GIndicator
-    v-if="isGIndicator"
-    :x="rotate_g_x"
-    :y="rotate_g_y"
-    :draw="true"
-  />
 </template>
 
 <script lang="ts">
@@ -156,7 +199,9 @@ import {
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
 import { rotate3dVector } from '@/libs/trigonometric'
 import GBowl from '@/components/GBowl.vue'
+import GBowlTouge from '@/components/GBowlTouge.vue'
 import GIndicator from '@/components/GIndicator.vue'
+import GIndicatorTouge from '@/components/GIndicatorTouge.vue'
 import { Modal } from 'bootstrap'
 import Slider from '@vueform/slider'
 import { useI18n } from 'vue-i18n'
@@ -164,7 +209,9 @@ import { useI18n } from 'vue-i18n'
 export default defineComponent({
   components: {
     GBowl,
+    GBowlTouge,
     GIndicator,
+    GIndicatorTouge,
     Slider,
   },
   setup() {
@@ -240,6 +287,8 @@ export default defineComponent({
     const isDriving = ref(false)
     const isGIndicator = ref(true)
     const isGBowl = ref(false)
+    const isTouge = ref(true)
+    const isCircuit = ref(false)
 
     // 「キャリブレーション」押下
     const cickCalibration = () => {
@@ -299,6 +348,22 @@ export default defineComponent({
       isGIndicator.value = true
     }
 
+    /**
+     * 「MaxG:1.4」押下
+     */
+    const clickMaxG14 = () => {
+      isTouge.value = false
+      isCircuit.value = true
+    }
+
+    /**
+     * 「MaxG:1.0」押下
+     */
+    const clickMaxG10 = () => {
+      isTouge.value = true
+      isCircuit.value = false
+    }
+
     // 「ログダウンロード」押下
     const clickLogDownload = () => {
       const text = JSON.stringify(log)
@@ -330,12 +395,16 @@ export default defineComponent({
       clickGIndicator,
       clickGBowl,
       clickLogDownload,
+      clickMaxG14,
+      clickMaxG10,
       isEnabledSensor,
       isCalibrated1,
       isCalibrated2,
       isDriving,
       isGIndicator,
       isGBowl,
+      isTouge,
+      isCircuit,
       adjust_moving_average,
       t,
     }
