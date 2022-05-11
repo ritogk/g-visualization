@@ -198,7 +198,7 @@
         <section id="demo" class="bg-white">
             <div class="container px-2">
                 <h2 class="display-4 lh-1 mb-2">{{__('lp.デモ')}}</h2>
-                <iframe style=" aspect-ratio: 16 / 9;width: 100%;height: 200;" src="https://www.youtube.com/embed/_0PG_Q7EbHo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe style="aspect-ratio: 16 / 9;width: 100%;height: 200;" src="https://www.youtube.com/embed/_0PG_Q7EbHo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
         <!-- Footer-->
