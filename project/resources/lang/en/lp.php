@@ -12,8 +12,8 @@ return [
     'スポーツ走行向けに様々なチューニングを行っております。' => 'We offer various tuning services for sports driving.',
     '豊富なテーマ' => 'Extensive themes',
     'Gを可視化するためのテーマを複数ご用意しています。' => 'Multiple themes available for visualizing G',
-    'iphone対応' => 'iphone support',
-    'safari, chromeで動作確認済。androidは後日対応します。' => 'Safari and chrome tested. android will be supported at a later date.', 'iphone support' => 'iphone support', 'safari and chrome tested. android will be supported at a later date.',
+    'スマートフォン対応' => 'Smartphone support',
+    'iphoneはsafariとchrome、androidはchromeで動作確認済' => 'Confirmed operation with safari and chrome for iphone, and chrome for android.',
     '簡単操作' => 'Easy operation',
     '複雑な操作はありません。' => 'No complicated operation.',
 

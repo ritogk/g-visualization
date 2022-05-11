@@ -140,8 +140,8 @@
                                     <!-- Feature item-->
                                     <div class="text-center">
                                         <i class="bi bi-phone icon-feature text-gradient d-block mb-3"></i>
-                                        <h3 class="font-alt">{{__('lp.iphone対応')}}</h3>
-                                        <p class="text-muted mb-0">{{__('lp.safari, chromeで動作確認済。androidは後日対応します。')}}</p>
+                                        <h3 class="font-alt">{{__('lp.スマートフォン対応')}}</h3>
+                                        <p class="text-muted mb-0">{{__('lp.iphoneはsafariとchrome、androidはchromeで動作確認済')}}</p>
                                     </div>
                                 </div>
                                 
