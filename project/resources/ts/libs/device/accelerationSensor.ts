@@ -13,7 +13,7 @@ type useAccelerationSensortType = {
   }>
   enableSensor(): void
   addEvent(): void
-  removeEvent(func: any): void
+  removeEvent(): void
 }
 
 const useAccelerationSensor = (): useAccelerationSensortType => {
@@ -57,8 +57,8 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
    * イベントハンドラを削除します。
    * @param func
    */
-  const removeEvent = (func: (e: DeviceMotionEvent) => void) => {
-    window.removeEventListener('devicemotion', func, false)
+  const removeEvent = () => {
+    window.removeEventListener('devicemotion', deviceAcceleration, false)
   }
 
   // 移動平均を計算するためのログ

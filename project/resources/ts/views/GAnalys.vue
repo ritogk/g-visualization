@@ -280,7 +280,7 @@ export default defineComponent({
       rotate_g_y.value = rotate_acceration.y
     })
 
-    // 画面の制御フラグ
+    // 制御フラグ
     const isEnabledSensor = useAccelerationSensor.stateRefs.isEnable
     const isCalibrated1 = ref(false)
     const isCalibrated2 = ref(false)
@@ -310,7 +310,7 @@ export default defineComponent({
       after_gyro_z = gyro_z.value
       isCalibrated2.value = true
       modalInfo.hide()
-
+      useGyroSensor.removeEvent()
       alert(t('message.キャリブレーションが完了しました。'))
     }
 

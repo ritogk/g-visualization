@@ -8,7 +8,7 @@ type useGyroSensortType = {
   stateRefs: ToRefs<{ isEnable: boolean; x: number; y: number; z: number }>
   enableSensor(): void
   addEvent(): void
-  removeEvent(func: any): void
+  removeEvent(): void
 }
 
 const useGyroSensor = (): useGyroSensortType => {
@@ -46,8 +46,8 @@ const useGyroSensor = (): useGyroSensortType => {
    * イベントハンドラを削除します。
    * @param func
    */
-  const removeEvent = (func: (e: DeviceOrientationEvent) => void) => {
-    window.removeEventListener('deviceorientation', func, false)
+  const removeEvent = () => {
+    window.removeEventListener('deviceorientation', deviceGyro, false)
   }
 
   let beforeX = 0
