@@ -11,7 +11,7 @@ type useAccelerationSensortType = {
     gZ: number
     adjustMovingAverage: number
   }>
-  enableSensor(): void
+  enableSensor(): Promise<void>
   addEvent(): void
   removeEvent(): void
 }
@@ -29,20 +29,13 @@ const useAccelerationSensor = (): useAccelerationSensortType => {
   /**
    * センサーを有効にします。
    */
-  const enableSensor = () => {
+  const enableSensor = async (): Promise<void> => {
     // prettier-ignore
-    (DeviceMotionEvent as any)
-    .requestPermission()
-    .then(function (response: string) {
-        if (response === 'granted') {
-          state.isEnable = true;
-          addEvent()
-        }
-    })
-    .catch(function (e: any) {
-        console.log(e)
-        state.isEnable = true
-    })
+    const response = await (DeviceMotionEvent as any).requestPermission()
+    if (response === 'granted') {
+      state.isEnable = true
+      addEvent()
+    }
   }
 
   /**

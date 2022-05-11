@@ -1,6 +1,6 @@
 <template>
   <button
-    :disabled="isEnabledSensor"
+    :disabled="isAccelerationSensor"
     type="button"
     class="btn btn-success w-100 mb-1"
     @click="clickStartSensor()"
@@ -10,7 +10,7 @@
   <button
     type="button"
     class="btn btn-primary w-100 mb-1"
-    :disabled="!isEnabledSensor || isCalibrated1 || isCalibrated2"
+    :disabled="!isAccelerationSensor || isCalibrated1 || isCalibrated2"
     @click="cickCalibration()"
   >
     {{ t('message.②キャリブレーション') }}
@@ -281,7 +281,8 @@ export default defineComponent({
     })
 
     // 制御フラグ
-    const isEnabledSensor = useAccelerationSensor.stateRefs.isEnable
+    const isAccelerationSensor = useAccelerationSensor.stateRefs.isEnable
+    const isGyroSensor = useGyroSensor.stateRefs.isEnable
     const isCalibrated1 = ref(false)
     const isCalibrated2 = ref(false)
     const isDriving = ref(false)
@@ -315,16 +316,18 @@ export default defineComponent({
     }
 
     // 「センサーを有効」押下
-    const clickStartSensor = () => {
+    const clickStartSensor = async () => {
       // 加速度センサーの有効化
-      useAccelerationSensor.enableSensor()
+      await useAccelerationSensor.enableSensor()
       // ジャイロセンサーの有効化
-      useGyroSensor.enableSensor()
-      alert(
-        t(
-          'message.センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
+      await useGyroSensor.enableSensor()
+      if (isAccelerationSensor.value && isGyroSensor.value) {
+        alert(
+          t(
+            'message.センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
+          )
         )
-      )
+      }
     }
 
     // 「ドライビングスタート」押下
@@ -397,7 +400,7 @@ export default defineComponent({
       clickLogDownload,
       clickMaxG14,
       clickMaxG10,
-      isEnabledSensor,
+      isAccelerationSensor,
       isCalibrated1,
       isCalibrated2,
       isDriving,

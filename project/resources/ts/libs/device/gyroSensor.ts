@@ -6,7 +6,7 @@ import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
 
 type useGyroSensortType = {
   stateRefs: ToRefs<{ isEnable: boolean; x: number; y: number; z: number }>
-  enableSensor(): void
+  enableSensor(): Promise<void>
   addEvent(): void
   removeEvent(): void
 }
@@ -18,20 +18,12 @@ const useGyroSensor = (): useGyroSensortType => {
   /**
    * センサーを有効にします。
    */
-  const enableSensor = () => {
-    // prettier-ignore
-    (DeviceOrientationEvent as any)
-    .requestPermission()
-    .then(function (response: string) {
-        if (response === 'granted') {
-          state.isEnable = true;
-          addEvent()
-        }
-    })
-    .catch(function (e: any) {
-        console.log(e)
-        state.isEnable = true
-    })
+  const enableSensor = async (): Promise<void> => {
+    const response = await (DeviceOrientationEvent as any).requestPermission()
+    if (response === 'granted') {
+      state.isEnable = true
+      addEvent()
+    }
   }
 
   /**
