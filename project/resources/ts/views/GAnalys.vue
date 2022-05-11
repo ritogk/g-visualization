@@ -47,7 +47,7 @@
       }"
       @click="clickMaxG14"
     >
-      MaxG:1.4
+      Max1.4G
     </button>
     <button
       type="button"
@@ -57,7 +57,7 @@
       }"
       @click="clickMaxG10"
     >
-      MaxG:1.0
+      Max1.0G
     </button>
   </div>
 
