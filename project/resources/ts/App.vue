@@ -2,7 +2,18 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <div class="me-auto">
-        <a class="navbar-brand" href="#" @click="clickHeader">GVisual</a>
+        <div class="row">
+          <div class="col">
+            <a class="navbar-brand pb-0" href="#" @click="clickHeader"
+              >GVisual</a
+            >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-light" style="font-size: 8px">
+            スポーツ走行に特化したGの可視化アプリ
+          </div>
+        </div>
       </div>
       <div>
         <img
