@@ -25,8 +25,7 @@ return [
 
     'デモ' => 'demo',
 
-    'iPhone対応、androidは近日対応予定' => 'iPhone support, android support coming soon',
-
-    '今すぐ起動' => 'Launch Now',
+    '今すぐ起動' => 'Start Now',
     'お問い合わせ' => 'Contact us',
+    'スクリーンショット' => 'screenshot',
 ];

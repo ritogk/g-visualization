@@ -45,6 +45,8 @@
                     <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#features">{{__('lp.基本機能')}}</a></li>
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#demo">{{__('lp.デモ')}}</a></li>
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="#screenshot">{{__('lp.スクリーンショット')}}</a></li>
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="#startnow">{{__('lp.今すぐ起動')}}</a></li>
                         <li class="nav-item"><a class="nav-link me-lg-3" href="https://twitter.com/homing_fd2">{{__('lp.お問い合わせ')}}</a></li>
                     </ul>
                 </div>
@@ -196,16 +198,30 @@
         </section>
         <!-- App demo section-->
         <section id="demo" class="bg-white">
-            <div class="container px-2">
+            <div class="container px-5">
                 <h2 class="display-4 lh-1 mb-2">{{__('lp.デモ')}}</h2>
                 <iframe style="aspect-ratio: 16 / 9;width: 100%;height: 200;" src="https://www.youtube.com/embed/_0PG_Q7EbHo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
-        <!-- Footer-->
-        <!-- App badge section-->
-        <section class="bg-gradient-primary-to-secondary" id="download">
+
+        <!-- App screenshot section-->
+        <section id="screenshot" class="bg-light">
             <div class="container px-5">
-                <h2 class="text-center text-white font-alt mb-4">{{__('lp.iPhone対応、androidは近日対応予定')}}</h2>
+                <h2 class="display-4 lh-1 mb-2">{{__('lp.スクリーンショット')}}</h2>
+                <div class="row">
+                    <div class="col">
+                        <img class="rounded img-fluid" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/screenshot1.jpg') }}" alt="..." />
+                    </div>
+                    <div class="col">
+                        <img class="rounded img-fluid" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/screenshot2.jpg') }}" alt="..." />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- App startnow section-->
+        <section class="bg-gradient-primary-to-secondary" id="startnow">
+            <div class="container px-5">
+                <h2 class="text-center text-white font-alt mb-4">{{__('lp.今すぐ起動')}}</h2>
                 <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center">
                     <a class="me-lg-3 mb-4 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
                 </div>
