@@ -1,5 +1,6 @@
 export default {
   'お問い合わせ': 'Inquiry',
+  'このアプリについて': 'About this app',
   '次へ': 'Next',
 
   'このアプリはios専用です。':
