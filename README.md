@@ -12,9 +12,9 @@ iphone(safari, chrome)
 
 ## できる事
 
-Gの可視化
-Gの感度調整
-G(x,y,z)の3次元ベクトル回転
+Gの可視化  
+Gの感度調整  
+最大Gの変更
 
 ## G インジケーター]]
 
@@ -34,8 +34,10 @@ G(x,y,z)の3次元ベクトル回転
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
 | <img src="https://user-images.githubusercontent.com/72111956/166639071-71d8d948-bf4d-42ac-9812-a2ea3610f11d.PNG"> | <img src="https://user-images.githubusercontent.com/72111956/166639066-5c035886-1728-474b-aaf3-951096c15134.PNG"> |
 
+
 ## デモ
-<video src="https://user-images.githubusercontent.com/72111956/167335417-57c4f74b-325d-4222-ab44-ae7125a77d8b.mp4"></video>
+
+<video src="https://user-images.githubusercontent.com/72111956/167770813-9f066ee5-5115-471d-805b-6606976c2a8e.mp4"></video>
 
 ## 環境構築
 
