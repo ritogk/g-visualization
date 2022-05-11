@@ -36,6 +36,11 @@
               t('message.お問い合わせ')
             }}</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="clickThisApp">{{
+              t('message.このアプリについて')
+            }}</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -102,6 +107,11 @@ export default defineComponent({
       location.href = 'https://twitter.com/homing_fd2'
     }
 
+    // 「このアプリについて」押下
+    const clickThisApp = () => {
+      location.href = `/lp/${locale.value}`
+    }
+
     // 「ヘッダー」クリックイベント
     const clickHeader = () => {
       router.push({ name: 'index' })
@@ -112,7 +122,7 @@ export default defineComponent({
       locale.value = lang
     }
 
-    return { clickInquiry, clickHeader, clickChangeLang, Lang, t }
+    return { clickInquiry, clickHeader, clickChangeLang, clickThisApp, Lang, t }
   },
 })
 </script>
