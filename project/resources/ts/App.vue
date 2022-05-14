@@ -11,7 +11,7 @@
         </div>
         <div class="row">
           <div class="col text-light" style="font-size: 8px">
-            スポーツ走行に特化したGの可視化アプリ
+            {{t('message.スポーツ走行に特化したGの可視化アプリ')}}
           </div>
         </div>
       </div>
