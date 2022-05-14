@@ -157,13 +157,26 @@
             <img src="/calibration.jpg" alt="Logo" class="rounded img-fluid" />
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary w-100"
-              @click="cickCalibration1"
-            >
-              {{ t('message.次へ') }}
-            </button>
+            <div class="w-50 m-0 pe-2">
+              <button
+                type="button"
+                class="btn btn-success w-100"
+                :disabled="!isLastSetting"
+                @click="clickLastSetting"
+              >
+                {{ t('message.前回の設定を使う') }}
+              </button>
+            </div>
+
+            <div class="w-50 m-0">
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                @click="cickCalibration1"
+              >
+                {{ t('message.次へ') }}
+              </button>
+            </div>
           </div>
         </div>
         <!-- キャリブレーション2 -->
@@ -205,6 +218,7 @@ import GIndicatorTouge from '@/components/GIndicatorTouge.vue'
 import { Modal } from 'bootstrap'
 import Slider from '@vueform/slider'
 import { useI18n } from 'vue-i18n'
+import { Keys } from '@/libs/localStorage'
 
 export default defineComponent({
   components: {
@@ -246,7 +260,6 @@ export default defineComponent({
     const adjust_moving_average =
       useAccelerationSensor.stateRefs.adjustMovingAverage
 
-    //const rotate_log: { time: number; x: number; y: number; z: number }[] = []
     const log: { time: number; x: number; y: number; z: number }[] = []
     let enabled_log = false
 
@@ -290,6 +303,14 @@ export default defineComponent({
     const isGBowl = ref(false)
     const isTouge = ref(true)
     const isCircuit = ref(false)
+    const isLastSetting = ref(
+      localStorage.getItem(Keys.beforeGyroX) !== null &&
+        localStorage.getItem(Keys.beforeGyroY) !== null &&
+        localStorage.getItem(Keys.beforeGyroZ) !== null &&
+        localStorage.getItem(Keys.afterGyroX) !== null &&
+        localStorage.getItem(Keys.afterGyroY) !== null &&
+        localStorage.getItem(Keys.afterGyroZ) !== null
+    )
 
     // 「キャリブレーション」押下
     const cickCalibration = () => {
@@ -301,6 +322,9 @@ export default defineComponent({
       before_gyro_x = gyro_x.value
       before_gyro_y = gyro_y.value
       before_gyro_z = gyro_z.value
+      localStorage.setItem(Keys.beforeGyroX, String(before_gyro_x))
+      localStorage.setItem(Keys.beforeGyroY, String(before_gyro_y))
+      localStorage.setItem(Keys.beforeGyroZ, String(before_gyro_z))
       isCalibrated1.value = true
     }
 
@@ -309,6 +333,24 @@ export default defineComponent({
       after_gyro_x = gyro_x.value
       after_gyro_y = gyro_y.value
       after_gyro_z = gyro_z.value
+      localStorage.setItem(Keys.afterGyroX, String(after_gyro_x))
+      localStorage.setItem(Keys.afterGyroY, String(after_gyro_y))
+      localStorage.setItem(Keys.afterGyroZ, String(after_gyro_z))
+      isCalibrated2.value = true
+      modalInfo.hide()
+      useGyroSensor.removeEvent()
+      alert(t('message.キャリブレーションが完了しました。'))
+    }
+
+    // 「前回の設定を使用する」押下
+    const clickLastSetting = () => {
+      before_gyro_x = Number(localStorage.getItem(Keys.beforeGyroX))
+      before_gyro_y = Number(localStorage.getItem(Keys.beforeGyroY))
+      before_gyro_z = Number(localStorage.getItem(Keys.beforeGyroZ))
+      after_gyro_x = Number(localStorage.getItem(Keys.afterGyroX))
+      after_gyro_y = Number(localStorage.getItem(Keys.afterGyroY))
+      after_gyro_z = Number(localStorage.getItem(Keys.afterGyroZ))
+      isCalibrated1.value = true
       isCalibrated2.value = true
       modalInfo.hide()
       useGyroSensor.removeEvent()
@@ -393,6 +435,7 @@ export default defineComponent({
       cickCalibration,
       cickCalibration1,
       cickCalibration2,
+      clickLastSetting,
       clickDrivingStart,
       clickStartSensor,
       clickGIndicator,
@@ -408,6 +451,7 @@ export default defineComponent({
       isGBowl,
       isTouge,
       isCircuit,
+      isLastSetting,
       adjust_moving_average,
       t,
     }

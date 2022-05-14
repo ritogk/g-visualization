@@ -1,7 +1,11 @@
 export default {
+  'スポーツ走行に特化したGの可視化アプリ':
+    'G visualization application specialized for sports driving',
+
   'お問い合わせ': 'Inquiry',
   'このアプリについて': 'About this app',
   '次へ': 'Next',
+  '前回の設定を使う': 'Use previous settings',
 
   'このアプリはスマホ専用です。': 'This application is for smartphones only.',
 
