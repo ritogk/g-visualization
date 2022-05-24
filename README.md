@@ -1,3 +1,8 @@
+# 技術
+- vue.js
+- typescript
+- jupyter notebook
+
 # アプリ概要
 
 スポーツ走行向けのGを可視化するアプリ
@@ -9,10 +14,11 @@ https://twitter.com/homing_fd2/status/1521749005360779265?s=20&t=qpOtG8M4-zggtwA
 ## 動作環境
 
 iphone(safari, chrome)
+android(chrome)
 
 ## できる事
 
-Gの可視化  
+Gの可視化
 Gの感度調整  
 最大Gの変更
 
