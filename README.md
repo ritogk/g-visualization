@@ -1,7 +1,7 @@
 # 技術
 - vue.js
 - typescript
-- jupyter notebook
+- laravel
 
 # アプリ概要
 
