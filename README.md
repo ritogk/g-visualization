@@ -53,3 +53,6 @@ Gの感度調整
 ./setup.sh
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 ```
+
+### メインのソースディレクトリはここ  
+https://github.com/ritogk/g-visualization/tree/main/project/resources/ts
