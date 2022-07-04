@@ -17,8 +17,8 @@ iphone(safari, chrome)
 android(chrome)
 
 ## できる事
-
-Gの可視化
+Gのベクトル回転
+Gの可視化  
 Gの感度調整  
 最大Gの変更
 
