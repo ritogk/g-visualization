@@ -1,7 +1,7 @@
 # 技術
 - vue.js
 - typescript
-- laravel
+- laravel(殆ど使ってない)
 
 # アプリ概要
 
