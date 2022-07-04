@@ -5,7 +5,7 @@
 
 # アプリ概要
 
-スポーツ走行向けのGを可視化するアプリ
+スポーツ走行時のGをコントロールして車を操れる手助けのようなアプリ
 
 ## リンク
 https://gvisual.homisoftware.net/lp/ja  
@@ -17,7 +17,7 @@ iphone(safari, chrome)
 android(chrome)
 
 ## できる事
-Gのベクトル回転
+Gのベクトル回転  
 Gの可視化  
 Gの感度調整  
 最大Gの変更
