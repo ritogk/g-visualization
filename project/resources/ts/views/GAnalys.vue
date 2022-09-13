@@ -95,6 +95,7 @@
     </div>
     <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
   </div>
+  
 
   <GBowl
     v-if="isGBowl && isCircuit"
@@ -973,7 +974,7 @@ export default defineComponent({
             max_g_left_info.measurement_time = new Date().getTime()
           }
         }
-      }, 100)
+      }, 150)
     }
 
     // i18n
@@ -1216,7 +1217,7 @@ export default defineComponent({
       isCircuit,
       isLastSetting,
       adjust_moving_average,
-      t,
+      t
     }
   },
 })
