@@ -1,5 +1,6 @@
 import * as voiceData from '@/libs/gVoice/voiceData'
 import { Ref } from 'vue'
+import { Device } from '@/libs/constants'
 
 /**
  * Gの音声出力に関するクラス
@@ -18,15 +19,19 @@ class GVoice {
   private ref_g_x: Ref<number>
   // g_y
   private ref_g_y: Ref<number>
+  // device
+  private device: Device
 
   /**
    * コンストラクタ
+   * @param device
    * @param g_x
    * @param g_y
    */
-  constructor(g_x: Ref<number>, g_y: Ref<number>) {
+  constructor(device: Device, g_x: Ref<number>, g_y: Ref<number>) {
     this.ref_g_x = g_x
     this.ref_g_y = g_y
+    this.device = device
   }
 
   /**
@@ -34,69 +39,56 @@ class GVoice {
    * ※ブラウザの仕様上クリックイベントから呼び出す事
    */
   setup(): void {
-    // １度再生しておかないとスマホでうまく再生されないのでその対応
     if (!this.is_setuped) {
       this.is_setuped = true
-      // up
-      voiceData.voice_g_up_1.play()
-      voiceData.voice_g_up_2.play()
-      voiceData.voice_g_up_3.play()
-      voiceData.voice_g_up_4.play()
-      voiceData.voice_g_up_5.play()
-      voiceData.voice_g_up_6.play()
-      voiceData.voice_g_up_7.play()
-      voiceData.voice_g_up_8.play()
-      voiceData.voice_g_up_9.play()
-      voiceData.voice_g_up_10.play()
-      voiceData.voice_g_up_11.play()
-      voiceData.voice_g_up_12.play()
-      voiceData.voice_g_up_13.play()
-      voiceData.voice_g_up_14.play()
-      // down
-      voiceData.voice_g_down_1.play()
-      voiceData.voice_g_down_2.play()
-      voiceData.voice_g_down_3.play()
-      voiceData.voice_g_down_4.play()
-      voiceData.voice_g_down_5.play()
-      voiceData.voice_g_down_6.play()
-      voiceData.voice_g_down_7.play()
-      voiceData.voice_g_down_8.play()
-      voiceData.voice_g_down_9.play()
-      voiceData.voice_g_down_10.play()
-      voiceData.voice_g_down_11.play()
-      voiceData.voice_g_down_12.play()
-      voiceData.voice_g_down_13.play()
-      voiceData.voice_g_down_14.play()
-      // left
-      voiceData.voice_g_left_1.play()
-      voiceData.voice_g_left_2.play()
-      voiceData.voice_g_left_3.play()
-      voiceData.voice_g_left_4.play()
-      voiceData.voice_g_left_5.play()
-      voiceData.voice_g_left_6.play()
-      voiceData.voice_g_left_7.play()
-      voiceData.voice_g_left_8.play()
-      voiceData.voice_g_left_9.play()
-      voiceData.voice_g_left_10.play()
-      voiceData.voice_g_left_11.play()
-      voiceData.voice_g_left_12.play()
-      voiceData.voice_g_left_13.play()
-      voiceData.voice_g_left_14.play()
-      // right
-      voiceData.voice_g_right_1.play()
-      voiceData.voice_g_right_2.play()
-      voiceData.voice_g_right_3.play()
-      voiceData.voice_g_right_4.play()
-      voiceData.voice_g_right_5.play()
-      voiceData.voice_g_right_6.play()
-      voiceData.voice_g_right_7.play()
-      voiceData.voice_g_right_8.play()
-      voiceData.voice_g_right_9.play()
-      voiceData.voice_g_right_10.play()
-      voiceData.voice_g_right_11.play()
-      voiceData.voice_g_right_12.play()
-      voiceData.voice_g_right_13.play()
-      voiceData.voice_g_right_14.play()
+      // iosの場合は１度再生しておかないとうまく再生されないのでその対応
+      if (this.device === Device.ios) {
+        // up
+        voiceData.voice_g_up_1.play()
+        voiceData.voice_g_up_2.play()
+        voiceData.voice_g_up_3.play()
+        voiceData.voice_g_up_4.play()
+        voiceData.voice_g_up_5.play()
+        voiceData.voice_g_up_6.play()
+        voiceData.voice_g_up_7.play()
+        voiceData.voice_g_up_8.play()
+        voiceData.voice_g_up_9.play()
+        voiceData.voice_g_up_10.play()
+        voiceData.voice_g_up_11.play()
+        voiceData.voice_g_up_12.play()
+        voiceData.voice_g_up_13.play()
+        voiceData.voice_g_up_14.play()
+        // left
+        voiceData.voice_g_left_1.play()
+        voiceData.voice_g_left_2.play()
+        voiceData.voice_g_left_3.play()
+        voiceData.voice_g_left_4.play()
+        voiceData.voice_g_left_5.play()
+        voiceData.voice_g_left_6.play()
+        voiceData.voice_g_left_7.play()
+        voiceData.voice_g_left_8.play()
+        voiceData.voice_g_left_9.play()
+        voiceData.voice_g_left_10.play()
+        voiceData.voice_g_left_11.play()
+        voiceData.voice_g_left_12.play()
+        voiceData.voice_g_left_13.play()
+        voiceData.voice_g_left_14.play()
+        // right
+        voiceData.voice_g_right_1.play()
+        voiceData.voice_g_right_2.play()
+        voiceData.voice_g_right_3.play()
+        voiceData.voice_g_right_4.play()
+        voiceData.voice_g_right_5.play()
+        voiceData.voice_g_right_6.play()
+        voiceData.voice_g_right_7.play()
+        voiceData.voice_g_right_8.play()
+        voiceData.voice_g_right_9.play()
+        voiceData.voice_g_right_10.play()
+        voiceData.voice_g_right_11.play()
+        voiceData.voice_g_right_12.play()
+        voiceData.voice_g_right_13.play()
+        voiceData.voice_g_right_14.play()
+      }
     }
   }
 

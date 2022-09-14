@@ -233,7 +233,7 @@ import {
   useAccelerationSensortType,
 } from '@/libs/device/accelerationSensor'
 import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
-// import { rotate3dVector } from '@/libs/trigonometric'
+import { useDeviceKey, useDeviceType } from '@/libs/device/device'
 import GBowl from '@/components/GBowl.vue'
 import GBowlTouge from '@/components/GBowlTouge.vue'
 import GIndicator from '@/components/GIndicator.vue'
@@ -255,6 +255,9 @@ export default defineComponent({
   setup() {
     // i18n
     const { t } = useI18n({ useScope: 'global' })
+
+    // ジャイロセンサーのモジュール
+    const useDevice = inject(useDeviceKey) as useDeviceType
 
     // ジャイロセンサーのモジュール
     const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
@@ -332,7 +335,12 @@ export default defineComponent({
       }
     })
 
-    const g_voice = new GVoice(rotate_g_x, rotate_g_y)
+    // Gの音声出力に関するクラス
+    const g_voice = new GVoice(
+      useDevice.stateRefs.device.value,
+      rotate_g_x,
+      rotate_g_y
+    )
 
     // 制御フラグ
     const isAccelerationSensor = useAccelerationSensor.stateRefs.isEnable
