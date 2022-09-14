@@ -186,6 +186,7 @@ class GVoice {
         switch (sound_target_direction) {
           case GDirection.Up:
             before_sound_time = new Date().getTime()
+            console.log('up:' + before_sound_time)
             if (max_g_up_info.g <= 0.1) {
               voiceData.voice_g_up_1.play()
             } else if (max_g_up_info.g <= 0.2) {
@@ -222,6 +223,7 @@ class GVoice {
             break
           case GDirection.Left:
             before_sound_time = new Date().getTime()
+            console.log('lef:' + before_sound_time)
             if (max_g_left_info.g <= 0.1) {
               voiceData.voice_g_left_1.play()
             } else if (max_g_left_info.g <= 0.2) {
@@ -257,8 +259,8 @@ class GVoice {
             max_g_left_info.measurement_time = 0
             break
           case GDirection.Right:
-            console.log(max_g_right_info.g)
             before_sound_time = new Date().getTime()
+            console.log('right:' + before_sound_time)
             if (max_g_right_info.g <= 0.1) {
               voiceData.voice_g_right_1.play()
             } else if (max_g_right_info.g <= 0.2) {
@@ -300,7 +302,7 @@ class GVoice {
       const g_up = Math.trunc(this.ref_g_y.value * 10) / 10
       if (max_g_up_info.g < g_up) {
         max_g_up_info.g = g_up
-        console.log('up:' + g_up)
+        // console.log('up:' + g_up)
         max_g_up_info.measurement_time = new Date().getTime()
       }
 
@@ -309,7 +311,7 @@ class GVoice {
         const g_right = Math.trunc(this.ref_g_x.value * 10) / 10
         if (max_g_right_info.g < g_right) {
           max_g_right_info.g = g_right
-          console.log('right:' + g_right)
+          // console.log('right:' + g_right)
           max_g_right_info.measurement_time = new Date().getTime()
         }
       } else {
@@ -317,7 +319,7 @@ class GVoice {
         const g_left = Math.trunc(this.ref_g_x.value * 10) / 10
         if (max_g_left_info.g * -1 > g_left) {
           max_g_left_info.g = Math.abs(g_left)
-          console.log('left:' + g_left)
+          // console.log('left:' + g_left)
           max_g_left_info.measurement_time = new Date().getTime()
         }
       }
