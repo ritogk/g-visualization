@@ -6,8 +6,9 @@ import { Device } from '@/libs/constants'
  * Gの音声出力に関するクラス
  */
 class GVoice {
-  // 最大GからGが減少した時に音を鳴らす。その時の減少幅の調整率
-  private readonly g_decrease_width_rate = 0.3
+  // 最大GからGが減少したタイミングで音を鳴らす。
+  // Gが減少したかどうかを判別するための基準のGを求める係数。上げると音がなるタイミングが速くなるがノイズを拾う可能性がある。
+  private readonly g_decrease_width_rate = 0.6
   // 次の音を鳴らすまでの待ち時間
   private readonly next_voice_interval = 300
   // Gの計測間隔
