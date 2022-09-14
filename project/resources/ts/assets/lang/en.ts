@@ -12,6 +12,9 @@ export default {
   '①センサーを有効にする': '①Enable sensor',
   '②キャリブレーション': '②Calibrate ',
 
+  '音声出力OFF': 'Voice Output Off',
+  '音声出力ON': 'Voice Output On',
+
   'G感度(-)': 'G Sensitivity(-)',
   'G感度(+)': 'G Sensitivity(+)',
 

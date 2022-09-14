@@ -1,7 +1,4 @@
 <template>
-  <button type="button" class="btn btn-primary w-100 mb-1" @click="clickTest()">
-    webwork
-  </button>
   <button
     :disabled="isAccelerationSensor"
     type="button"
@@ -69,6 +66,29 @@
       type="button"
       class="btn btn-secondary w-50"
       :class="{
+        active: isVoiceOutput,
+      }"
+      @click="clickVoiceOutputOn"
+    >
+      {{ t('message.音声出力ON') }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
+        active: !isVoiceOutput,
+      }"
+      @click="clickVoiceOutputOff"
+    >
+      {{ t('message.音声出力OFF') }}
+    </button>
+  </div>
+
+  <div class="mb-1">
+    <button
+      type="button"
+      class="btn btn-secondary w-50"
+      :class="{
         active: isGBowl,
       }"
       @click="clickGBowl"
@@ -95,17 +115,6 @@
     </div>
     <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
   </div>
-
-  <div class="me-auto p-2 bd-highlight text-white">sound_interval</div>
-  <Slider v-model="sound_interval" :min="200" :max="600" :step="100"/>
-
-  <div class="me-auto p-2 bd-highlight text-white">sound_ajest</div>
-  <Slider v-model="sound_ajest" :min="2" :max="6" :step="1"/>
-
-  <div class="me-auto p-2 bd-highlight text-white">set_time_interval</div>
-  <Slider v-model="set_time_interval" :min="100" :max="400" :step="50"/>
-  <br>
-  <br>
 
   <GBowl
     v-if="isGBowl && isCircuit"
@@ -234,6 +243,7 @@ import Slider from '@vueform/slider'
 import { useI18n } from 'vue-i18n'
 import { Keys } from '@/libs/localStorage'
 
+
 export default defineComponent({
   components: {
     GBowl,
@@ -243,34 +253,9 @@ export default defineComponent({
     Slider,
   },
   setup() {
-    // const SampleWorker = require('@/libs/worker/gSound.ts')
-    // console.log(SampleWorker)
-    // const w: Worker = new Worker(SampleWorker)
-
     const w = new Worker(
       new URL('@/libs/worker/vectorRotate.ts', import.meta.url)
     )
-
-    // debugger
-
-    // const worker = new Worker()
-    // console.log(w)
-    // const params = {}
-
-    // w.onmessage = (event: MessageEvent<any>) => {
-    //   console.log('Workerから結果が帰ってきたよ！！！')
-    //   console.log(event.data)
-    //   w.terminate()
-    // }
-
-    // w.onmessage = onWorkerMessage // workerから帰ってくる処理結果をひろうリスナーを登録
-    // w.postMessage(33) // イベント経由でworkerに処理を依頼
-
-    // // Getした値を受け取る
-    // w.addEventListener('message', e => {
-    //   alert(e)
-    //   // w.terminate()
-    // })
 
     //down
     const base64_g_down_1 =
@@ -455,6 +440,7 @@ export default defineComponent({
     const sound_interval = ref(300)
     const sound_ajest = ref(3)
     const set_time_interval = ref(150)
+    let timer_id: number = 0
 
     enum Direction {
       Up,
@@ -484,19 +470,163 @@ export default defineComponent({
       g: 0,
       measurement_time: 0,
     }
-    const clickTest = () => {
+
+    // i18n
+    const { t } = useI18n({ useScope: 'global' })
+
+    // ジャイロセンサーのモジュール
+    const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
+    // ジャイロセンサーから取得できるリアルタイムな値
+    const gyro_x = useGyroSensor.stateRefs.x
+    const gyro_y = useGyroSensor.stateRefs.y
+    const gyro_z = useGyroSensor.stateRefs.z
+    let before_gyro_x = 0
+    let before_gyro_y = 0
+    let before_gyro_z = 0
+    let after_gyro_x = 0
+    let after_gyro_y = 0
+    let after_gyro_z = 0
+
+    // 加速度センサーのモジュール
+    const useAccelerationSensor = inject(
+      useAccelerationSensortKey
+    ) as useAccelerationSensortType
+    // 加速度から取得したリアルタイムな値
+    const g_x = useAccelerationSensor.stateRefs.gX
+    const g_y = useAccelerationSensor.stateRefs.gY
+    const g_z = useAccelerationSensor.stateRefs.gZ
+    // 回転したG
+    const rotate_g_x = ref(0)
+    const rotate_g_y = ref(0)
+    // Gの感度調整用
+    const adjust_moving_average =
+      useAccelerationSensor.stateRefs.adjustMovingAverage
+
+    const log: { time: number; x: number; y: number; z: number }[] = []
+    let enabled_log = false
+
+    // スマホで検出したGを車のGに変換する
+    watch([g_z], () => {
+      // let timeStamp = 0
+      if (enabled_log) {
+        // timeStamp = Math.round(new Date().getTime() / 1000)
+      }
+
+      const angle_x = after_gyro_x - before_gyro_x
+      const angle_y = after_gyro_y - before_gyro_y
+      const angle_z = Math.abs(before_gyro_z - after_gyro_z)
+      // let rotate_acceration = null
+
+      const x = g_x.value
+      const y = g_y.value
+      const z = g_z.value
+
+      w.postMessage({
+        x: x,
+        y: y,
+        z: z,
+        angle_x: angle_x,
+        angle_y: angle_y,
+        angle_z: angle_z,
+      })
+      // rotate_acceration = rotate3dVector(x, y, z, angle_x, angle_y, angle_z)
+
+      // if (enabled_log) {
+      //   log.push({
+      //     time: timeStamp,
+      //     x: rotate_acceration.x,
+      //     y: rotate_acceration.y,
+      //     z: rotate_acceration.z,
+      //   })
+      // }
+      // rotate_g_x.value = rotate_acceration.x
+      // rotate_g_y.value = rotate_acceration.y
+    })
+    w.onmessage = (event: MessageEvent<any>) => {
+      rotate_g_x.value = event.data.x
+      rotate_g_y.value = event.data.y
+      // console.log(event.data.x)
+      // console.log(event.data.y)
+      // w.terminate()
+    }
+
+    // 制御フラグ
+    const isAccelerationSensor = useAccelerationSensor.stateRefs.isEnable
+    const isGyroSensor = useGyroSensor.stateRefs.isEnable
+    const isCalibrated1 = ref(false)
+    const isCalibrated2 = ref(false)
+    const isDriving = ref(false)
+    const isGIndicator = ref(true)
+    const isGBowl = ref(false)
+    const isTouge = ref(true)
+    const isCircuit = ref(false)
+    const isVoiceOutput = ref(false)
+    const isLastSetting = ref(
+      localStorage.getItem(Keys.beforeGyroX) !== null &&
+        localStorage.getItem(Keys.beforeGyroY) !== null &&
+        localStorage.getItem(Keys.beforeGyroZ) !== null &&
+        localStorage.getItem(Keys.afterGyroX) !== null &&
+        localStorage.getItem(Keys.afterGyroY) !== null &&
+        localStorage.getItem(Keys.afterGyroZ) !== null
+    )
+
+    // 「キャリブレーション」押下
+    const cickCalibration = () => {
+      modalInfo.show()
+    }
+
+    // 車の加速度を計測する際の角度を計測する
+    const cickCalibration1 = () => {
+      before_gyro_x = gyro_x.value
+      before_gyro_y = gyro_y.value
+      before_gyro_z = gyro_z.value
+      localStorage.setItem(Keys.beforeGyroX, String(before_gyro_x))
+      localStorage.setItem(Keys.beforeGyroY, String(before_gyro_y))
+      localStorage.setItem(Keys.beforeGyroZ, String(before_gyro_z))
+      isCalibrated1.value = true
+    }
+
+    // スマホを固定しときの角度を記憶する
+    const cickCalibration2 = () => {
+      after_gyro_x = gyro_x.value
+      after_gyro_y = gyro_y.value
+      after_gyro_z = gyro_z.value
+      localStorage.setItem(Keys.afterGyroX, String(after_gyro_x))
+      localStorage.setItem(Keys.afterGyroY, String(after_gyro_y))
+      localStorage.setItem(Keys.afterGyroZ, String(after_gyro_z))
+      isCalibrated2.value = true
+      modalInfo.hide()
+      useGyroSensor.removeEvent()
+      alert(t('message.キャリブレーションが完了しました。'))
+    }
+
+    // 「前回の設定を使用する」押下
+    const clickLastSetting = () => {
+      before_gyro_x = Number(localStorage.getItem(Keys.beforeGyroX))
+      before_gyro_y = Number(localStorage.getItem(Keys.beforeGyroY))
+      before_gyro_z = Number(localStorage.getItem(Keys.beforeGyroZ))
+      after_gyro_x = Number(localStorage.getItem(Keys.afterGyroX))
+      after_gyro_y = Number(localStorage.getItem(Keys.afterGyroY))
+      after_gyro_z = Number(localStorage.getItem(Keys.afterGyroZ))
+      isCalibrated1.value = true
+      isCalibrated2.value = true
+      modalInfo.hide()
+      useGyroSensor.removeEvent()
+      alert(t('message.キャリブレーションが完了しました。'))
+    }
+
+    // 「センサーを有効」押下
+    const clickStartSensor = async () => {
+      // 加速度センサーの有効化
+      await useAccelerationSensor.enableSensor()
+      // ジャイロセンサーの有効化
+      await useGyroSensor.enableSensor()
+
       // web worker側でAPI Callさせる(今回はパラメータはなし)
       w.postMessage(111111)
 
-      alert('完了')
-      
-      // 大きくすればするほど音の再生が速くなる。
-      const sound_adjustment_rate = sound_ajest.value * 0.1
-      const audio_time_interval = sound_interval.value
-      const set_interval = set_time_interval.value
-      
-
-      // １度再生しておかないと何故か再生できない・・
+      // １度再生しておかないとスマホでうまく再生されないのでその対応
+      // up
       audio_g_up_1.play()
       audio_g_up_2.play()
       audio_g_up_3.play()
@@ -511,7 +641,7 @@ export default defineComponent({
       audio_g_up_12.play()
       audio_g_up_13.play()
       audio_g_up_14.play()
-
+      // down
       audio_g_down_1.play()
       audio_g_down_2.play()
       audio_g_down_3.play()
@@ -526,7 +656,7 @@ export default defineComponent({
       audio_g_down_12.play()
       audio_g_down_13.play()
       audio_g_down_14.play()
-
+      // left
       audio_g_left_1.play()
       audio_g_left_2.play()
       audio_g_left_3.play()
@@ -541,7 +671,7 @@ export default defineComponent({
       audio_g_left_12.play()
       audio_g_left_13.play()
       audio_g_left_14.play()
-
+      // right
       audio_g_right_1.play()
       audio_g_right_2.play()
       audio_g_right_3.play()
@@ -556,8 +686,73 @@ export default defineComponent({
       audio_g_right_12.play()
       audio_g_right_13.play()
       audio_g_right_14.play()
+      if (isAccelerationSensor.value && isGyroSensor.value) {
+        alert(
+          t(
+            'message.センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
+          )
+        )
+      }
+    }
 
-      setInterval(() => {
+    // 「ドライビングスタート」押下
+    const clickDrivingStart = () => {
+      isDriving.value = true
+    }
+
+    /**
+     * 「gbowl」押下
+     */
+    const clickGBowl = () => {
+      isGBowl.value = true
+      isGIndicator.value = false
+    }
+
+    /**
+     * 「gindicator」押下
+     */
+    const clickGIndicator = () => {
+      isGBowl.value = false
+      isGIndicator.value = true
+    }
+
+    /**
+     * 「MaxG:1.4」押下
+     */
+    const clickMaxG14 = () => {
+      isTouge.value = false
+      isCircuit.value = true
+    }
+
+    /**
+     * 「MaxG:1.0」押下
+     */
+    const clickMaxG10 = () => {
+      isTouge.value = true
+      isCircuit.value = false
+    }
+
+    /**
+     * 「音声出力OFF」押下
+     */
+    const clickVoiceOutputOff = () => {
+      isVoiceOutput.value = false
+      clearInterval(timer_id)
+    }
+
+    /**
+     * 「音声出力ON」押下
+     */
+    const clickVoiceOutputOn = () => {
+      isVoiceOutput.value = true
+
+      // 大きくすればするほど音の再生が速くなる。
+      const sound_adjustment_rate = 0.3
+      const audio_time_interval = 300
+      const set_interval = 150      
+
+      
+      timer_id = window.setInterval(() => {
         // Gを鳴らした後は一定時間Gを鳴らさない
         if (new Date().getTime() - audio_st_time >= audio_time_interval) {
           const max_g_info_list = [
@@ -740,201 +935,6 @@ export default defineComponent({
       }, set_interval)
     }
 
-    // i18n
-    const { t } = useI18n({ useScope: 'global' })
-
-    // ジャイロセンサーのモジュール
-    const useGyroSensor = inject(useGyroSensortKey) as useGyroSensortType
-    // ジャイロセンサーから取得できるリアルタイムな値
-    const gyro_x = useGyroSensor.stateRefs.x
-    const gyro_y = useGyroSensor.stateRefs.y
-    const gyro_z = useGyroSensor.stateRefs.z
-    let before_gyro_x = 0
-    let before_gyro_y = 0
-    let before_gyro_z = 0
-    let after_gyro_x = 0
-    let after_gyro_y = 0
-    let after_gyro_z = 0
-
-    // 加速度センサーのモジュール
-    const useAccelerationSensor = inject(
-      useAccelerationSensortKey
-    ) as useAccelerationSensortType
-    // 加速度から取得したリアルタイムな値
-    const g_x = useAccelerationSensor.stateRefs.gX
-    const g_y = useAccelerationSensor.stateRefs.gY
-    const g_z = useAccelerationSensor.stateRefs.gZ
-    // 回転したG
-    const rotate_g_x = ref(0)
-    const rotate_g_y = ref(0)
-    // Gの感度調整用
-    const adjust_moving_average =
-      useAccelerationSensor.stateRefs.adjustMovingAverage
-
-    const log: { time: number; x: number; y: number; z: number }[] = []
-    let enabled_log = false
-
-    // スマホで検出したGを車のGに変換する
-    watch([g_z], () => {
-      // let timeStamp = 0
-      if (enabled_log) {
-        // timeStamp = Math.round(new Date().getTime() / 1000)
-      }
-
-      const angle_x = after_gyro_x - before_gyro_x
-      const angle_y = after_gyro_y - before_gyro_y
-      const angle_z = Math.abs(before_gyro_z - after_gyro_z)
-      // let rotate_acceration = null
-
-      const x = g_x.value
-      const y = g_y.value
-      const z = g_z.value
-
-      w.postMessage({
-        x: x,
-        y: y,
-        z: z,
-        angle_x: angle_x,
-        angle_y: angle_y,
-        angle_z: angle_z,
-      })
-      // rotate_acceration = rotate3dVector(x, y, z, angle_x, angle_y, angle_z)
-
-      // if (enabled_log) {
-      //   log.push({
-      //     time: timeStamp,
-      //     x: rotate_acceration.x,
-      //     y: rotate_acceration.y,
-      //     z: rotate_acceration.z,
-      //   })
-      // }
-      // rotate_g_x.value = rotate_acceration.x
-      // rotate_g_y.value = rotate_acceration.y
-    })
-    w.onmessage = (event: MessageEvent<any>) => {
-      rotate_g_x.value = event.data.x
-      rotate_g_y.value = event.data.y
-      // console.log(event.data.x)
-      // console.log(event.data.y)
-      // w.terminate()
-    }
-
-    // 制御フラグ
-    const isAccelerationSensor = useAccelerationSensor.stateRefs.isEnable
-    const isGyroSensor = useGyroSensor.stateRefs.isEnable
-    const isCalibrated1 = ref(false)
-    const isCalibrated2 = ref(false)
-    const isDriving = ref(false)
-    const isGIndicator = ref(true)
-    const isGBowl = ref(false)
-    const isTouge = ref(true)
-    const isCircuit = ref(false)
-    const isLastSetting = ref(
-      localStorage.getItem(Keys.beforeGyroX) !== null &&
-        localStorage.getItem(Keys.beforeGyroY) !== null &&
-        localStorage.getItem(Keys.beforeGyroZ) !== null &&
-        localStorage.getItem(Keys.afterGyroX) !== null &&
-        localStorage.getItem(Keys.afterGyroY) !== null &&
-        localStorage.getItem(Keys.afterGyroZ) !== null
-    )
-
-    // 「キャリブレーション」押下
-    const cickCalibration = () => {
-      modalInfo.show()
-    }
-
-    // 車の加速度を計測する際の角度を計測する
-    const cickCalibration1 = () => {
-      before_gyro_x = gyro_x.value
-      before_gyro_y = gyro_y.value
-      before_gyro_z = gyro_z.value
-      localStorage.setItem(Keys.beforeGyroX, String(before_gyro_x))
-      localStorage.setItem(Keys.beforeGyroY, String(before_gyro_y))
-      localStorage.setItem(Keys.beforeGyroZ, String(before_gyro_z))
-      isCalibrated1.value = true
-    }
-
-    // スマホを固定しときの角度を記憶する
-    const cickCalibration2 = () => {
-      after_gyro_x = gyro_x.value
-      after_gyro_y = gyro_y.value
-      after_gyro_z = gyro_z.value
-      localStorage.setItem(Keys.afterGyroX, String(after_gyro_x))
-      localStorage.setItem(Keys.afterGyroY, String(after_gyro_y))
-      localStorage.setItem(Keys.afterGyroZ, String(after_gyro_z))
-      isCalibrated2.value = true
-      modalInfo.hide()
-      useGyroSensor.removeEvent()
-      alert(t('message.キャリブレーションが完了しました。'))
-    }
-
-    // 「前回の設定を使用する」押下
-    const clickLastSetting = () => {
-      before_gyro_x = Number(localStorage.getItem(Keys.beforeGyroX))
-      before_gyro_y = Number(localStorage.getItem(Keys.beforeGyroY))
-      before_gyro_z = Number(localStorage.getItem(Keys.beforeGyroZ))
-      after_gyro_x = Number(localStorage.getItem(Keys.afterGyroX))
-      after_gyro_y = Number(localStorage.getItem(Keys.afterGyroY))
-      after_gyro_z = Number(localStorage.getItem(Keys.afterGyroZ))
-      isCalibrated1.value = true
-      isCalibrated2.value = true
-      modalInfo.hide()
-      useGyroSensor.removeEvent()
-      alert(t('message.キャリブレーションが完了しました。'))
-    }
-
-    // 「センサーを有効」押下
-    const clickStartSensor = async () => {
-      // 加速度センサーの有効化
-      await useAccelerationSensor.enableSensor()
-      // ジャイロセンサーの有効化
-      await useGyroSensor.enableSensor()
-      if (isAccelerationSensor.value && isGyroSensor.value) {
-        alert(
-          t(
-            'message.センサーを有効にしました。スマホをホルダーで固定する場合は「キャリブレーション」を行って下さい。'
-          )
-        )
-      }
-    }
-
-    // 「ドライビングスタート」押下
-    const clickDrivingStart = () => {
-      isDriving.value = true
-    }
-
-    /**
-     * 「gbowl」押下
-     */
-    const clickGBowl = () => {
-      isGBowl.value = true
-      isGIndicator.value = false
-    }
-
-    /**
-     * 「gindicator」押下
-     */
-    const clickGIndicator = () => {
-      isGBowl.value = false
-      isGIndicator.value = true
-    }
-
-    /**
-     * 「MaxG:1.4」押下
-     */
-    const clickMaxG14 = () => {
-      isTouge.value = false
-      isCircuit.value = true
-    }
-
-    /**
-     * 「MaxG:1.0」押下
-     */
-    const clickMaxG10 = () => {
-      isTouge.value = true
-      isCircuit.value = false
-    }
-
     // 「ログダウンロード」押下
     const clickLogDownload = () => {
       const text = JSON.stringify(log)
@@ -956,7 +956,6 @@ export default defineComponent({
     })
 
     return {
-      clickTest,
       rotate_g_x,
       rotate_g_y,
       cickCalibration,
@@ -970,6 +969,8 @@ export default defineComponent({
       clickLogDownload,
       clickMaxG14,
       clickMaxG10,
+      clickVoiceOutputOff,
+      clickVoiceOutputOn,
       isAccelerationSensor,
       isCalibrated1,
       isCalibrated2,
@@ -978,6 +979,7 @@ export default defineComponent({
       isGBowl,
       isTouge,
       isCircuit,
+      isVoiceOutput,
       isLastSetting,
       adjust_moving_average,
       t,
