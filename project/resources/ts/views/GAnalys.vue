@@ -95,7 +95,17 @@
     </div>
     <Slider v-model="adjust_moving_average" :min="-5" :max="5" />
   </div>
-  
+
+  <div class="me-auto p-2 bd-highlight text-white">sound_interval</div>
+  <Slider v-model="sound_interval" :min="200" :max="600" :step="100"/>
+
+  <div class="me-auto p-2 bd-highlight text-white">sound_ajest</div>
+  <Slider v-model="sound_ajest" :min="2" :max="6" :step="1"/>
+
+  <div class="me-auto p-2 bd-highlight text-white">set_time_interval</div>
+  <Slider v-model="set_time_interval" :min="100" :max="400" :step="50"/>
+  <br>
+  <br>
 
   <GBowl
     v-if="isGBowl && isCircuit"
@@ -442,6 +452,10 @@ export default defineComponent({
     const audio_g_right_13 = new Audio(base64_g_right_13)
     const audio_g_right_14 = new Audio(base64_g_right_14)
 
+    const sound_interval = ref(300)
+    const sound_ajest = ref(3)
+    const set_time_interval = ref(150)
+
     enum Direction {
       Up,
       Down,
@@ -453,9 +467,8 @@ export default defineComponent({
       g: number
       measurement_time: number
     }
-    const audio_time_interval = 500
+    
     let audio_st_time = new Date().getTime()
-    let sound_adjustment_rate = 0.4
     let max_g_up_info: MaxGInfo = {
       direction: Direction.Up,
       g: 0,
@@ -476,6 +489,12 @@ export default defineComponent({
       w.postMessage(111111)
 
       alert('完了')
+      
+      // 大きくすればするほど音の再生が速くなる。
+      const sound_adjustment_rate = sound_ajest.value * 0.1
+      const audio_time_interval = sound_interval.value
+      const set_interval = set_time_interval.value
+      
 
       // １度再生しておかないと何故か再生できない・・
       audio_g_up_1.play()
@@ -691,271 +710,13 @@ export default defineComponent({
               max_g_right_info.measurement_time = 0
               break
           }
-
-          // let fall_g_up = 0
-          // let fall_g_left = 0
-          // let fall_g_right = 0
-          // // Gの下がり幅が大きいものを優先的に鳴らす。
-          // // if (rotate_g_y.value > 0 && max_g_up > rotate_g_y.value) {
-          // //   fall_g_up = max_g_up - rotate_g_y.value
-          // // }
-
-          // fall_g_up = max_g_up - rotate_g_y.value
-          // fall_g_right = max_g_right - rotate_g_x.value
-          // fall_g_left = max_g_left + rotate_g_x.value
-          // console.log(
-          //   'up:' +
-          //     fall_g_up +
-          //     ' left:' +
-          //     fall_g_left +
-          //     ' right:' +
-          //     fall_g_right
-          // )
-
-          // if (
-          //   fall_g_up >= fall_g_right &&
-          //   fall_g_up >= fall_g_left &&
-          //   max_g_up >= 0.2 &&
-          //   rotate_g_y.value < max_g_up * sound_adjustment_rate
-          // ) {
-          //   // up
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_up <= 0.1) {
-          //     audio_g_up_1.play()
-          //   } else if (max_g_up <= 0.2) {
-          //     audio_g_up_2.play()
-          //   } else if (max_g_up <= 0.3) {
-          //     audio_g_up_3.play()
-          //   } else if (max_g_up <= 0.4) {
-          //     audio_g_up_4.play()
-          //   } else if (max_g_up <= 0.5) {
-          //     audio_g_up_5.play()
-          //   } else if (max_g_up <= 0.6) {
-          //     audio_g_up_6.play()
-          //   } else if (max_g_up <= 0.7) {
-          //     audio_g_up_7.play()
-          //   } else if (max_g_up <= 0.8) {
-          //     audio_g_up_8.play()
-          //   } else if (max_g_up <= 0.9) {
-          //     audio_g_up_9.play()
-          //   } else if (max_g_up <= 1) {
-          //     audio_g_up_10.play()
-          //   } else if (max_g_up <= 1.1) {
-          //     audio_g_up_11.play()
-          //   } else if (max_g_up <= 1.2) {
-          //     audio_g_up_12.play()
-          //   } else if (max_g_up <= 1.3) {
-          //     audio_g_up_13.play()
-          //   } else if (max_g_up <= 1.4) {
-          //     audio_g_up_14.play()
-          //   } else if (max_g_up > 1.4) {
-          //     audio_g_up_14.play()
-          //   }
-          //   max_g_up = 0
-          // } else if (
-          //   fall_g_left >= fall_g_right &&
-          //   fall_g_left >= fall_g_up &&
-          //   max_g_left >= 0.2 &&
-          //   rotate_g_x.value < 0 &&
-          //   rotate_g_x.value * -1 < max_g_left * sound_adjustment_rate
-          // ) {
-          //   // left
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_left <= 0.1) {
-          //     audio_g_left_1.play()
-          //   } else if (max_g_left <= 0.2) {
-          //     audio_g_left_2.play()
-          //   } else if (max_g_left <= 0.3) {
-          //     audio_g_left_3.play()
-          //   } else if (max_g_left <= 0.4) {
-          //     audio_g_left_4.play()
-          //   } else if (max_g_left <= 0.5) {
-          //     audio_g_left_5.play()
-          //   } else if (max_g_left <= 0.6) {
-          //     audio_g_left_6.play()
-          //   } else if (max_g_left <= 0.7) {
-          //     audio_g_left_7.play()
-          //   } else if (max_g_left <= 0.8) {
-          //     audio_g_left_8.play()
-          //   } else if (max_g_left <= 0.9) {
-          //     audio_g_left_9.play()
-          //   } else if (max_g_left <= 1) {
-          //     audio_g_left_10.play()
-          //   } else if (max_g_left <= 1.1) {
-          //     audio_g_left_11.play()
-          //   } else if (max_g_left <= 1.2) {
-          //     audio_g_left_12.play()
-          //   } else if (max_g_left <= 1.3) {
-          //     audio_g_left_13.play()
-          //   } else if (max_g_left <= 1.4) {
-          //     audio_g_left_14.play()
-          //   } else if (max_g_left > 1.4) {
-          //     audio_g_left_14.play()
-          //   }
-          //   max_g_left = 0
-          // } else if (
-          //   fall_g_right >= fall_g_left &&
-          //   fall_g_right >= fall_g_up &&
-          //   max_g_right >= 0.2 &&
-          //   rotate_g_x.value > 0 &&
-          //   rotate_g_x.value < max_g_right * sound_adjustment_rate
-          // ) {
-          //   // right
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_right <= 0.1) {
-          //     audio_g_right_1.play()
-          //   } else if (max_g_right <= 0.2) {
-          //     audio_g_right_2.play()
-          //   } else if (max_g_right <= 0.3) {
-          //     audio_g_right_3.play()
-          //   } else if (max_g_right <= 0.4) {
-          //     audio_g_right_4.play()
-          //   } else if (max_g_right <= 0.5) {
-          //     audio_g_right_5.play()
-          //   } else if (max_g_right <= 0.6) {
-          //     audio_g_right_6.play()
-          //   } else if (max_g_right <= 0.7) {
-          //     audio_g_right_7.play()
-          //   } else if (max_g_right <= 0.8) {
-          //     audio_g_right_8.play()
-          //   } else if (max_g_right <= 0.9) {
-          //     audio_g_right_9.play()
-          //   } else if (max_g_right <= 1) {
-          //     audio_g_right_10.play()
-          //   } else if (max_g_right <= 1.1) {
-          //     audio_g_right_11.play()
-          //   } else if (max_g_right <= 1.2) {
-          //     audio_g_right_12.play()
-          //   } else if (max_g_right <= 1.3) {
-          //     audio_g_right_13.play()
-          //   } else if (max_g_right <= 1.4) {
-          //     audio_g_right_14.play()
-          //   } else if (max_g_right > 1.4) {
-          //     audio_g_right_14.play()
-          //   }
-          //   max_g_right = 0
-          // }
-
-          // if (
-          //   max_g_up >= 0.2 &&
-          //   rotate_g_y.value < max_g_up * sound_adjustment_rate
-          // ) {
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_up <= 0.1) {
-          //     audio_g_up_1.play()
-          //   } else if (max_g_up <= 0.2) {
-          //     audio_g_up_2.play()
-          //   } else if (max_g_up <= 0.3) {
-          //     audio_g_up_3.play()
-          //   } else if (max_g_up <= 0.4) {
-          //     audio_g_up_4.play()
-          //   } else if (max_g_up <= 0.5) {
-          //     audio_g_up_5.play()
-          //   } else if (max_g_up <= 0.6) {
-          //     audio_g_up_6.play()
-          //   } else if (max_g_up <= 0.7) {
-          //     audio_g_up_7.play()
-          //   } else if (max_g_up <= 0.8) {
-          //     audio_g_up_8.play()
-          //   } else if (max_g_up <= 0.9) {
-          //     audio_g_up_9.play()
-          //   } else if (max_g_up <= 1) {
-          //     audio_g_up_10.play()
-          //   } else if (max_g_up <= 1.1) {
-          //     audio_g_up_11.play()
-          //   } else if (max_g_up <= 1.2) {
-          //     audio_g_up_12.play()
-          //   } else if (max_g_up <= 1.3) {
-          //     audio_g_up_13.play()
-          //   } else if (max_g_up <= 1.4) {
-          //     audio_g_up_14.play()
-          //   } else if (max_g_up > 1.4) {
-          //     audio_g_up_14.play()
-          //   }
-          //   max_g_up = 0
-          // } else if (
-          //   max_g_left >= 0.2 &&
-          //   rotate_g_x.value < 0 &&
-          //   rotate_g_x.value * -1 < max_g_left * sound_adjustment_rate
-          // ) {
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_left <= 0.1) {
-          //     audio_g_left_1.play()
-          //   } else if (max_g_left <= 0.2) {
-          //     audio_g_left_2.play()
-          //   } else if (max_g_left <= 0.3) {
-          //     audio_g_left_3.play()
-          //   } else if (max_g_left <= 0.4) {
-          //     audio_g_left_4.play()
-          //   } else if (max_g_left <= 0.5) {
-          //     audio_g_left_5.play()
-          //   } else if (max_g_left <= 0.6) {
-          //     audio_g_left_6.play()
-          //   } else if (max_g_left <= 0.7) {
-          //     audio_g_left_7.play()
-          //   } else if (max_g_left <= 0.8) {
-          //     audio_g_left_8.play()
-          //   } else if (max_g_left <= 0.9) {
-          //     audio_g_left_9.play()
-          //   } else if (max_g_left <= 1) {
-          //     audio_g_left_10.play()
-          //   } else if (max_g_left <= 1.1) {
-          //     audio_g_left_11.play()
-          //   } else if (max_g_left <= 1.2) {
-          //     audio_g_left_12.play()
-          //   } else if (max_g_left <= 1.3) {
-          //     audio_g_left_13.play()
-          //   } else if (max_g_left <= 1.4) {
-          //     audio_g_left_14.play()
-          //   } else if (max_g_left > 1.4) {
-          //     audio_g_left_14.play()
-          //   }
-          //   max_g_left = 0
-          // } else if (
-          //   max_g_right >= 0.2 &&
-          //   rotate_g_x.value > 0 &&
-          //   rotate_g_x.value < max_g_right * sound_adjustment_rate
-          // ) {
-          //   audio_st_time = new Date().getTime()
-          //   if (max_g_right <= 0.1) {
-          //     audio_g_right_1.play()
-          //   } else if (max_g_right <= 0.2) {
-          //     audio_g_right_2.play()
-          //   } else if (max_g_right <= 0.3) {
-          //     audio_g_right_3.play()
-          //   } else if (max_g_right <= 0.4) {
-          //     audio_g_right_4.play()
-          //   } else if (max_g_right <= 0.5) {
-          //     audio_g_right_5.play()
-          //   } else if (max_g_right <= 0.6) {
-          //     audio_g_right_6.play()
-          //   } else if (max_g_right <= 0.7) {
-          //     audio_g_right_7.play()
-          //   } else if (max_g_right <= 0.8) {
-          //     audio_g_right_8.play()
-          //   } else if (max_g_right <= 0.9) {
-          //     audio_g_right_9.play()
-          //   } else if (max_g_right <= 1) {
-          //     audio_g_right_10.play()
-          //   } else if (max_g_right <= 1.1) {
-          //     audio_g_right_11.play()
-          //   } else if (max_g_right <= 1.2) {
-          //     audio_g_right_12.play()
-          //   } else if (max_g_right <= 1.3) {
-          //     audio_g_right_13.play()
-          //   } else if (max_g_right <= 1.4) {
-          //     audio_g_right_14.play()
-          //   } else if (max_g_right > 1.4) {
-          //     audio_g_right_14.play()
-          //   }
-          //   max_g_right = 0
-          // }
         }
 
         // 最大前Gを保持
         const g_up = Math.trunc(rotate_g_y.value * 10) / 10
         if (max_g_up_info.g < g_up) {
           max_g_up_info.g = g_up
+          console.log('up:' + g_up)
           max_g_up_info.measurement_time = new Date().getTime()
         }
 
@@ -964,6 +725,7 @@ export default defineComponent({
           const g_right = Math.trunc(rotate_g_x.value * 10) / 10
           if (max_g_right_info.g < g_right) {
             max_g_right_info.g = g_right
+            console.log('right:' + g_right)
             max_g_right_info.measurement_time = new Date().getTime()
           }
         } else {
@@ -971,10 +733,11 @@ export default defineComponent({
           const g_left = Math.trunc(rotate_g_x.value * 10) / 10
           if (max_g_left_info.g * -1 > g_left) {
             max_g_left_info.g = Math.abs(g_left)
+            console.log('left:' + g_left)
             max_g_left_info.measurement_time = new Date().getTime()
           }
         }
-      }, 150)
+      }, set_interval)
     }
 
     // i18n
@@ -1217,7 +980,10 @@ export default defineComponent({
       isCircuit,
       isLastSetting,
       adjust_moving_average,
-      t
+      t,
+      sound_interval,
+      sound_ajest,
+      set_time_interval
     }
   },
 })
