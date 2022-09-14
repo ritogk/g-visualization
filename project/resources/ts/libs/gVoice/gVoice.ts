@@ -1,6 +1,9 @@
 import * as voiceData from '@/libs/gVoice/voiceData'
 import { Ref } from 'vue'
 
+/**
+ * Gの音声出力に関するクラス
+ */
 class GVoice {
   // 最大GからGが減少した時に音を鳴らす。その時の減少幅の調整率
   private readonly g_decrease_width_rate = 0.3
