@@ -253,10 +253,6 @@ export default defineComponent({
     Slider,
   },
   setup() {
-    const w = new Worker(
-      new URL('@/libs/worker/vectorRotate.ts', import.meta.url)
-    )
-
     // i18n
     const { t } = useI18n({ useScope: 'global' })
 
@@ -287,27 +283,37 @@ export default defineComponent({
     // Gの感度調整用
     const adjust_moving_average =
       useAccelerationSensor.stateRefs.adjustMovingAverage
-
+    // ログ
     const log: { time: number; x: number; y: number; z: number }[] = []
     let enabled_log = false
 
+    // ベクトルの回転を別スレッドで実行する
+    const w_vector_rotate = new Worker(
+      new URL('@/libs/worker/vectorRotate.ts', import.meta.url)
+    )
+    w_vector_rotate.onmessage = (event: MessageEvent<any>) => {
+      rotate_g_x.value = event.data.x
+      rotate_g_y.value = event.data.y
+      // w.terminate()
+    }
+
     // スマホで検出したGを車のGに変換する
     watch([g_z], () => {
-      // let timeStamp = 0
+      let timeStamp = 0
       if (enabled_log) {
-        // timeStamp = Math.round(new Date().getTime() / 1000)
+        timeStamp = Math.round(new Date().getTime() / 1000)
       }
 
       const angle_x = after_gyro_x - before_gyro_x
       const angle_y = after_gyro_y - before_gyro_y
       const angle_z = Math.abs(before_gyro_z - after_gyro_z)
-      // let rotate_acceration = null
 
       const x = g_x.value
       const y = g_y.value
       const z = g_z.value
 
-      w.postMessage({
+      // 三次元ベクトルの回転を別スレッドで実行
+      w_vector_rotate.postMessage({
         x: x,
         y: y,
         z: z,
@@ -315,26 +321,16 @@ export default defineComponent({
         angle_y: angle_y,
         angle_z: angle_z,
       })
-      // rotate_acceration = rotate3dVector(x, y, z, angle_x, angle_y, angle_z)
 
-      // if (enabled_log) {
-      //   log.push({
-      //     time: timeStamp,
-      //     x: rotate_acceration.x,
-      //     y: rotate_acceration.y,
-      //     z: rotate_acceration.z,
-      //   })
-      // }
-      // rotate_g_x.value = rotate_acceration.x
-      // rotate_g_y.value = rotate_acceration.y
+      if (enabled_log) {
+        log.push({
+          time: timeStamp,
+          x: x,
+          y: y,
+          z: z,
+        })
+      }
     })
-    w.onmessage = (event: MessageEvent<any>) => {
-      rotate_g_x.value = event.data.x
-      rotate_g_y.value = event.data.y
-      // console.log(event.data.x)
-      // console.log(event.data.y)
-      // w.terminate()
-    }
 
     const g_voice = new GVoice(rotate_g_x, rotate_g_y)
 
@@ -409,9 +405,6 @@ export default defineComponent({
       await useAccelerationSensor.enableSensor()
       // ジャイロセンサーの有効化
       await useGyroSensor.enableSensor()
-
-      // web worker側でAPI Callさせる(今回はパラメータはなし)
-      w.postMessage(111111)
 
       if (isAccelerationSensor.value && isGyroSensor.value) {
         alert(
