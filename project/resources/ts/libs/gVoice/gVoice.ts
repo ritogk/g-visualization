@@ -132,6 +132,12 @@ class GVoice {
       measurement_time: 0,
     }
 
+    // 直前に鳴らした音声情報
+    const before_voice_info = {
+      direction: GDirection.Down,
+      measurement_time: 0,
+    }
+
     // 音声出力
     this.timer_id = window.setInterval(() => {
       // Gを鳴らした後は一定時間Gを鳴らさない
@@ -187,6 +193,8 @@ class GVoice {
         switch (sound_target_direction) {
           case GDirection.Up:
             before_sound_time = new Date().getTime()
+            before_voice_info.direction = GDirection.Up
+            before_voice_info.measurement_time = before_sound_time
             console.log('up:' + before_sound_time)
             if (max_g_up_info.g <= 0.1) {
               voiceData.voice_g_up_1.play()
@@ -224,6 +232,8 @@ class GVoice {
             break
           case GDirection.Left:
             before_sound_time = new Date().getTime()
+            before_voice_info.direction = GDirection.Left
+            before_voice_info.measurement_time = before_sound_time
             console.log('lef:' + before_sound_time)
             if (max_g_left_info.g <= 0.1) {
               voiceData.voice_g_left_1.play()
@@ -261,6 +271,8 @@ class GVoice {
             break
           case GDirection.Right:
             before_sound_time = new Date().getTime()
+            before_voice_info.direction = GDirection.Right
+            before_voice_info.measurement_time = before_sound_time
             console.log('right:' + before_sound_time)
             if (max_g_right_info.g <= 0.1) {
               voiceData.voice_g_right_1.play()
@@ -302,26 +314,47 @@ class GVoice {
       // 最大前Gを保持
       const g_up = Math.trunc(this.ref_g_y.value * 10) / 10
       if (max_g_up_info.g < g_up) {
-        max_g_up_info.g = g_up
-        // console.log('up:' + g_up)
-        max_g_up_info.measurement_time = new Date().getTime()
+        if (
+          before_voice_info.direction == GDirection.Up &&
+          new Date().getTime() - before_voice_info.measurement_time < 3000
+        ) {
+          //
+        } else {
+          max_g_up_info.g = g_up
+          // console.log('up:' + g_up)
+          max_g_up_info.measurement_time = new Date().getTime()
+        }
       }
 
       if (this.ref_g_x.value > 0) {
         // 最大右Gを保持
         const g_right = Math.trunc(this.ref_g_x.value * 10) / 10
         if (max_g_right_info.g < g_right) {
-          max_g_right_info.g = g_right
-          // console.log('right:' + g_right)
-          max_g_right_info.measurement_time = new Date().getTime()
+          if (
+            before_voice_info.direction == GDirection.Right &&
+            new Date().getTime() - before_voice_info.measurement_time < 3000
+          ) {
+            //
+          } else {
+            max_g_right_info.g = g_right
+            // console.log('right:' + g_right)
+            max_g_right_info.measurement_time = new Date().getTime()
+          }
         }
       } else {
         // 最大左Gを保持
         const g_left = Math.trunc(this.ref_g_x.value * 10) / 10
         if (max_g_left_info.g * -1 > g_left) {
-          max_g_left_info.g = Math.abs(g_left)
-          // console.log('left:' + g_left)
-          max_g_left_info.measurement_time = new Date().getTime()
+          if (
+            before_voice_info.direction == GDirection.Left &&
+            new Date().getTime() - before_voice_info.measurement_time < 3000
+          ) {
+            //
+          } else {
+            max_g_left_info.g = Math.abs(g_left)
+            // console.log('left:' + g_left)
+            max_g_left_info.measurement_time = new Date().getTime()
+          }
         }
       }
     }, this.g_measurement_interval)
