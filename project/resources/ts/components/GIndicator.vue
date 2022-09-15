@@ -108,7 +108,7 @@ export default defineComponent({
       // 少数点第1までの絶対値を取得
       const abs_g_x = Math.trunc(Math.abs(props.x) * 10) / 10
       for (let i = 0; i < g_x_bar.items.length; i++) {
-        g_x_bar.items[i].show = g_x_bar.items[i].value < abs_g_x
+        g_x_bar.items[i].show = g_x_bar.items[i].value <= abs_g_x
       }
     })
 
@@ -139,7 +139,7 @@ export default defineComponent({
       // 少数点第1までの絶対値を取得
       const abs_g_y = Math.trunc(Math.abs(props.y) * 10) / 10
       for (let i = 0; i < g_y_bar.items.length; i++) {
-        g_y_bar.items[i].show = g_y_bar.items[i].value < abs_g_y
+        g_y_bar.items[i].show = g_y_bar.items[i].value <= abs_g_y
       }
     })
 
