@@ -21,7 +21,8 @@ return [
     'Gセンサー値の可視化(インジケータータイプ)' => 'Visualization of G sensor value (indicator type)',
     'Gセンサー値の可視化(ボールタイプ)' => 'Visualization of G Sensor Value (Ball Type)',
     'Gセンサーの感度調整(路面、足回りの硬さに合わせて調整して下さい。)' => 'G Sensor Sensitivity Adjustment (Adjust according to the road surface and suspension hardness.)',
-    '対応機種(iphone)' => 'Compatible model(iphone)',
+    'Gセンサー値の音声出力' => 'Audio output of G-sensor values',
+    '対応機種(iphone)' => 'Compatible model(iphone, android)',
 
     'デモ' => 'demo',
 
