@@ -200,6 +200,7 @@
                         <p class="lead fw-normal text-muted mb-1">・{{__('lp.Gセンサー値の可視化(インジケータータイプ)')}}</p>
                         <p class="lead fw-normal text-muted mb-1">・{{__('lp.Gセンサー値の可視化(ボールタイプ)')}}</p>
                         <p class="lead fw-normal text-muted mb-1">・{{__('lp.Gセンサーの感度調整(路面、足回りの硬さに合わせて調整して下さい。)')}}</p>
+                        <p class="lead fw-normal text-muted mb-1">・{{__('lp.Gセンサー値の音声出力')}}</p>
                         <p class="lead fw-normal text-muted mb-1">・{{__('lp.対応機種(iphone)')}}</p>
                     </div>
                 </div>
