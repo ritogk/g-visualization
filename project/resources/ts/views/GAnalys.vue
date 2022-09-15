@@ -134,13 +134,12 @@
     :y="rotate_g_y"
     :draw="true"
   />
-  <GIndicatorTouge v-if="false" :x="rotate_g_x" :y="rotate_g_y" :draw="true" />
-  <!-- <GIndicatorTouge
+  <GIndicatorTouge
     v-if="isGIndicator && isTouge"
     :x="rotate_g_x"
     :y="rotate_g_y"
     :draw="true"
-  /> -->
+  />
 
   <!-- モーダル表示エリア -->
   <div
