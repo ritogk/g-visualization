@@ -31,6 +31,16 @@ class OperationLogSeeder extends Seeder
             'execution_cnt' => 0
         ]);
         OperationLog::create([
+            'operation_cd' => Constants::OPERATION_CD_CALIBRATION_NEXT_1,
+            'operation_nm' => '「キャリブレーション 次へ1」',
+            'execution_cnt' => 0
+        ]);
+        OperationLog::create([
+            'operation_cd' => Constants::OPERATION_CD_CALIBRATION_NEXT_2,
+            'operation_nm' => '「キャリブレーション 次へ2」',
+            'execution_cnt' => 0
+        ]);
+        OperationLog::create([
             'operation_cd' => Constants::OPERATION_CD_MAX_14_G,
             'operation_nm' => '「Max1.4G」',
             'execution_cnt' => 0
