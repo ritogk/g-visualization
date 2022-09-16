@@ -5,7 +5,7 @@
 
 # アプリ概要
 
-スポーツ走行時のGを可視化して車を操る手助けをするアプリ
+スポーツ走行時のGを可視化or音声出力して車を操る手助けをするアプリ
 
 ## リンク
 https://gvisual.homisoftware.net/lp/ja  
@@ -17,10 +17,9 @@ iphone(safari, chrome)
 android(chrome)
 
 ## できる事
-Gのベクトル回転  
-Gの可視化  
-Gの感度調整  
-最大Gの変更
+Gの可視化
+Gの音声出力
+ベクトルの回転
 
 ## G インジケーター
 
@@ -43,7 +42,7 @@ Gの感度調整
 
 ## デモ
 
-<video src="https://user-images.githubusercontent.com/72111956/167770813-9f066ee5-5115-471d-805b-6606976c2a8e.mp4"></video>
+<video src="https://user-images.githubusercontent.com/72111956/190582702-4d902ad0-a674-41cf-ae12-8c52dca0863b.mp4"></video>
 
 ## 環境構築
 
