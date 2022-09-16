@@ -10,6 +10,7 @@
 ## リンク
 https://gvisual.homisoftware.net/lp/ja  
 https://twitter.com/homing_fd2/status/1521749005360779265?s=20&t=qpOtG8M4-zggtwA0-cncgw
+https://twitter.com/homing_fd2/status/1570358896711315456
 
 ## 動作環境
 
@@ -17,9 +18,9 @@ iphone(safari, chrome)
 android(chrome)
 
 ## できる事
-Gの可視化
-Gの音声出力
-ベクトルの回転
+Gの可視化  
+Gの音声出力  
+Gのベクトル回転  
 
 ## G インジケーター
 
