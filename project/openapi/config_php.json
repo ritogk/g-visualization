@@ -1,0 +1,4 @@
+{
+  "invokerPackage": "App\\OpenAPI",
+  "variableNamingConvention": "camelCase"
+}

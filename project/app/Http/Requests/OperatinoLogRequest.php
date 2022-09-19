@@ -14,7 +14,7 @@ class OperatinoLogRequest extends FormRequest
     public function rules()
     {
         return [
-            'operation_cd' => 'required',
+            'operationCd' => 'required',
         ];
     }
 
@@ -26,7 +26,7 @@ class OperatinoLogRequest extends FormRequest
     public function attributes()
     {
         return [
-            'operation_cd' => '操作コード',
+            'operationCd' => '操作コード',
         ];
     }
 }

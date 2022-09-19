@@ -243,8 +243,8 @@ import Slider from '@vueform/slider'
 import { useI18n } from 'vue-i18n'
 import { Keys } from '@/libs/localStorage'
 import { GVoice } from '@/libs/gVoice/gVoice'
-import { sendOperationLog } from '@/libs/utility'
-import { OperationCd } from '@/libs/constants'
+import { operationLog } from '@/libs/log/operationLog'
+import { OperationCd } from '@/openapi/models'
 
 export default defineComponent({
   components: {
@@ -257,6 +257,8 @@ export default defineComponent({
   setup() {
     // i18n
     const { t } = useI18n({ useScope: 'global' })
+
+    const operation_log = new operationLog()
 
     // ジャイロセンサーのモジュール
     const useDevice = inject(useDeviceKey) as useDeviceType
@@ -366,13 +368,14 @@ export default defineComponent({
 
     // 「キャリブレーション」押下
     const cickCalibration = () => {
-      sendOperationLog(OperationCd.CALIBRATION)
+      operation_log.send(OperationCd.CALIBRATION)
+      // sendOperationLog(OperationCd.CALIBRATION)
       modalInfo.show()
     }
 
     // 車の加速度を計測する際の角度を計測する
     const cickCalibration1 = () => {
-      sendOperationLog(OperationCd.CALIBRATION_NEXT_1)
+      operation_log.send(OperationCd.CALIBRATION_NEXT_1)
       before_gyro_x = gyro_x.value
       before_gyro_y = gyro_y.value
       before_gyro_z = gyro_z.value
@@ -384,7 +387,7 @@ export default defineComponent({
 
     // スマホを固定しときの角度を記憶する
     const cickCalibration2 = () => {
-      sendOperationLog(OperationCd.CALIBRATION_NEXT_2)
+      operation_log.send(OperationCd.CALIBRATION_NEXT_2)
       after_gyro_x = gyro_x.value
       after_gyro_y = gyro_y.value
       after_gyro_z = gyro_z.value
@@ -399,7 +402,7 @@ export default defineComponent({
 
     // 「前回の設定を使用する」押下
     const clickLastSetting = () => {
-      sendOperationLog(OperationCd.CALIBRATION_BEFORE_SETTING)
+      operation_log.send(OperationCd.CALIBRATION_BEFORE_SETTING)
       before_gyro_x = Number(localStorage.getItem(Keys.beforeGyroX))
       before_gyro_y = Number(localStorage.getItem(Keys.beforeGyroY))
       before_gyro_z = Number(localStorage.getItem(Keys.beforeGyroZ))
@@ -415,7 +418,7 @@ export default defineComponent({
 
     // 「センサーを有効」押下
     const clickStartSensor = async () => {
-      sendOperationLog(OperationCd.ENABLE_SENSOR)
+      operation_log.send(OperationCd.ENABLE_SENSOR)
       // 加速度センサーの有効化
       await useAccelerationSensor.enableSensor()
       // ジャイロセンサーの有効化
@@ -439,7 +442,7 @@ export default defineComponent({
      * 「gbowl」押下
      */
     const clickGBowl = () => {
-      sendOperationLog(OperationCd.GBOWL)
+      operation_log.send(OperationCd.GBOWL)
       isGBowl.value = true
       isGIndicator.value = false
     }
@@ -448,7 +451,7 @@ export default defineComponent({
      * 「gindicator」押下
      */
     const clickGIndicator = () => {
-      sendOperationLog(OperationCd.GINDICATOR)
+      operation_log.send(OperationCd.GINDICATOR)
       isGBowl.value = false
       isGIndicator.value = true
     }
@@ -457,7 +460,7 @@ export default defineComponent({
      * 「MaxG:1.4」押下
      */
     const clickMaxG14 = () => {
-      sendOperationLog(OperationCd.MAX_14_G)
+      operation_log.send(OperationCd.MAX_14_G)
       isTouge.value = false
       isCircuit.value = true
     }
@@ -466,7 +469,7 @@ export default defineComponent({
      * 「MaxG:1.0」押下
      */
     const clickMaxG10 = () => {
-      sendOperationLog(OperationCd.MAX_10_G)
+      operation_log.send(OperationCd.MAX_10_G)
       isTouge.value = true
       isCircuit.value = false
     }
@@ -475,7 +478,7 @@ export default defineComponent({
      * 「音声出力OFF」押下
      */
     const clickVoiceOutputOff = () => {
-      sendOperationLog(OperationCd.VOICE_OUTPUT_OFF)
+      operation_log.send(OperationCd.VOICE_OUTPUT_OFF)
       isVoiceOutput.value = false
       g_voice.stop()
     }
@@ -484,7 +487,7 @@ export default defineComponent({
      * 「音声出力ON」押下
      */
     const clickVoiceOutputOn = () => {
-      sendOperationLog(OperationCd.VOICE_OUTPUT_ON)
+      operation_log.send(OperationCd.VOICE_OUTPUT_ON)
       isVoiceOutput.value = true
       g_voice.setup()
       g_voice.start()
