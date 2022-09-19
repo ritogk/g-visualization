@@ -15,7 +15,7 @@ class CreateAccessLogs extends Migration
     {
         Schema::create('access_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('ip')->comment('ipアドレス');
+            $table->string('ip')->comment('ipアドレス');
             $table->integer('access_cnt')->comment('アクセス数');
             $table->dateTime('last_accessed_at')->comment('最終アクセス日時');
             $table->timestamps();
