@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: OpenAPI Tutorial
+  description: OpenAPI Tutorial by halhorn
+  version: 0.0.0
+servers:
+  - url: http://localhost:80/api/v1
+    description: 開発用
+paths:
+  /log/operation:
+    post:
+      tags:
+        - 'log'
+      summary: 操作ログの送信を行います。
+      description: 詳細内容
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestOperationLog'
+      responses:
+        '200':
+          description: OK
+          content: {}
+  /questionnaires/status:
+    get:
+      tags:
+        - 'questionnaires'
+      summary: アンケートの回答状態を取得します。
+      description: 詳細内容
+      responses:
+        '200':
+          description: タイヤ一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/responseItemQuestionnaireStatus'
+
+components:
+  schemas:
+    responseItemQuestionnaireStatus:
+      description: レスポンス アンケートの状態
+      type: object
+      properties:
+        questionnaireId:
+          type: integer
+          description: アンケートid
+        status:
+          $ref: '#/components/schemas/responseItemQuestionnaireStatus'
+      required:
+        - questionnaireId
+        - status
+    requestOperationLog:
+      description: リクエスト 操作ログ
+      type: object
+      properties:
+        operationCd:
+          $ref: '#/components/schemas/operationCd'
+      required:
+        - operationCd
+    questionnaireStatus:
+      description: |
+        アンケートの状態
+        ANSWERED: 回答済
+        UNANSWERED: 未回答
+      enum: [1, 2]
+      x-enum-varnames: [ANSWERED, UNANSWERED]
+    operationCd:
+      description: 操作コード
+      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      x-enum-varnames:
+        [
+          ENABLE_SENSOR,
+          CALIBRATION,
+          CALIBRATION_BEFORE_SETTING,
+          CALIBRATION_NEXT_1,
+          CALIBRATION_NEXT_2,
+          MAX_14_G,
+          MAX_10_G,
+          VOICE_OUTPUT_ON,
+          VOICE_OUTPUT_OFF,
+          GBOWL,
+          GINDICATOR,
+        ]
