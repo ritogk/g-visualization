@@ -19,17 +19,17 @@ class Service
   public static function get_questionnaire_status(string $ip_address): int
   {
     $questionnaire_answer = QuestionnaireAnswer::where('sub_privary_key', $ip_address)
-      ->where('questionnaire_type', Data::get_questionnaire_type())
+      ->where('questionnaire_type', Data::QUESTIONNAIRE_TYPE)
       ->first();
     // アンケートが回答済
     if ($questionnaire_answer != null) {
       return Model\QuestionnaireStatus::ANSWERED;
     }
 
-    // アンケート期間の範囲外
     $now = new Carbon();
-    if ($now->between(Data::get_period_start(), Data::get_period_end())) {
+    if ($now->between(new Carbon(Data::PERIOD_START), new Carbon(Data::PERIOD_END))) {
     } else {
+      // アンケート期間の範囲外
       return Model\QuestionnaireStatus::INELIGIBILITY;
     }
 
