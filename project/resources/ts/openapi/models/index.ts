@@ -4,4 +4,5 @@ export * from './OperationCd';
 export * from './QuestionnaireStatus';
 export * from './QuestionnaireType';
 export * from './RequestOperationLog';
+export * from './RequestQuestionnaireCreate';
 export * from './ResponseQuestionnaireStatus';

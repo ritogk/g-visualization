@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateQuestionnaireRequest;
 use App\Models\QuestionnaireAnswer;
 use Illuminate\Http\Response;
 //use Illuminate\Support\Facades\Log;
@@ -35,6 +36,23 @@ class QuestionnaireController extends Controller
         return response()->json(
             $response_model,
             Response::HTTP_OK
+        );
+    }
+
+    /**
+     * アンケートの登録を行います。
+     *
+     * @return void
+     */
+    public function create(int $questionnaires_type, CreateQuestionnaireRequest $request)
+    {
+        $request_body = new OpenAPI\Model\RequestQuestionnaireCreate($request->all());
+        $questionnaire_service = new QuestionnaireService();
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+        $questionnaire_service->create_questionnaire_answer($questionnaires_type, $ip_address, $request_body->getJsonAnswer(), $request_body->getIsCanceld());
+        return response()->json(
+            [],
+            Response::HTTP_CREATED
         );
     }
 }

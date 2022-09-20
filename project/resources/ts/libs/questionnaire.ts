@@ -1,0 +1,52 @@
+import { QuestionnairesApi } from '@/openapi/apis'
+import { apiConfig } from '@/libs/openapi'
+import { QuestionnaireType, QuestionnaireStatus } from '@/openapi/models'
+/**
+ * アンケートに関するクラス
+ */
+class Questionnaire {
+  private questionnairesApi = new QuestionnairesApi(apiConfig)
+  /**
+   * コンストラクタ
+   */
+  constructor() {}
+
+  /**
+   * アンケートの回答状態を取得します。
+   * @param questionnaireType
+   * @return QuestionnaireStatus
+   */
+  async get_questionnaire_status(
+    questionnaireType: QuestionnaireType
+  ): Promise<QuestionnaireStatus> {
+    const response =
+      await this.questionnairesApi.questionnairesQuestionnairesTypeStatusGet({
+        questionnairesType: questionnaireType,
+      })
+    return response.status
+  }
+
+  /**
+   * アンケート回答の登録を行います。
+   * @param questionnaireType
+   * @param jsonAnswer
+   * @param isCanceld
+   * @returns
+   */
+  async create_questionnaire_answer(
+    questionnaireType: QuestionnaireType,
+    jsonAnswer: string,
+    isCanceld: boolean
+  ): Promise<void> {
+    await this.questionnairesApi.questionnairesQuestionnairesTypePost({
+      questionnairesType: questionnaireType,
+      requestQuestionnaireCreate: {
+        jsonAnswer: jsonAnswer,
+        isCanceld: isCanceld,
+      },
+    })
+    return
+  }
+}
+
+export { Questionnaire }

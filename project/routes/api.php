@@ -24,3 +24,5 @@ Route::post('/log/operation', [Controllers\LogController::class, 'operation']);
 
 // 特定のアンケートの状態を取得
 Route::get('/questionnaires/{questionnaire_type}/status', [Controllers\QuestionnaireController::class, 'questionnaire_status']);
+// アンケート投稿
+Route::post('/questionnaires/{questionnaire_type}', [Controllers\QuestionnaireController::class, 'create']);

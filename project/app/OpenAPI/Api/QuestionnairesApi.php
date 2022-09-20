@@ -116,11 +116,257 @@ class QuestionnairesApi
     }
 
     /**
+     * Operation questionnairesQuestionnairesTypePost
+     *
+     * アンケートの登録を行います。
+     *
+     * @param  QuestionnaireType $questionnairesType questionnairesType (required)
+     * @param  \App\OpenAPI\Model\RequestQuestionnaireCreate $requestQuestionnaireCreate requestQuestionnaireCreate (required)
+     *
+     * @throws \App\OpenAPI\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return void
+     */
+    public function questionnairesQuestionnairesTypePost($questionnairesType, $requestQuestionnaireCreate)
+    {
+        $this->questionnairesQuestionnairesTypePostWithHttpInfo($questionnairesType, $requestQuestionnaireCreate);
+    }
+
+    /**
+     * Operation questionnairesQuestionnairesTypePostWithHttpInfo
+     *
+     * アンケートの登録を行います。
+     *
+     * @param  QuestionnaireType $questionnairesType (required)
+     * @param  \App\OpenAPI\Model\RequestQuestionnaireCreate $requestQuestionnaireCreate (required)
+     *
+     * @throws \App\OpenAPI\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function questionnairesQuestionnairesTypePostWithHttpInfo($questionnairesType, $requestQuestionnaireCreate)
+    {
+        $request = $this->questionnairesQuestionnairesTypePostRequest($questionnairesType, $requestQuestionnaireCreate);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation questionnairesQuestionnairesTypePostAsync
+     *
+     * アンケートの登録を行います。
+     *
+     * @param  QuestionnaireType $questionnairesType (required)
+     * @param  \App\OpenAPI\Model\RequestQuestionnaireCreate $requestQuestionnaireCreate (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function questionnairesQuestionnairesTypePostAsync($questionnairesType, $requestQuestionnaireCreate)
+    {
+        return $this->questionnairesQuestionnairesTypePostAsyncWithHttpInfo($questionnairesType, $requestQuestionnaireCreate)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation questionnairesQuestionnairesTypePostAsyncWithHttpInfo
+     *
+     * アンケートの登録を行います。
+     *
+     * @param  QuestionnaireType $questionnairesType (required)
+     * @param  \App\OpenAPI\Model\RequestQuestionnaireCreate $requestQuestionnaireCreate (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function questionnairesQuestionnairesTypePostAsyncWithHttpInfo($questionnairesType, $requestQuestionnaireCreate)
+    {
+        $returnType = '';
+        $request = $this->questionnairesQuestionnairesTypePostRequest($questionnairesType, $requestQuestionnaireCreate);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'questionnairesQuestionnairesTypePost'
+     *
+     * @param  QuestionnaireType $questionnairesType (required)
+     * @param  \App\OpenAPI\Model\RequestQuestionnaireCreate $requestQuestionnaireCreate (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function questionnairesQuestionnairesTypePostRequest($questionnairesType, $requestQuestionnaireCreate)
+    {
+
+        // verify the required parameter 'questionnairesType' is set
+        if ($questionnairesType === null || (is_array($questionnairesType) && count($questionnairesType) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $questionnairesType when calling questionnairesQuestionnairesTypePost'
+            );
+        }
+
+        // verify the required parameter 'requestQuestionnaireCreate' is set
+        if ($requestQuestionnaireCreate === null || (is_array($requestQuestionnaireCreate) && count($requestQuestionnaireCreate) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $requestQuestionnaireCreate when calling questionnairesQuestionnairesTypePost'
+            );
+        }
+
+        $resourcePath = '/questionnaires/{questionnairesType}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($questionnairesType !== null) {
+            $resourcePath = str_replace(
+                '{' . 'questionnairesType' . '}',
+                ObjectSerializer::toPathValue($questionnairesType),
+                $resourcePath
+            );
+        }
+
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                []
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                [],
+                ['application/json']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($requestQuestionnaireCreate)) {
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($requestQuestionnaireCreate));
+            } else {
+                $httpBody = $requestQuestionnaireCreate;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation questionnairesQuestionnairesTypeStatusGet
      *
      * アンケートの回答状態を取得します。
      *
-     * @param  ResponseQuestionnaireStatus $questionnairesType questionnairesType (required)
+     * @param  QuestionnaireType $questionnairesType questionnairesType (required)
      *
      * @throws \App\OpenAPI\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -137,7 +383,7 @@ class QuestionnairesApi
      *
      * アンケートの回答状態を取得します。
      *
-     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
+     * @param  QuestionnaireType $questionnairesType (required)
      *
      * @throws \App\OpenAPI\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -236,7 +482,7 @@ class QuestionnairesApi
      *
      * アンケートの回答状態を取得します。
      *
-     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
+     * @param  QuestionnaireType $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -256,7 +502,7 @@ class QuestionnairesApi
      *
      * アンケートの回答状態を取得します。
      *
-     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
+     * @param  QuestionnaireType $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -305,7 +551,7 @@ class QuestionnairesApi
     /**
      * Create request for operation 'questionnairesQuestionnairesTypeStatusGet'
      *
-     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
+     * @param  QuestionnaireType $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request

@@ -3,6 +3,7 @@
 namespace App\Service\Questionnaire;
 
 use App\Http\Controllers\Controller;
+use App\Models\QuestionnaireAnswer;
 //use Illuminate\Support\Facades\Log;
 
 // openapi
@@ -30,5 +31,22 @@ class QuestionnaireService extends Controller
                 break;
         }
         return QuestionnaireStatus::INELIGIBILITY;
+    }
+
+    /**
+     * アンケート回答の登録を行います。
+     *
+     * @param integer $questionnaire_type
+     * @param string $sub_key
+     * @param string $json_answer
+     * @param boolean $is_canceld
+     * @return void
+     */
+    public function create_questionnaire_answer(int $questionnaire_type, string $sub_key, string $json_answer, bool $is_canceld): void
+    {
+        // 同じ回答は登録させない。
+        if (QuestionnaireAnswer::where('questionnaire_type', $questionnaire_type)->where('sub_key', $sub_key)->get()->isEmpty()) {
+            QuestionnaireAnswer::create(['questionnaire_type' => $questionnaire_type, 'sub_key' => $sub_key, 'is_canceled' => $is_canceld, 'json_answer' => $json_answer]);
+        }
     }
 }
