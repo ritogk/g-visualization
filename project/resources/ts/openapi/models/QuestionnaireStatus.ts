@@ -13,15 +13,17 @@
  */
 
 /**
- * アンケートの状態
- * ANSWERED: 回答済
+ * ■アンケートの回答状態  
+ * ANSWERED: 回答済  
  * UNANSWERED: 未回答
+ * INELIGIBILITY: 不適格
  * @export
  * @enum {string}
  */
 export enum QuestionnaireStatus {
     ANSWERED = 1,
-    UNANSWERED = 2
+    UNANSWERED = 2,
+    INELIGIBILITY = 3
 }
 
 export function QuestionnaireStatusFromJSON(json: any): QuestionnaireStatus {

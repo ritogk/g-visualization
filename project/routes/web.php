@@ -13,5 +13,7 @@ Route::get('/', function () {
 
 // spaのルーティング
 Route::get('/app/{any}', function () {
+    $controller = new Controllers\AppController();
+    $controller->show();
     return view('app');
 })->where('any', '.*');
