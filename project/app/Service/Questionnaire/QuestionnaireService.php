@@ -2,16 +2,12 @@
 
 namespace App\Service\Questionnaire;
 
-use App\Models\QuestionnaireAnswer;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 //use Illuminate\Support\Facades\Log;
 
 // openapi
-use App\OpenAPI;
 use App\OpenAPI\Model\QuestionnaireType;
 use App\OpenAPI\Model\QuestionnaireStatus;
-//use App\Libs\OpenAPIUtility;
 
 /**
  * アンケートのサービスクラス
