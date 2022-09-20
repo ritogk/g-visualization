@@ -12,7 +12,7 @@ class Questionnaire {
   constructor() {}
 
   /**
-   * アンケートの回答状態を取得します。
+   * 特定のアンケートの回答状態を取得します。
    * @param questionnaireType
    * @return QuestionnaireStatus
    */
