@@ -16,8 +16,9 @@ class CreateQuestionnaireAnswers extends Migration
         Schema::create('questionnaire_answers', function (Blueprint $table) {
             $table->id();
             $table->integer('questionnaire_type')->comment('アンケート種別');
-            $table->string('sub_privary_key')->comment('サブ主キー ※ipやuser_idが入る想定');
-            $table->string('answer')->comment('回答 ※json');
+            $table->string('sub_key')->comment('※ipかuser_idが入る想定');
+            $table->boolean('is_canceled')->comment('回答キャンセルフラグ');
+            $table->json('json_answer')->nullable()->comment('回答 ※json');
             $table->timestamps();
         });
     }

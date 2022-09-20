@@ -18,7 +18,7 @@ class Service
    */
   public static function get_questionnaire_status(string $ip_address): int
   {
-    $questionnaire_answer = QuestionnaireAnswer::where('sub_privary_key', $ip_address)
+    $questionnaire_answer = QuestionnaireAnswer::where('sub_key', $ip_address)
       ->where('questionnaire_type', Data::QUESTIONNAIRE_TYPE)
       ->first();
     // アンケートが回答済

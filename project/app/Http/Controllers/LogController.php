@@ -20,7 +20,7 @@ class LogController extends Controller
         $log_service->update_operation_log((int)$request_body->getOperationCd());
         return response()->json(
             [],
-            Response::HTTP_OK
+            Response::HTTP_CREATED
         );
     }
 }

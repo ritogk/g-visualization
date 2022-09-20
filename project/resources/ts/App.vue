@@ -11,7 +11,7 @@
         </div>
         <div class="row">
           <div class="col text-light" style="font-size: 8px">
-            {{t('message.スポーツ走行に特化したGの可視化アプリ')}}
+            {{ t('message.スポーツ走行に特化したGの可視化アプリ') }}
           </div>
         </div>
       </div>
@@ -61,11 +61,13 @@
       <router-view />
     </transition>
   </div>
+  <QuestionnaireModal></QuestionnaireModal>
 </template>
 
 <script lang="ts">
 import { defineComponent, provide, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import QuestionnaireModal from '@/components/QuestionnaireModal.vue'
 import { useDevice, useDeviceKey } from '@/libs/device/device'
 import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
 import {
@@ -75,8 +77,18 @@ import {
 import { Device, Lang } from '@/libs/constants'
 import NoSleep from 'nosleep.js'
 import { useI18n } from 'vue-i18n'
+import { Questionnaire } from '@/libs/questionnaire'
+import { QuestionnaireStatus } from '@/openapi/models'
+import {
+  useQuestionnaireState,
+  useQuestionnaireStateKey,
+} from '@/libs/questionnaireModalState'
+import { QuestionnaireType } from '@/openapi/models'
 
 export default defineComponent({
+  components: {
+    QuestionnaireModal,
+  },
   setup() {
     // i18n
     const { t, locale } = useI18n()
@@ -106,6 +118,23 @@ export default defineComponent({
       },
       false
     )
+
+    // アンケートポップアップ
+    const questionnaireState = useQuestionnaireState()
+    provide(useQuestionnaireStateKey, questionnaireState)
+
+    // 初回 アンケート表示制御
+    const questionnaire = new Questionnaire()
+    questionnaire
+      .get_questionnaire_status(QuestionnaireType.FIRST_TEST)
+      .then((value) => {
+        if (value == QuestionnaireStatus.UNANSWERED) {
+          questionnaireState.setQuestionnaireType(QuestionnaireType.FIRST_TEST)
+          questionnaireState.show()
+          console.log(questionnaireState.stateRefs.isShow.value)
+          console.log(questionnaireState.stateRefs.questionnaireType.value)
+        }
+      })
 
     onMounted(() => {
       // 端末がiphoneでない場合は警告文を表示

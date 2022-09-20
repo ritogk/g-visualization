@@ -15,13 +15,24 @@
 
 import * as runtime from '../runtime';
 import {
+    QuestionnaireType,
+    QuestionnaireTypeFromJSON,
+    QuestionnaireTypeToJSON,
+    RequestQuestionnaireCreate,
+    RequestQuestionnaireCreateFromJSON,
+    RequestQuestionnaireCreateToJSON,
     ResponseQuestionnaireStatus,
     ResponseQuestionnaireStatusFromJSON,
     ResponseQuestionnaireStatusToJSON,
 } from '../models';
 
+export interface QuestionnairesQuestionnairesTypePostRequest {
+    questionnairesType: QuestionnaireType;
+    requestQuestionnaireCreate: RequestQuestionnaireCreate;
+}
+
 export interface QuestionnairesQuestionnairesTypeStatusGetRequest {
-    questionnairesType: ResponseQuestionnaireStatus;
+    questionnairesType: QuestionnaireType;
 }
 
 /**
@@ -33,8 +44,25 @@ export interface QuestionnairesQuestionnairesTypeStatusGetRequest {
 export interface QuestionnairesApiInterface {
     /**
      * 詳細内容
+     * @summary アンケートの登録を行います。
+     * @param {QuestionnaireType} questionnairesType 
+     * @param {RequestQuestionnaireCreate} requestQuestionnaireCreate 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof QuestionnairesApiInterface
+     */
+    questionnairesQuestionnairesTypePostRaw(requestParameters: QuestionnairesQuestionnairesTypePostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * 詳細内容
+     * アンケートの登録を行います。
+     */
+    questionnairesQuestionnairesTypePost(requestParameters: QuestionnairesQuestionnairesTypePostRequest, initOverrides?: RequestInit): Promise<void>;
+
+    /**
+     * 詳細内容
      * @summary アンケートの回答状態を取得します。
-     * @param {ResponseQuestionnaireStatus} questionnairesType 
+     * @param {QuestionnaireType} questionnairesType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuestionnairesApiInterface
@@ -53,6 +81,44 @@ export interface QuestionnairesApiInterface {
  * 
  */
 export class QuestionnairesApi extends runtime.BaseAPI implements QuestionnairesApiInterface {
+
+    /**
+     * 詳細内容
+     * アンケートの登録を行います。
+     */
+    async questionnairesQuestionnairesTypePostRaw(requestParameters: QuestionnairesQuestionnairesTypePostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.questionnairesType === null || requestParameters.questionnairesType === undefined) {
+            throw new runtime.RequiredError('questionnairesType','Required parameter requestParameters.questionnairesType was null or undefined when calling questionnairesQuestionnairesTypePost.');
+        }
+
+        if (requestParameters.requestQuestionnaireCreate === null || requestParameters.requestQuestionnaireCreate === undefined) {
+            throw new runtime.RequiredError('requestQuestionnaireCreate','Required parameter requestParameters.requestQuestionnaireCreate was null or undefined when calling questionnairesQuestionnairesTypePost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/questionnaires/{questionnairesType}`.replace(`{${"questionnairesType"}}`, encodeURIComponent(String(requestParameters.questionnairesType))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RequestQuestionnaireCreateToJSON(requestParameters.requestQuestionnaireCreate),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * 詳細内容
+     * アンケートの登録を行います。
+     */
+    async questionnairesQuestionnairesTypePost(requestParameters: QuestionnairesQuestionnairesTypePostRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.questionnairesQuestionnairesTypePostRaw(requestParameters, initOverrides);
+    }
 
     /**
      * 詳細内容
