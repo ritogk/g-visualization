@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OperatinoLogRequest;
 use App\Models\OperationLog;
 use Illuminate\Http\Response;
-//use Illuminate\Support\Facades\Log;
+use App\Service\Log\LogService;
 
 // openapi
 use App\OpenAPI;
-//use App\Libs\OpenAPIUtility;
 
 class LogController extends Controller
 {
@@ -17,9 +16,8 @@ class LogController extends Controller
     public function operation(OperatinoLogRequest $request)
     {
         $request_body = new OpenAPI\Model\RequestOperationLog($request->all());
-        $operation_log = OperationLog::where('operation_cd', $request_body->getOperationCd())->first();
-        $operation_log->execution_cnt = $operation_log->execution_cnt + 1;
-        $operation_log->save();
+        $log_service = new LogService();
+        $log_service->update_operation_log((int)$request_body->getOperationCd());
         return response()->json(
             [],
             Response::HTTP_OK
