@@ -34,7 +34,7 @@ paths:
           name: questionnairesType
           required: true
           schema:
-            $ref: '#/components/schemas/responseQuestionnaireStatus'
+            $ref: '#/components/schemas/questionnaireType'
       responses:
         '200':
           description: アンケートの回答状態
@@ -42,6 +42,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/responseQuestionnaireStatus'
+  /questionnaires/{questionnairesType}:
+    post:
+      tags:
+        - 'questionnaires'
+      summary: アンケートの登録を行います。
+      description: 詳細内容
+      parameters:
+        - in: path
+          name: questionnairesType
+          required: true
+          schema:
+            $ref: '#/components/schemas/questionnaireType'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestQuestionnaireCreate'
+      responses:
+        '200':
+          description: OK
+          content: {}
 
 components:
   schemas:
@@ -64,6 +86,19 @@ components:
           $ref: '#/components/schemas/operationCd'
       required:
         - operationCd
+    requestQuestionnaireCreate:
+      description: リクエスト アンケート登録
+      type: object
+      properties:
+        jsonAnswer:
+          type: string
+          description: ' json形式の回答データ'
+        isCanceld:
+          type: boolean
+          description: キャンセルフラグ
+      required:
+        - jsonAnswer
+        - isCanceld
     questionnaireType:
       description: |
         ■アンケートの種類  
