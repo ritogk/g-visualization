@@ -1,6 +1,6 @@
 <?php
 /**
- * ResponseItemQuestionnaireStatus
+ * ResponseQuestionnaireStatus
  *
  * PHP version 7.4
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \App\OpenAPI\ObjectSerializer;
 
 /**
- * ResponseItemQuestionnaireStatus Class Doc Comment
+ * ResponseQuestionnaireStatus Class Doc Comment
  *
  * @category Class
  * @description レスポンス アンケートの状態
@@ -41,7 +41,7 @@ use \App\OpenAPI\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+class ResponseQuestionnaireStatus implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
       *
       * @var string
       */
-    protected static $openAPIModelName = 'responseItemQuestionnaireStatus';
+    protected static $openAPIModelName = 'responseQuestionnaireStatus';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -58,8 +58,8 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
       * @var string[]
       */
     protected static $openAPITypes = [
-        'questionnaireId' => 'int',
-        'status' => '\App\OpenAPI\Model\ResponseItemQuestionnaireStatus'
+        'questionnaireType' => '\App\OpenAPI\Model\QuestionnaireType',
+        'status' => '\App\OpenAPI\Model\QuestionnaireStatus'
     ];
 
     /**
@@ -70,7 +70,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'questionnaireId' => null,
+        'questionnaireType' => null,
         'status' => null
     ];
 
@@ -80,7 +80,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'questionnaireId' => false,
+        'questionnaireType' => false,
 		'status' => false
     ];
 
@@ -160,7 +160,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
      * @var string[]
      */
     protected static $attributeMap = [
-        'questionnaireId' => 'questionnaireId',
+        'questionnaireType' => 'questionnaireType',
         'status' => 'status'
     ];
 
@@ -170,7 +170,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
      * @var string[]
      */
     protected static $setters = [
-        'questionnaireId' => 'setQuestionnaireId',
+        'questionnaireType' => 'setQuestionnaireType',
         'status' => 'setStatus'
     ];
 
@@ -180,7 +180,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
      * @var string[]
      */
     protected static $getters = [
-        'questionnaireId' => 'getQuestionnaireId',
+        'questionnaireType' => 'getQuestionnaireType',
         'status' => 'getStatus'
     ];
 
@@ -241,7 +241,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('questionnaireId', $data ?? [], null);
+        $this->setIfExists('questionnaireType', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
     }
 
@@ -272,9 +272,6 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
     {
         $invalidProperties = [];
 
-        if ($this->container['questionnaireId'] === null) {
-            $invalidProperties[] = "'questionnaireId' can't be null";
-        }
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
         }
@@ -294,30 +291,30 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
 
 
     /**
-     * Gets questionnaireId
+     * Gets questionnaireType
      *
-     * @return int
+     * @return \App\OpenAPI\Model\QuestionnaireType|null
      */
-    public function getQuestionnaireId()
+    public function getQuestionnaireType()
     {
-        return $this->container['questionnaireId'];
+        return $this->container['questionnaireType'];
     }
 
     /**
-     * Sets questionnaireId
+     * Sets questionnaireType
      *
-     * @param int $questionnaireId アンケートid
+     * @param \App\OpenAPI\Model\QuestionnaireType|null $questionnaireType questionnaireType
      *
      * @return self
      */
-    public function setQuestionnaireId($questionnaireId)
+    public function setQuestionnaireType($questionnaireType)
     {
 
-        if (is_null($questionnaireId)) {
-            throw new \InvalidArgumentException('non-nullable questionnaireId cannot be null');
+        if (is_null($questionnaireType)) {
+            throw new \InvalidArgumentException('non-nullable questionnaireType cannot be null');
         }
 
-        $this->container['questionnaireId'] = $questionnaireId;
+        $this->container['questionnaireType'] = $questionnaireType;
 
         return $this;
     }
@@ -325,7 +322,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
     /**
      * Gets status
      *
-     * @return \App\OpenAPI\Model\ResponseItemQuestionnaireStatus
+     * @return \App\OpenAPI\Model\QuestionnaireStatus
      */
     public function getStatus()
     {
@@ -335,7 +332,7 @@ class ResponseItemQuestionnaireStatus implements ModelInterface, ArrayAccess, \J
     /**
      * Sets status
      *
-     * @param \App\OpenAPI\Model\ResponseItemQuestionnaireStatus $status status
+     * @param \App\OpenAPI\Model\QuestionnaireStatus $status status
      *
      * @return self
      */

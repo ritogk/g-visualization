@@ -23,33 +23,36 @@ paths:
         '200':
           description: OK
           content: {}
-  /questionnaires/status:
+  /questionnaires/{questionnairesType}/status:
     get:
       tags:
         - 'questionnaires'
       summary: アンケートの回答状態を取得します。
       description: 詳細内容
+      parameters:
+        - in: path
+          name: questionnairesType
+          required: true
+          schema:
+            $ref: '#/components/schemas/responseQuestionnaireStatus'
       responses:
         '200':
-          description: タイヤ一覧
+          description: アンケートの回答状態
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/responseItemQuestionnaireStatus'
+                $ref: '#/components/schemas/responseQuestionnaireStatus'
 
 components:
   schemas:
-    responseItemQuestionnaireStatus:
+    responseQuestionnaireStatus:
       description: レスポンス アンケートの状態
       type: object
       properties:
-        questionnaireId:
-          type: integer
-          description: アンケートid
+        questionnaireType:
+          $ref: '#/components/schemas/questionnaireType'
         status:
-          $ref: '#/components/schemas/responseItemQuestionnaireStatus'
+          $ref: '#/components/schemas/questionnaireStatus'
       required:
         - questionnaireId
         - status
@@ -61,26 +64,33 @@ components:
           $ref: '#/components/schemas/operationCd'
       required:
         - operationCd
+    questionnaireType:
+      description: |
+        ■アンケートの種類  
+        FIRST_TEST: 初回テスト
+      enum: [1]
+      x-enum-varnames: [FIRST_TEST]
     questionnaireStatus:
       description: |
-        ■アンケートの状態
-        ANSWERED: 回答済
+        ■アンケートの回答状態  
+        ANSWERED: 回答済  
         UNANSWERED: 未回答
-      enum: [1, 2]
-      x-enum-varnames: [ANSWERED, UNANSWERED]
+        INELIGIBILITY: 不適格
+      enum: [1, 2, 3]
+      x-enum-varnames: [ANSWERED, UNANSWERED, INELIGIBILITY]
     operationCd:
       description: |
-        ■操作コード
-        ENABLE_SENSOR: センサーを有効にする
-        CALIBRATION: キャリブレーション
-        CALIBRATION_BEFORE_SETTING: 直前設定を使う
-        CALIBRATION_NEXT_1: キャリブレーション1 次へ
-        CALIBRATION_NEXT_2: キャリブレーション2 次へ
-        MAX_14_G: Max1.4G
-        MAX_10_G: Max1.0G
-        VOICE_OUTPUT_ON: 音声出力ON
-        VOICE_OUTPUT_OFF: 音声出力OFF
-        GBOWL: GBowl
+        ■操作コード  
+        ENABLE_SENSOR: センサーを有効にする  
+        CALIBRATION: キャリブレーション  
+        CALIBRATION_BEFORE_SETTING: 直前設定を使う  
+        CALIBRATION_NEXT_1: キャリブレーション1 次へ  
+        CALIBRATION_NEXT_2: キャリブレーション2 次へ  
+        MAX_14_G: Max1.4G  
+        MAX_10_G: Max1.0G  
+        VOICE_OUTPUT_ON: 音声出力ON  
+        VOICE_OUTPUT_OFF: 音声出力OFF  
+        GBOWL: GBowl  
         GINDICATOR: GIndicator
       enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       x-enum-varnames:

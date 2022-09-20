@@ -1,6 +1,6 @@
 <?php
 /**
- * QuestionnaireStatus
+ * QuestionnaireType
  *
  * PHP version 7.4
  *
@@ -30,24 +30,20 @@ namespace App\OpenAPI\Model;
 use \App\OpenAPI\ObjectSerializer;
 
 /**
- * QuestionnaireStatus Class Doc Comment
+ * QuestionnaireType Class Doc Comment
  *
  * @category Class
- * @description ■アンケートの回答状態   ANSWERED: 回答済   UNANSWERED: 未回答 INELIGIBILITY: 不適格
+ * @description ■アンケートの種類   FIRST_TEST: 初回テスト
  * @package  App\OpenAPI
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class QuestionnaireStatus
+class QuestionnaireType
 {
     /**
      * Possible values of this enum
      */
-    public const ANSWERED = 1;
-
-    public const UNANSWERED = 2;
-
-    public const INELIGIBILITY = 3;
+    public const FIRST_TEST = 1;
 
     /**
      * Gets allowable values of the enum
@@ -56,9 +52,7 @@ class QuestionnaireStatus
     public static function getAllowableEnumValues()
     {
         return [
-            self::ANSWERED,
-            self::UNANSWERED,
-            self::INELIGIBILITY
+            self::FIRST_TEST
         ];
     }
 }

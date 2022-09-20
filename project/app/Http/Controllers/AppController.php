@@ -15,7 +15,7 @@ class AppController extends Controller
         // アクセスログ取得
         $access_log = AccessLog::where('ip', $ip)->first();
         if ($access_log == null) {
-            AccessLog::create(['ip' => $ip, 'access_cnt' => 0, 'last_accessed_at' => now()]);
+            AccessLog::create(['ip' => $ip, 'access_cnt' => 1, 'last_accessed_at' => now()]);
         } else {
             // アクセスログ更新
             $access_log->access_cnt = $access_log->access_cnt + 1;

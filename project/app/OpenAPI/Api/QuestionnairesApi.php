@@ -116,34 +116,36 @@ class QuestionnairesApi
     }
 
     /**
-     * Operation questionnairesStatusGet
+     * Operation questionnairesQuestionnairesTypeStatusGet
      *
      * アンケートの回答状態を取得します。
      *
+     * @param  ResponseQuestionnaireStatus $questionnairesType questionnairesType (required)
      *
      * @throws \App\OpenAPI\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]
+     * @return \App\OpenAPI\Model\ResponseQuestionnaireStatus
      */
-    public function questionnairesStatusGet()
+    public function questionnairesQuestionnairesTypeStatusGet($questionnairesType)
     {
-        list($response) = $this->questionnairesStatusGetWithHttpInfo();
+        list($response) = $this->questionnairesQuestionnairesTypeStatusGetWithHttpInfo($questionnairesType);
         return $response;
     }
 
     /**
-     * Operation questionnairesStatusGetWithHttpInfo
+     * Operation questionnairesQuestionnairesTypeStatusGetWithHttpInfo
      *
      * アンケートの回答状態を取得します。
      *
+     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
      *
      * @throws \App\OpenAPI\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \App\OpenAPI\Model\ResponseItemQuestionnaireStatus[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \App\OpenAPI\Model\ResponseQuestionnaireStatus, HTTP status code, HTTP response headers (array of strings)
      */
-    public function questionnairesStatusGetWithHttpInfo()
+    public function questionnairesQuestionnairesTypeStatusGetWithHttpInfo($questionnairesType)
     {
-        $request = $this->questionnairesStatusGetRequest();
+        $request = $this->questionnairesQuestionnairesTypeStatusGetRequest($questionnairesType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -182,23 +184,23 @@ class QuestionnairesApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]' === '\SplFileObject') {
+                    if ('\App\OpenAPI\Model\ResponseQuestionnaireStatus' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]' !== 'string') {
+                        if ('\App\OpenAPI\Model\ResponseQuestionnaireStatus' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]', []),
+                        ObjectSerializer::deserialize($content, '\App\OpenAPI\Model\ResponseQuestionnaireStatus', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]';
+            $returnType = '\App\OpenAPI\Model\ResponseQuestionnaireStatus';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -219,7 +221,7 @@ class QuestionnairesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]',
+                        '\App\OpenAPI\Model\ResponseQuestionnaireStatus',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -230,17 +232,18 @@ class QuestionnairesApi
     }
 
     /**
-     * Operation questionnairesStatusGetAsync
+     * Operation questionnairesQuestionnairesTypeStatusGetAsync
      *
      * アンケートの回答状態を取得します。
      *
+     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function questionnairesStatusGetAsync()
+    public function questionnairesQuestionnairesTypeStatusGetAsync($questionnairesType)
     {
-        return $this->questionnairesStatusGetAsyncWithHttpInfo()
+        return $this->questionnairesQuestionnairesTypeStatusGetAsyncWithHttpInfo($questionnairesType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -249,18 +252,19 @@ class QuestionnairesApi
     }
 
     /**
-     * Operation questionnairesStatusGetAsyncWithHttpInfo
+     * Operation questionnairesQuestionnairesTypeStatusGetAsyncWithHttpInfo
      *
      * アンケートの回答状態を取得します。
      *
+     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function questionnairesStatusGetAsyncWithHttpInfo()
+    public function questionnairesQuestionnairesTypeStatusGetAsyncWithHttpInfo($questionnairesType)
     {
-        $returnType = '\App\OpenAPI\Model\ResponseItemQuestionnaireStatus[]';
-        $request = $this->questionnairesStatusGetRequest();
+        $returnType = '\App\OpenAPI\Model\ResponseQuestionnaireStatus';
+        $request = $this->questionnairesQuestionnairesTypeStatusGetRequest($questionnairesType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -299,16 +303,24 @@ class QuestionnairesApi
     }
 
     /**
-     * Create request for operation 'questionnairesStatusGet'
+     * Create request for operation 'questionnairesQuestionnairesTypeStatusGet'
      *
+     * @param  ResponseQuestionnaireStatus $questionnairesType (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function questionnairesStatusGetRequest()
+    public function questionnairesQuestionnairesTypeStatusGetRequest($questionnairesType)
     {
 
-        $resourcePath = '/questionnaires/status';
+        // verify the required parameter 'questionnairesType' is set
+        if ($questionnairesType === null || (is_array($questionnairesType) && count($questionnairesType) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $questionnairesType when calling questionnairesQuestionnairesTypeStatusGet'
+            );
+        }
+
+        $resourcePath = '/questionnaires/{questionnairesType}/status';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -317,6 +329,14 @@ class QuestionnairesApi
 
 
 
+        // path params
+        if ($questionnairesType !== null) {
+            $resourcePath = str_replace(
+                '{' . 'questionnairesType' . '}',
+                ObjectSerializer::toPathValue($questionnairesType),
+                $resourcePath
+            );
+        }
 
 
         if ($multipart) {

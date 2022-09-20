@@ -15,10 +15,14 @@
 
 import * as runtime from '../runtime';
 import {
-    ResponseItemQuestionnaireStatus,
-    ResponseItemQuestionnaireStatusFromJSON,
-    ResponseItemQuestionnaireStatusToJSON,
+    ResponseQuestionnaireStatus,
+    ResponseQuestionnaireStatusFromJSON,
+    ResponseQuestionnaireStatusToJSON,
 } from '../models';
+
+export interface QuestionnairesQuestionnairesTypeStatusGetRequest {
+    questionnairesType: ResponseQuestionnaireStatus;
+}
 
 /**
  * QuestionnairesApi - interface
@@ -30,17 +34,18 @@ export interface QuestionnairesApiInterface {
     /**
      * 詳細内容
      * @summary アンケートの回答状態を取得します。
+     * @param {ResponseQuestionnaireStatus} questionnairesType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuestionnairesApiInterface
      */
-    questionnairesStatusGetRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ResponseItemQuestionnaireStatus>>>;
+    questionnairesQuestionnairesTypeStatusGetRaw(requestParameters: QuestionnairesQuestionnairesTypeStatusGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ResponseQuestionnaireStatus>>;
 
     /**
      * 詳細内容
      * アンケートの回答状態を取得します。
      */
-    questionnairesStatusGet(initOverrides?: RequestInit): Promise<Array<ResponseItemQuestionnaireStatus>>;
+    questionnairesQuestionnairesTypeStatusGet(requestParameters: QuestionnairesQuestionnairesTypeStatusGetRequest, initOverrides?: RequestInit): Promise<ResponseQuestionnaireStatus>;
 
 }
 
@@ -53,27 +58,31 @@ export class QuestionnairesApi extends runtime.BaseAPI implements Questionnaires
      * 詳細内容
      * アンケートの回答状態を取得します。
      */
-    async questionnairesStatusGetRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ResponseItemQuestionnaireStatus>>> {
+    async questionnairesQuestionnairesTypeStatusGetRaw(requestParameters: QuestionnairesQuestionnairesTypeStatusGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ResponseQuestionnaireStatus>> {
+        if (requestParameters.questionnairesType === null || requestParameters.questionnairesType === undefined) {
+            throw new runtime.RequiredError('questionnairesType','Required parameter requestParameters.questionnairesType was null or undefined when calling questionnairesQuestionnairesTypeStatusGet.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/questionnaires/status`,
+            path: `/questionnaires/{questionnairesType}/status`.replace(`{${"questionnairesType"}}`, encodeURIComponent(String(requestParameters.questionnairesType))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ResponseItemQuestionnaireStatusFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ResponseQuestionnaireStatusFromJSON(jsonValue));
     }
 
     /**
      * 詳細内容
      * アンケートの回答状態を取得します。
      */
-    async questionnairesStatusGet(initOverrides?: RequestInit): Promise<Array<ResponseItemQuestionnaireStatus>> {
-        const response = await this.questionnairesStatusGetRaw(initOverrides);
+    async questionnairesQuestionnairesTypeStatusGet(requestParameters: QuestionnairesQuestionnairesTypeStatusGetRequest, initOverrides?: RequestInit): Promise<ResponseQuestionnaireStatus> {
+        const response = await this.questionnairesQuestionnairesTypeStatusGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
