@@ -30,4 +30,27 @@ export default {
   'スマホをホルダーに固定して「次へ」を押して下さい。':
     'Please fix your phone to the holder and press "Next".',
   'キャリブレーションが完了しました。': 'Calibration is completed.',
+
+  // アンケート(共通)
+  'アンケートのお願い': 'Survey Request',
+  '今後より良いサービスを提供すべくためにアンケートを実施しております。お手数ではございますがご協力お願い致します。':
+    'We are conducting a survey to provide better service in the future. \nWe appreciate your cooperation.',
+  'アンケートにご協力いただきありがとうございました。':
+    'Thank you for your cooperation in filling out the survey.',
+  'アンケートを送信する': 'Submit Survey',
+  '閉じる': 'Close',
+  'とてもそう思う': 'Very much so',
+  'ややそう思う': 'Somewhat agree',
+  'どちらともいえない': 'Neither agree nor disagree',
+  'あまりそう思わない': 'Not so much',
+  'まったくそう思わない': 'Not at all',
+
+  // アンケート(first_test)
+  '■このアプリで運転中に新たな気付きが得られましたか?':
+    '■Did you notice anything new while driving with this app?',
+  '■アプリの操作は分かりやすいですか?': '■Is the app easy to use?',
+  '■もし何かご要望がありましたらご自由にお書きください。':
+    '■If you have any requests, please feel free to write them down.',
+  'こんな機能がほしい!もっとこうしてほしい!':
+    'I want such a function! I want more like this!.',
 }
