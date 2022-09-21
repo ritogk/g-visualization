@@ -1,5 +1,5 @@
 import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
-import { Device } from '@/libs/constants'
+import { Device } from '@/core/constants'
 
 /**
  * 加速度センサーに関係するモジュール

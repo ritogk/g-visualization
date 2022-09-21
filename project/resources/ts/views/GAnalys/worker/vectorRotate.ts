@@ -3,7 +3,7 @@
  * ※worker用
  */
 
-import { rotate3dVector } from '@/libs/trigonometric'
+import { rotate3dVector } from '@/views/GAnalys/services/trigonometric'
 
 const w: Worker = self as any
 

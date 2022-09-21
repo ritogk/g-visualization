@@ -1,6 +1,9 @@
-import { QuestionnairesApi } from '@/openapi/apis'
-import { apiConfig } from '@/libs/openapi'
-import { QuestionnaireType, QuestionnaireStatus } from '@/openapi/models'
+import { QuestionnairesApi } from '@/core/openapiClient/apis'
+import { apiConfig } from '@/core/openapi'
+import {
+  QuestionnaireType,
+  QuestionnaireStatus,
+} from '@/core/openapiClient/models'
 /**
  * アンケートに関するクラス
  */

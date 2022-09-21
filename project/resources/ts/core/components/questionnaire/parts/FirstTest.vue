@@ -1,3 +1,4 @@
+<!-- 初回アンケート -->
 <template>
   <!-- モーダル -->
   <div
@@ -233,12 +234,12 @@
 import { defineComponent, reactive, onMounted, watch, ref, inject } from 'vue'
 import { Modal } from 'bootstrap'
 import { useI18n } from 'vue-i18n'
-import { Questionnaire } from '@/libs/questionnaire'
-import { QuestionnaireType } from '@/openapi/models'
+import { Questionnaire } from '@/core/services/questionnaire'
+import { QuestionnaireType } from '@/core/openapiClient/models'
 import {
   useQuestionnaireStateKey,
   useQuestionnaireStateType,
-} from '@/libs/questionnaireModalState'
+} from '@/core/components/questionnaire/questionnaireState'
 
 export default defineComponent({
   setup() {

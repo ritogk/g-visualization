@@ -1,10 +1,8 @@
 import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
-// import { Device } from '@/libs/constants'
-import { QuestionnaireType } from '@/openapi/models'
-// import { Questionnaire } from './questionnaire'
+import { QuestionnaireType } from '@/core/openapiClient/models'
 
 /**
- * アンケートポップアップの状態に関するクラス
+ * アンケートの状態に関するクラス
  **/
 
 type useQuestionnaireStateType = {
