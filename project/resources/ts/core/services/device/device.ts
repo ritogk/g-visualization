@@ -1,5 +1,5 @@
 import { InjectionKey, reactive, ToRefs, toRefs } from 'vue'
-import { Device } from '@/libs/constants'
+import { Device } from '@/core/constants'
 
 /**
  * 端末の情報に関係するモジュール

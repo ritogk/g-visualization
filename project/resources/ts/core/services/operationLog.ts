@@ -1,6 +1,6 @@
-import { apiConfig } from '@/libs/openapi'
-import { LogApi } from '@/openapi/apis/LogApi'
-import { OperationCd } from '@/openapi/models'
+import { apiConfig } from '@/core/openapi'
+import { LogApi } from '@/core/openapiClient/apis/LogApi'
+import { OperationCd } from '@/core/openapiClient/models'
 /**
  * 操作ログに関するクラス
  */

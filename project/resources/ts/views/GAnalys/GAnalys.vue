@@ -231,20 +231,23 @@ import { defineComponent, ref, inject, watch, onMounted } from 'vue'
 import {
   useAccelerationSensortKey,
   useAccelerationSensortType,
-} from '@/libs/device/accelerationSensor'
-import { useGyroSensortKey, useGyroSensortType } from '@/libs/device/gyroSensor'
-import { useDeviceKey, useDeviceType } from '@/libs/device/device'
-import GBowl from '@/components/GBowl.vue'
-import GBowlTouge from '@/components/GBowlTouge.vue'
-import GIndicator from '@/components/GIndicator.vue'
-import GIndicatorTouge from '@/components/GIndicatorTouge.vue'
+} from '@/core/services/device/accelerationSensor'
+import {
+  useGyroSensortKey,
+  useGyroSensortType,
+} from '@/core/services/device/gyroSensor'
+import { useDeviceKey, useDeviceType } from '@/core/services/device/device'
+import GBowl from './parts/GBowl.vue'
+import GBowlTouge from './parts/GBowlTouge.vue'
+import GIndicator from './parts/GIndicator.vue'
+import GIndicatorTouge from './parts/GIndicatorTouge.vue'
 import { Modal } from 'bootstrap'
 import Slider from '@vueform/slider'
 import { useI18n } from 'vue-i18n'
-import { Keys } from '@/libs/localStorage'
-import { GVoice } from '@/libs/gVoice/gVoice'
-import { operationLog } from '@/libs/log/operationLog'
-import { OperationCd } from '@/openapi/models'
+import { Keys } from '@/core/localStorage'
+import { GVoice } from './services/gVoice/gVoice'
+import { operationLog } from '@/core/services/operationLog'
+import { OperationCd } from '@/core/openapiClient/models'
 
 export default defineComponent({
   components: {
@@ -296,7 +299,7 @@ export default defineComponent({
 
     // ベクトルの回転を別スレッドで実行する
     const w_vector_rotate = new Worker(
-      new URL('@/libs/worker/vectorRotate.ts', import.meta.url)
+      new URL('@/views/GAnalys/worker/vectorRotate.ts', import.meta.url)
     )
     w_vector_rotate.onmessage = (event: MessageEvent<any>) => {
       rotate_g_x.value = event.data.x

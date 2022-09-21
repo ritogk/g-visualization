@@ -61,33 +61,36 @@
       <router-view />
     </transition>
   </div>
-  <QuestionnaireModal></QuestionnaireModal>
+  <QuestionnaireArea></QuestionnaireArea>
 </template>
 
 <script lang="ts">
 import { defineComponent, provide, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import QuestionnaireModal from '@/components/QuestionnaireModal.vue'
-import { useDevice, useDeviceKey } from '@/libs/device/device'
-import { useGyroSensor, useGyroSensortKey } from '@/libs/device/gyroSensor'
+import QuestionnaireArea from '@/core/components/questionnaire/QuestionnaireArea.vue'
+import { useDevice, useDeviceKey } from '@/core/services/device/device'
+import {
+  useGyroSensor,
+  useGyroSensortKey,
+} from '@/core/services/device/gyroSensor'
 import {
   useAccelerationSensor,
   useAccelerationSensortKey,
-} from '@/libs/device/accelerationSensor'
-import { Device, Lang } from '@/libs/constants'
+} from '@/core/services/device/accelerationSensor'
+import { Device, Lang } from '@/core/constants'
 import NoSleep from 'nosleep.js'
 import { useI18n } from 'vue-i18n'
-import { Questionnaire } from '@/libs/questionnaire'
-import { QuestionnaireStatus } from '@/openapi/models'
+import { Questionnaire } from '@/core/services/questionnaire'
+import { QuestionnaireStatus } from '@/core/openapiClient/models'
 import {
   useQuestionnaireState,
   useQuestionnaireStateKey,
-} from '@/libs/questionnaireModalState'
-import { QuestionnaireType } from '@/openapi/models'
+} from '@/core/components/questionnaire/questionnaireState'
+import { QuestionnaireType } from '@/core/openapiClient/models'
 
 export default defineComponent({
   components: {
-    QuestionnaireModal,
+    QuestionnaireArea,
   },
   setup() {
     // i18n

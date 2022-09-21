@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './route'
-import { i18n } from '@/libs/i18n'
-import { getParam } from '@/libs/utility'
+import { i18n } from '@/core/i18n'
+import { getParam } from '@/core/utility'
 import 'bootstrap'
 
 const app = createApp(App)

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import GAnalys from './views/GAnalys.vue'
+import GAnalys from './views/GAnalys/GAnalys.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

@@ -1,6 +1,6 @@
-import * as voiceData from '@/libs/gVoice/voiceData'
+import * as voiceData from './voiceData'
 import { Ref } from 'vue'
-import { Device } from '@/libs/constants'
+import { Device } from '@/core/constants'
 
 /**
  * Gの音声出力に関するクラス

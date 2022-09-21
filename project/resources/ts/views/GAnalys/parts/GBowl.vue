@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
-import { touge_max_g } from '@/libs/constants'
+import { circuit_max_g } from '@/core/constants'
 import p5 from 'p5'
 
 export default defineComponent({
@@ -108,7 +108,8 @@ export default defineComponent({
         p.stroke(158, 158, 147)
         // gサークルを描画
         p.ellipse(0, 0, g_circle_diameter)
-        const num = touge_max_g * 10
+        const num = circuit_max_g * 10
+        p.ellipse(0, 0, (g_circle_diameter * 12) / num)
         p.ellipse(0, 0, (g_circle_diameter * 10) / num)
         p.ellipse(0, 0, (g_circle_diameter * 8) / num)
         p.ellipse(0, 0, (g_circle_diameter * 6) / num)
@@ -123,8 +124,10 @@ export default defineComponent({
         // ラベルを描画
         p.fill(158, 158, 147)
         p.strokeWeight(0)
-        const cicle_interval = g_circle_diameter / 2 / 5
+        const cicle_interval = g_circle_diameter / 2 / 7
 
+        p.text('1.4G', 0, cicle_interval * 7 * -1 + 5)
+        p.text('1.2G', 0, cicle_interval * 6 * -1 + 5)
         p.text('1.0G', 0, cicle_interval * 5 * -1 + 5)
         p.text('0.8G', 0, cicle_interval * 4 * -1 + 5)
         p.text('0.6G', 0, cicle_interval * 3 * -1 + 5)
@@ -157,7 +160,7 @@ export default defineComponent({
       const adjust_x = (g: number) => {
         // gオブジェクトの半径
         const g_object_radius = g_object_diameter / 2
-        return (g * (g_circle_diameter / 2)) / touge_max_g - g_object_radius
+        return (g * (g_circle_diameter / 2)) / circuit_max_g - g_object_radius
       }
 
       // gからキャンバス用のy座標に変換
@@ -165,7 +168,7 @@ export default defineComponent({
         // gオブジェクトの半径
         const g_object_radius = g_object_diameter / 2
         return (
-          ((g * (g_circle_diameter / 2)) / touge_max_g + g_object_radius) * -1
+          ((g * (g_circle_diameter / 2)) / circuit_max_g + g_object_radius) * -1
         )
       }
     }
