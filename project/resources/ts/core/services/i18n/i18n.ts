@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
-import ja from '@/assets/lang/ja'
-import en from '@/assets/lang/en'
+import ja from '@/core/services/i18n/lang/ja'
+import en from '@/core/services/i18n/lang/en'
 
 const messages = {
   en: {

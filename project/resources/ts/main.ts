@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './route'
-import { i18n } from '@/core/i18n'
+import { i18n } from '@/core/services/i18n/i18n'
 import { getParam } from '@/core/utility'
 import 'bootstrap'
 

@@ -299,7 +299,7 @@ export default defineComponent({
 
     // ベクトルの回転を別スレッドで実行する
     const w_vector_rotate = new Worker(
-      new URL('@/views/GAnalys/worker/vectorRotate.ts', import.meta.url)
+      new URL('@/pages/GAnalys/worker/vectorRotate.ts', import.meta.url)
     )
     w_vector_rotate.onmessage = (event: MessageEvent<any>) => {
       rotate_g_x.value = event.data.x
