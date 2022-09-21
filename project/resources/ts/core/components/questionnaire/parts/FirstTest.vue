@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
-          <h5 class="modal-title">アンケートのお願い</h5>
+          <h5 class="modal-title">{{ t('message.アンケートのお願い') }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -24,13 +24,20 @@
         <div v-if="pageNoRefs == PAGE_NO.QUESTIONNAIRE_ANSWER">
           <div class="modal-body">
             <p>
-              今後より良いサービスを提供すべくためにアンケートを実施しております。
-              お手数ではございますがご協力お願い致します。
+              {{
+                t(
+                  'message.今後より良いサービスを提供すべくためにアンケートを実施しております。お手数ではございますがご協力お願い致します。'
+                )
+              }}
             </p>
             <!-- 質問1 -->
             <div>
               <p class="mt-3">
-                ■このアプリで運転中に新たな気付きが得られましたか?
+                {{
+                  t(
+                    'message.■このアプリで運転中に新たな気付きが得られましたか?'
+                  )
+                }}
               </p>
               <div class="form-check mb-2">
                 <input
@@ -43,7 +50,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question1_1">
-                  とてもそう思う
+                  {{ t('message.とてもそう思う') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -57,7 +64,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question1_2">
-                  ややそう思う
+                  {{ t('message.ややそう思う') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -71,7 +78,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question1_3">
-                  どちらともいえない
+                  {{ t('message.どちらともいえない') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -85,7 +92,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question1_4">
-                  あまりそう思わない
+                  {{ t('message.あまりそう思わない') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -99,13 +106,15 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question1_5">
-                  まったくそう思わない
+                  {{ t('message.まったくそう思わない') }}
                 </label>
               </div>
             </div>
             <!-- 質問2 -->
             <div>
-              <p class="mt-4">■アプリの操作は分かりやすいですか?</p>
+              <p class="mt-4">
+                {{ t('message.■アプリの操作は分かりやすいですか?') }}
+              </p>
               <div class="form-check mb-2">
                 <input
                   id="question2_1"
@@ -117,7 +126,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question2_1">
-                  とてもそう思う
+                  {{ t('message.とてもそう思う') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -131,7 +140,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question2_2">
-                  ややそう思う
+                  {{ t('message.ややそう思う') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -145,7 +154,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question2_3">
-                  どちらともいえない
+                  {{ t('message.どちらともいえない') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -159,7 +168,7 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question2_4">
-                  あまりそう思わない
+                  {{ t('message.あまりそう思わない') }}
                 </label>
               </div>
               <div class="form-check mb-2">
@@ -173,14 +182,18 @@
                   style="transform: scale(1.6)"
                 />
                 <label class="form-check-label" for="question2_5">
-                  まったくそう思わない
+                  {{ t('message.まったくそう思わない') }}
                 </label>
               </div>
             </div>
             <!-- 質問3 -->
             <div>
               <p class="mt-4">
-                ■もし何かご要望がありましたらご自由にお書きください。
+                {{
+                  t(
+                    'message.■もし何かご要望がありましたらご自由にお書きください。'
+                  )
+                }}
               </p>
               <div class="form-floating">
                 <textarea
@@ -190,9 +203,9 @@
                   placeholder="Leave a comment here"
                   style="height: 100px"
                 ></textarea>
-                <label for="floatingTextarea2" class="text-muted"
-                  >こんな機能がほしい! もっとこうしてほしい!</label
-                >
+                <label for="floatingTextarea2" class="text-muted">{{
+                  t('message.こんな機能がほしい!もっとこうしてほしい!')
+                }}</label>
               </div>
             </div>
           </div>
@@ -203,7 +216,7 @@
                 class="btn btn-success w-100"
                 @click="clickSend"
               >
-                アンケートを送信する
+                {{ t('message.アンケートを送信する') }}
               </button>
             </div>
           </div>
@@ -211,7 +224,11 @@
         <!-- アンケート回答後の画面 -->
         <div v-if="pageNoRefs == PAGE_NO.COMPLETE">
           <div class="modal-body">
-            <p>アンケートにご協力いただきありがとうございました。</p>
+            <p>
+              {{
+                t('message.アンケートにご協力いただきありがとうございました。')
+              }}
+            </p>
             <div class="modal-footer">
               <div class="w-100 m-0">
                 <button
@@ -219,7 +236,7 @@
                   class="btn btn-secondary w-100"
                   @click="clickClose"
                 >
-                  閉じる
+                  {{ t('message.閉じる') }}
                 </button>
               </div>
             </div>
