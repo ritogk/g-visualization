@@ -5,9 +5,8 @@
     "development": "mix",
     "watch": "mix watch",
     "watch-poll": "mix watch -- --watch-options-poll=1000",
-    "prod-watch": "watchexec -e ts,vue npm run prod",
     "hot": "mix watch --hot",
-    "prod": "npm run production",
+    "prod": "mix --production",
     "production": "mix --production",
     "lint": "eslint --ext .ts,.vue --fix --ignore-path .gitignore resources/",
     "format": "prettier --write --ignore-path .gitignore resources/**/*.{ts,vue}"
