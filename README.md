@@ -1,7 +1,7 @@
 # 技術
 - vue.js
 - typescript
-- laravel(殆ど使ってない)
+- laravel
 
 # アプリ概要
 
@@ -54,5 +54,5 @@ Gのベクトル回転
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 ```
 
-### メインのソースディレクトリはここ  
+### フロントエンド側のコードはこちらです。
 https://github.com/ritogk/g-visualization/tree/main/project/resources/ts
