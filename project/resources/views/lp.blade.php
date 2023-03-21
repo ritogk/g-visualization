@@ -69,8 +69,8 @@
                     <div class="col-lg-6">
                         <!-- Mashead text and app badges-->
                         <div class="mb-5 mb-lg-0 text-center text-lg-start">
-                            <h1 class="display-1 lh-1 mb-3">{{__('lp.スポーツ走行に特化したGを可視化するアプリ')}}</h1>
-                            <p class="lead fw-normal text-muted mb-4">{{__('lp.簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。')}}</p>
+                            <h1 class="display-1 lh-1 mb-3">{{__('lp.荷重移動をマスターしてタイムを更新せよ！ドラテク支援アプリ')}}</h1>
+                            <p class="lead fw-normal text-muted mb-4">{{__('lp.荷重のモニタリング。荷重をその場で音でリアルタイムに確認することができます。')}}</p>
                             <div class="d-flex flex-column flex-lg-row align-items-center">
                                 <a class="me-lg-3 mb-1 mb-lg-0" href="/app/index?lang={{Config::get('app.locale')}}"><img class="app-badge" src="{{ App\Assets\Helpers::cacheBusting('/lp/img/startapp.png') }}" alt="..." /></a>
                             </div>

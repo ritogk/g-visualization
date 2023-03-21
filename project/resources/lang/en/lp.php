@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'スポーツ走行に特化したGを可視化するアプリ' => 'G visualization application specialized for sports driving',
-    '簡単操作でGの可視化が行なえます。ドライビングモニターとしてもご利用いただけます。' => 'G visualization with easy operation. It can also be used as a driving monitor.',
+    '荷重移動をマスターしてタイムを更新せよ！ドラテク支援アプリ' => 'Master the load transfer and beat your time! Driving tech support app',
+    '荷重のモニタリング。荷重をその場で音でリアルタイムに確認することができます。' => 'G monitoring. G can be checked in real time with sound on the spot.',
 
     'Gを....操れ....!!' => 'G is .... Manipulate ....!!!',
 
