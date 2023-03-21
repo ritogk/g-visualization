@@ -1,13 +1,15 @@
 # 技術
+
 - vue.js
 - typescript
 - laravel
 
 # アプリ概要
 
-スポーツ走行時のGを可視化or音声出力して車を操る手助けをするアプリ
+スポーツ走行時の G を可視化 or 音声出力して車を操る手助けをするアプリ
 
 ## リンク
+
 https://gvisual.homisoftware.net/lp/ja  
 https://twitter.com/homing_fd2/status/1521749005360779265?s=20&t=qpOtG8M4-zggtwA0-cncgw
 https://twitter.com/homing_fd2/status/1570358896711315456
@@ -18,9 +20,10 @@ iphone(safari, chrome)
 android(chrome)
 
 ## できる事
-Gの可視化  
-Gの音声出力  
-Gのベクトル回転  
+
+G の可視化  
+G の音声出力  
+G のベクトル回転
 
 ## G インジケーター
 
@@ -40,7 +43,6 @@ Gのベクトル回転
 | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
 | <img src="https://user-images.githubusercontent.com/72111956/166639071-71d8d948-bf4d-42ac-9812-a2ea3610f11d.PNG"> | <img src="https://user-images.githubusercontent.com/72111956/166639066-5c035886-1728-474b-aaf3-951096c15134.PNG"> |
 
-
 ## デモ
 
 <video src="https://user-images.githubusercontent.com/72111956/190582702-4d902ad0-a674-41cf-ae12-8c52dca0863b.mp4"></video>
@@ -52,7 +54,11 @@ Gのベクトル回転
 ```sh
 ./setup.sh
 curl https://sh.rustup.rs -sSf | sh -s -- -y
+php artisan migrate:refresh --seed
+npm run prod
+php artisan serve --host 0.0.0.0:8000
 ```
 
 ### フロントエンド側のコードはこちらです。
+
 https://github.com/ritogk/g-visualization/tree/main/project/resources/ts
