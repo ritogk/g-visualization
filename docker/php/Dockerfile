@@ -22,7 +22,7 @@ RUN apt-get install -y zlib1g-dev libzip-dev libpng-dev wget\
 RUN apt install -y nodejs npm \
     && npm install n -g \
     && n latest 
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
