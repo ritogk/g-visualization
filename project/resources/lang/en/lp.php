@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'html-title' => 'GVisual - Master load shifting and beat your time! Driving tech support app',
+    'html-description' => 'Load monitoring for real-time sound confirmation, load control and improved draughtsmanship. Use on circuits, mountain passes, city driving, etc.',
     '荷重移動をマスターしてタイムを更新せよ！ドラテク支援アプリ' => 'Master the load transfer and beat your time! Driving tech support app',
     '荷重のモニタリング。荷重をリアルタイムに音で確認。荷重を操りドラテク向上。サーキット、峠、街乗りなど、様々なユースケースで活用することができます。' => 'G monitoring. Real-time sound confirmation of the g. Manipulate the g to improve driving technique. Can be used in various use cases, e.g. on circuits, mountain passes, city driving, etc.',
 
