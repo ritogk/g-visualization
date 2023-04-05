@@ -3,14 +3,14 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="description" content="{{__('lp.html-description')}}" />
+        <meta name="author" content="ritogk" />
         <link rel=”alternate” hreflang=”ja” lang="ja" href="{{ route('lp.ja') }}">
         <link rel="alternate" hreflang="en-gb" lang="en" href="{{ route('lp.en') }}" />
         <link rel="alternate" hreflang="en-us" lang="en" href="{{ route('lp.en') }}" />
         <link rel="alternate" hreflang="en-au" lang="en" href="{{ route('lp.en') }}" />
 
-        <title>GVisual LP</title>
+        <title>{{__('lp.html-title')}}</title>
         <link rel="icon" type="image/x-icon" href="lp/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
