@@ -25,7 +25,10 @@
     <!-- ファビコン -->
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
-    @include('components.gtag')
+    @if(config('app.env') === 'production')
+      @include('components.gtag')
+      @include('components.clarity-app')
+    @endif
 
 </head>
 
