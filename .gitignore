@@ -14,3 +14,5 @@ docker/db/data
 docker/db/sql
 docker/test_db/data
 docker/test_db/sql
+
+jupyter/.ipynb_checkpoints
