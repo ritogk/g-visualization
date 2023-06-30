@@ -59,6 +59,6 @@ npm run prod
 php artisan serve --host 0.0.0.0:8000
 ```
 
-### フロントエンド側のコードはこちらです。
+### フロントエンド側のコード
 
 https://github.com/ritogk/g-visualization/tree/main/project/resources/ts
