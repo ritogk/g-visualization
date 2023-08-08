@@ -44,8 +44,7 @@ G のベクトル回転
 | <img src="https://user-images.githubusercontent.com/72111956/166639071-71d8d948-bf4d-42ac-9812-a2ea3610f11d.PNG"> | <img src="https://user-images.githubusercontent.com/72111956/166639066-5c035886-1728-474b-aaf3-951096c15134.PNG"> |
 
 ## デモ
-
-<video src="https://user-images.githubusercontent.com/72111956/190582702-4d902ad0-a674-41cf-ae12-8c52dca0863b.mp4"></video>
+https://www.youtube.com/watch?v=_0PG_Q7EbHo&ab_channel=%E3%81%BB%E3%81%BFcar%2Fpuyopuyo%2Fprogram
 
 ## 環境構築
 
