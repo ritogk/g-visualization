@@ -3,6 +3,9 @@
 スポーツ走行時のGを可視化, 音声出力して車を操る手助けをするアプリ  
 リアルタイムにGを体と目と耳で感じ取る事ができます。
 
+## 技術的な事
+https://zenn.dev/homing/articles/705ac9c0cd1006  
+
 ## リンク
 
 https://gvisual.homisoftware.net/lp/ja  
