@@ -66,10 +66,11 @@ cdk deploy --all
 1. GUIでIAMユーザーのアクセスキーとシークレットキーを作成  
 
 ### VPSセットアップ
-```
+```sh
 cd cron
 cp backup-db.base.sh backup-db.sh
 sudo vim backup-db.sh #アクセスキーとシークレットキーを書き込む
+chmod +x backup-db.sh
 crontab -e
-0 0 1 * * /home/ubuntu/g-visual/cron/backup-db.sh
+  0 0 1 * * /home/ubuntu/g-visualization/cron/backup-db.sh
 ```
