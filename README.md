@@ -56,6 +56,20 @@ npm run prod
 php artisan serve --host 0.0.0.0:8000
 ```
 
-### フロントエンド側のコード
+### awsセットアップ
+```sh
+cd cdk
+cp .env.base
+vim .env
+cdk deploy --all
+```
+1. GUIでIAMユーザーのアクセスキーとシークレットキーを作成  
 
-https://github.com/ritogk/g-visualization/tree/main/project/resources/ts
+### VPSセットアップ
+```
+cd cron
+cp backup-db.base.sh backup-db.sh
+sudo vim backup-db.sh #アクセスキーとシークレットキーを書き込む
+crontab -e
+0 0 1 * * /home/ubuntu/g-visual/cron/backup-db.sh
+```
