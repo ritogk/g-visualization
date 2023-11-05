@@ -11,12 +11,12 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
-    // s3バケットを作成。89日経過したファイルは自動的に削除する
+    // s3バケットを作成。91日経過したファイルは自動的に削除する
     const bucket = new s3.Bucket(this, "MyFirstBucket", {
       bucketName: "gvisual-db-backup",
       lifecycleRules: [
         {
-          expiration: cdk.Duration.days(89),
+          expiration: cdk.Duration.days(91),
         },
       ],
       removalPolicy: cdk.RemovalPolicy.DESTROY, // スタックが削除されたときにバケットも削除する
